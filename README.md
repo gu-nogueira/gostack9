@@ -70,10 +70,6 @@ Meu setup de ambiente de desenvolvimento web
 
 ## Criando um novo projeto
 
-### Frontend
-  - ReactJS
-### Mobile
-  - React Native
 ### Backend
   - ```mkdir backend```
   - ```cd \backend```
@@ -151,3 +147,9 @@ Meu setup de ambiente de desenvolvimento web
   
   ### Podman
   - É tudo igual ao docker...
+
+  
+### Frontend
+  - ReactJS
+### Mobile
+  - React Native
