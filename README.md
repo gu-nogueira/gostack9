@@ -52,10 +52,10 @@ Meu setup de ambiente de desenvolvimento web
 ### DevDocs
   - Link para download: https://www.electronjs.org/apps/devdocs-app
   - Linguagens a selecionar:
-   * Javascript
-   * ReactJS
-   * React Native
-   * Node
+    * Javascript
+    * ReactJS
+    * React Native
+    * Node
 
 ## Package manager
 
@@ -64,8 +64,8 @@ Meu setup de ambiente de desenvolvimento web
 ### node LTS + npm
   - Link para instalação via package manager (chocolatey): https://nodejs.org/en/download/package-manager/#windows
 ### Yarn
-   - Link para instalação via npm: https://yarnpkg.com/getting-started/install
-   - Checar versão do yarn: ```yarn -v```
+  - Link para instalação via npm: https://yarnpkg.com/getting-started/install
+  - Checar versão do yarn: ```yarn -v```
   
 
 ## Criando um novo projeto
@@ -129,12 +129,25 @@ Meu setup de ambiente de desenvolvimento web
       "protocol": "inspector"
       }
       ```
-      * Agora, rodamos o servidor com ````yarn dev:debug``` e debugamos com os breakpoins e clicando em play na aba debug do vscode
+      * Agora, rodamos o servidor com ```yarn dev:debug``` e debugamos com os breakpoins e clicando em play na aba debug do vscode
 
 ## Containers
 
- ### Docker
+  ### Docker
   - Link para download: https://docs.docker.com/get-docker/
+    * No windows é necessário utilizar o ```WSL``` ou o ```Hyper-V``` para virtualizar o docker
+  - Iniciar (criar) um container:
+    ```
+    docker run
+    --name > dá um nome ao container
+    -e > uso de variáveis ambientes
+    -p > redirecionamento de porta
+    -d > nome da imagem a utilizar para criação do container
+
+    exemplo:
+
+    docker run --name database -e POSTGRES_PASSWORD=docker -p 5432:5432
+    ```
   
- ### Podman
-  - ...
+  ### Podman
+  - É tudo igual ao docker...
