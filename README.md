@@ -142,7 +142,17 @@ Meu setup de ambiente de desenvolvimento web
 
     exemplo:
 
-    docker run --name database -e POSTGRES_PASSWORD=docker -p 5432:5432
+    docker run --name database -e POSTGRES_PASSWORD=docker -p 5432:5432 -d postgres
+    ```
+  - Listar todos os containers em execução:
+    ```
+    docker ps
+
+    -a > lista todos os containers (até desligados)
+    ```
+  - Listar todas as imagens de containers:
+    ```
+    docker image ls
     ```
   
   ### Podman
