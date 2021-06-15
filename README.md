@@ -139,6 +139,7 @@ Meu setup de ambiente de desenvolvimento web
     -e > uso de variáveis ambientes
     -p > redirecionamento de porta
     -d > nome da imagem a utilizar para criação do container
+    --network > define a rede de conversação do container
 
     exemplo:
 
@@ -148,11 +149,19 @@ Meu setup de ambiente de desenvolvimento web
     ```
     docker ps
 
-    -a > lista todos os containers (até desligados)
+    -a > lista todos os containers (até desligados):
     ```
   - Listar todas as imagens de containers:
     ```
     docker image ls
+    ```
+  - Iniciar um container desligado:
+    ```
+    docker start <NAME>
+    ```
+  - Ver os logs do container:
+    ```
+    docker logs <NAME>
     ```
 
   ### Podman
