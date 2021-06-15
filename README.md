@@ -70,7 +70,7 @@ Meu setup de ambiente de desenvolvimento web
 
 ## Criando um novo projeto
 
-### Backend
+  ## Backend
   - ```mkdir backend```
   - ```cd \backend```
   - Iniciar o package.json para cuidar das dependências do projeto com o parâmetro -y, aceitando todas as questões ```yarn init -y```
@@ -127,7 +127,7 @@ Meu setup de ambiente de desenvolvimento web
       ```
       * Agora, rodamos o servidor com ```yarn dev:debug``` e debugamos com os breakpoins e clicando em play na aba debug do vscode
 
-## Containers
+  ## Containers
 
   ### Docker
   - Link para download: https://docs.docker.com/get-docker/
@@ -154,11 +154,35 @@ Meu setup de ambiente de desenvolvimento web
     ```
     docker image ls
     ```
-  
+
   ### Podman
   - É tudo igual ao docker...
-
   
+  ## Banco de dados
+
+  ### PostgreSQL
+  - Link para montar o container: https://hub.docker.com/_/postgres
+  ```docker run --name database -e POSTGRES_PASSWORD=docker -p 5432:5432 -d postgres```
+  - Aqui, montamos o container conversando com o host na porta 5432
+
+  ### pgAdmin
+  - Link para download: https://www.pgadmin.org/download/
+  - Link para montar o container *recomendado*: https://www.pgadmin.org/docs/pgadmin4/latest/container_deployment.html
+  ```bash
+  docker pull dpage/pgadmin4
+  docker run --name databasegui -p 5433:80 -e 'PGADMIN_DEFAULT_EMAIL=gustavo@onmai.com.br' -e 'PGADMIN_DEFAULT_PASSWORD=docker' -d dpage/pgadmin4
+  ```
+  - Aqui, montamos o container na porta 5433 (host), conversando com a porta 80 (container).
+  - login: gustavo@onmai.com.br
+  - senha: docker
+  - Configurando servidor:
+    ```
+    Name: database
+    Host: host.docker.internal
+    Port: 5432
+    User: postgres
+    Pass: docker
+    ```
 ### Frontend
   - ReactJS
 ### Mobile
