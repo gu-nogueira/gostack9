@@ -227,6 +227,26 @@ Meu setup de ambiente de desenvolvimento web
   }
   ```
 
+  ### Configurando PostgreSQL para o Sequelize
+  - Vamos precisar de duas dependências: `yarn add pg pg-hstore`
+  - No arquivo `database.js`, vamos inserir:
+  ```js
+  module.exports = {
+    dialect: 'postgres',
+    host: 'localhost',
+    username: 'postgres',
+    password: 'docker',
+    database: 'gobarber',
+    define: {
+      timestamps: true,
+      underscored: true,
+      underscoredAll: true,
+    },
+  };
+  ```
+
+
+
   ## Padronização de código
 
   ### ESLint (necessário extensão vscode)
