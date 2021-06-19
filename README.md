@@ -189,27 +189,43 @@ Meu setup de ambiente de desenvolvimento web
   - login: gustavo@onmai.com.br
   - senha: docker
   - Configurando servidor:
-    ```
-    Name: database
-    Host: host.docker.internal
-    Port: 5432
-    User: postgres
-    Pass: docker
-    ```
+  ```
+  Name: database
+  Host: host.docker.internal
+  Port: 5432
+  User: postgres
+  Pass: docker
+  ```
 
-    ### Sequelize
-    - ORM para bancos de dados relacionais (SQLs);
-    - Tabelas do banco viram models (ex: tabela.js);
-    - Migrations:
-      * Controle de versionamento do banco de dados;
-      * Uma espécie de "Git" de banco de dados;
-      * Cada arquivo é uma migração, contendo instruções para criação, alteração ou remoção de tabelas ou colunas;
-      * Sua ordenação é por data;
-      * Caso precise de alguma alteração é possível fazer ROLLBACK de uma migration;
-    - Seeds:
-      * Populam a base de dados para desenvolvimento;
-      * Ótimo para ambientes de teste;
-      * Executável apenas por código;
+  ### Sequelize
+  - ORM para bancos de dados relacionais (SQLs)
+  - Tabelas do banco viram models (ex: tabela.js)
+  - Migrations
+    * Controle de versionamento do banco de dados
+    * Cada arquivo é uma migração, contendo instruções para criação, alteração ou remoção de tabelas ou colunas
+  - Seeds:
+    * Populam a base de dados para desenvolvimento
+  - Instalar com `yarn add sequelize`
+  - Instalar a interface de linha de comando, como dependência de desenvolvimento: `yarn add sequelize-cli -D`
+  - Configurar estrutura de pastas:
+  ```
+  > app > controllers
+  > app > models
+  > config > database.js
+  > database > migrations
+  ```
+  - Criar na raiz do projeto: `.sequelizerc` e mudar sintaxe do arquivo para javascript
+  - Dentro de sequelize, temos por padrão:
+  ```js
+  const { resolve } = require('path');
+
+  module.exports = {
+    config: resolve(__dirname, 'src', 'config', 'database.js'),
+    'models-path': resolve(__dirname, 'src', 'app', 'models'),
+    'migrations-path': resolve(__dirname, 'src', 'database', 'migrations'),
+    'seeders-path': resolve(__dirname, 'src', 'database', 'seeds'),
+  }
+  ```
 
   ## Padronização de código
 
