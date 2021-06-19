@@ -90,7 +90,7 @@ server.post('/projects/:id/tasks', checkProjectExists, (req, res) => {
   
   const project = projects.find(item => item.id == id);
 
-  project.tasks.push(title)
+  project.tasks.push(title);
   
   return res.sendStatus(201);
 

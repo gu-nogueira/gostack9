@@ -27,6 +27,9 @@ Meu setup de ambiente de desenvolvimento web
 ### Powershell 7
   - Link para download: https://github.com/PowerShell/PowerShell
 
+### Windows Terminal
+  - Baixar na Microsoft Store;
+  
 ### Vscode
   - Link para download: https://code.visualstudio.com/download
   - Sincronizar com a conta do github ```gu-nogueira``` para puxar todas as configs, plugins, preferências, etc.
