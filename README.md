@@ -10,43 +10,43 @@ Meu setup de ambiente de desenvolvimento web
 
 ## Instaladores
 
-### Git 
+### Git
   - Link para download: https://git-scm.com/downloads
-  - Gerar chave ssh para liberar no github no terminal ```ssh-keygen```
-  - Procurar a chave em ```C:\Users\<usuario>\.ssh\id_rsa.pub``` e copiar para o github em Configurações da conta > Chaves SSH e GPG
+  - Gerar chave ssh para liberar no github no terminal `ssh-keygen`
+  - Procurar a chave em `C:\Users\<usuario>\.ssh\id_rsa.pub` e copiar para o github em Configurações da conta > Chaves SSH e GPG
   - Comandos GIT:
-    * Clonar um repositório do github ```git clone git@github.com:nome-do-usuario/repositorio.git```
-    * Status de um repositório ```git status```
-    * Logs de commits de um repositório ```git log```
-    * Baixar repositório atualizado ```git pull origin master```
-    * Adicionar arquivos ```git add <arquivos>``` ou para adicionar todos os arquivos novos ```git add .```
-    * Criar um commit com as alterações ```git commit -m "Mensagem de alteração"```
-    * Atalho: Adicionar todos os arquivos alterados já com o commit ```git commit -am "Mensagem de alteração"```
-    * Subir as alteraçõs no repositório remoto (github) ```git push origin master```
+    * Clonar um repositório do github `git clone git@github.com:nome-do-usuario/repositorio.git`
+    * Status de um repositório `git status`
+    * Logs de commits de um repositório `git log`
+    * Baixar repositório atualizado `git pull origin master`
+    * Adicionar arquivos `git add <arquivos>` ou para adicionar todos os arquivos novos `git add .`
+    * Criar um commit com as alterações `git commit -m "Mensagem de alteração"`
+    * Atalho: Adicionar todos os arquivos alterados já com o commit `git commit -am "Mensagem de alteração"`
+    * Subir as alteraçõs no repositório remoto (github) `git push origin master`
 
 ### Powershell 7
   - Link para download: https://github.com/PowerShell/PowerShell
 
 ### Windows Terminal
   - Baixar na Microsoft Store;
-  
+
 ### Vscode
   - Link para download: https://code.visualstudio.com/download
-  - Sincronizar com a conta do github ```gu-nogueira``` para puxar todas as configs, plugins, preferências, etc.
-  - Configurar terminal com o diretório do Powershell 7 ```C:\Program Files\PowerShell\7\pwsh.exe```
+  - Sincronizar com a conta do github `gu-nogueira` para puxar todas as configs, plugins, preferências, etc.
+  - Configurar terminal com o diretório do Powershell 7 `C:\Program Files\PowerShell\7\pwsh.exe`
   - Plugins utilizados:
     * Bracket Pair Colorizer;
     * DotENV;
     * Dracula Official;
     * EditorConfig;
     * ESLint;
-    * GitLens; ```Fazer login no github```
+    * GitLens; `Fazer login no github`
     * Live Share;
     * Material Icon;
     * Node.js exec;
     * Rocketseat React Native;
     * Rocketseat ReactJS;
-    * Tabnine Autocomplete AI; ```Fazer login```
+    * Tabnine Autocomplete AI; `Fazer login`
     * Vscode-styled-compoments;
 
 ### Insomnia
@@ -68,25 +68,25 @@ Meu setup de ambiente de desenvolvimento web
   - Link para instalação via package manager (chocolatey): https://nodejs.org/en/download/package-manager/#windows
 ### Yarn
   - Link para instalação via npm: https://yarnpkg.com/getting-started/install
-  - Checar versão do yarn: ```yarn -v```
-  
+  - Checar versão do yarn: `yarn -v`
+
 
 ## Criando um novo projeto
 
   ## Backend
-  - ```mkdir backend```
-  - ```cd \backend```
-  - Iniciar o package.json para cuidar das dependências do projeto com o parâmetro -y, aceitando todas as questões ```yarn init -y```
-  - Instalar o framework express ```yarn add express```
-  - Iniciar o nodemon para reiniciar automaticamente o servidor quando houver alterações no projeto, com o parâmetro '-D' para instalar em modo de desenvolvimento ```yarn add nodemon -D```
-    - Para configurar o nodemon, vamos no ```package.json``` do backend e inserir a seguinte configuração
+  - `mkdir backend`
+  - `cd \backend`
+  - Iniciar o package.json para cuidar das dependências do projeto com o parâmetro -y, aceitando todas as questões `yarn init -y`
+  - Instalar o framework express `yarn add express`
+  - Iniciar o nodemon para reiniciar automaticamente o servidor quando houver alterações no projeto, com o parâmetro '-D' para instalar em modo de desenvolvimento `yarn add nodemon -D`
+    - Para configurar o nodemon, vamos no `package.json` do backend e inserir a seguinte configuração
     ```json
     "scripts": {
     "dev": "nodemon index.js"
     },
     ```
-    - Dessa forma, rodaremos o servidor com nodemon utilizando o comando ```yarn dev```
-  - Criar o arquivo para iniciar o servidor ```index.js``` incluindo o código para iniciar
+    - Dessa forma, rodaremos o servidor com nodemon utilizando o comando `yarn dev`
+  - Criar o arquivo para iniciar o servidor `index.js` incluindo o código para iniciar
   ```node
   // Importando o express
   const express = require('express');
@@ -100,9 +100,9 @@ Meu setup de ambiente de desenvolvimento web
   // Inicia o servidor na porta definida: '3000'
   server.listen(3000);
   ```
-  - Instalar o compilador sucrase para interpretar sintaxe moderna de javascript no node ```yarn add sucrase```
+  - Instalar o compilador sucrase para interpretar sintaxe moderna de javascript no node `yarn add sucrase`
     - Configurar o nodemon para compilar qualquer extensão `.js` com o sucrase:
-    - Criar um arquivo na pasta raiz do projeto (backend): ```nodemon.json```
+    - Criar um arquivo na pasta raiz do projeto (backend): `nodemon.json`
     ```json
     {
       "execMap": {
@@ -111,7 +111,7 @@ Meu setup de ambiente de desenvolvimento web
     }
     ```
     - Configurar o nodemon e o vscode para debugar com o sucrase:
-      * Iremos alterar no arquivo ```package.json``` os nossos ```"scripts"```, ficando da seguinte forma:
+      * Iremos alterar no arquivo `package.json` os nossos `"scripts"`, ficando da seguinte forma:
       ```json
       {
       "scripts": {
@@ -119,7 +119,7 @@ Meu setup de ambiente de desenvolvimento web
         "dev:debug": "nodemon --inspect src/server.js"
       },
       ```
-      * Na aba debug do vscode, criar uma nova configuração ```package.json```, mudar os seguintes campos:
+      * Na aba debug do vscode, criar uma nova configuração `package.json`, mudar os seguintes campos:
       ```json
       {
       ...
@@ -128,13 +128,14 @@ Meu setup de ambiente de desenvolvimento web
       "protocol": "inspector"
       }
       ```
-      * Agora, rodamos o servidor com ```yarn dev:debug``` e debugamos com os breakpoins e clicando em play na aba debug do vscode
+      * Agora, rodamos o servidor com `yarn dev:debug` e debugamos com os breakpoins e clicando em play na aba debug do vscode
 
   ## Containers
 
   ### Docker
   - Link para download: https://docs.docker.com/get-docker/
-    * No windows é necessário utilizar o ```WSL``` ou o ```Hyper-V``` para virtualizar o docker
+    * No windows é necessário utilizar o `WSL` ou o `Hyper-V` para virtualizar o docker
+    * Como instalar o `WSL` no Windows: https://docs.microsoft.com/pt-br/windows/terminal/get-started
   - Iniciar (criar) um container:
     ```
     docker run
@@ -153,7 +154,7 @@ Meu setup de ambiente de desenvolvimento web
     docker ps
 
     -a > lista todos os containers (até desligados):
-    ``` 
+    ```
   - Listar todas as imagens de containers:
     ```
     docker image ls
@@ -169,12 +170,12 @@ Meu setup de ambiente de desenvolvimento web
 
   ### Podman
   - É tudo igual ao docker...
-  
+
   ## Banco de dados
 
   ### PostgreSQL
   - Link para montar o container: https://hub.docker.com/_/postgres
-  ```docker run --name database -e POSTGRES_PASSWORD=docker -p 5432:5432 -d postgres```
+  `docker run --name database -e POSTGRES_PASSWORD=docker -p 5432:5432 -d postgres`
   - Aqui, montamos o container conversando com o host na porta 5432
 
   ### pgAdmin
@@ -199,7 +200,34 @@ Meu setup de ambiente de desenvolvimento web
     ### Sequelize
     - ORM para bancos de dados relacionais (SQLs);
     - Tabelas do banco viram models (ex: tabela.js);
-    - Migrations
+    - Migrations:
+      * Controle de versionamento do banco de dados;
+      * Uma espécie de "Git" de banco de dados;
+      * Cada arquivo é uma migração, contendo instruções para criação, alteração ou remoção de tabelas ou colunas;
+      * Sua ordenação é por data;
+      * Caso precise de alguma alteração é possível fazer ROLLBACK de uma migration;
+    - Seeds:
+      * Populam a base de dados para desenvolvimento;
+      * Ótimo para ambientes de teste;
+      * Executável apenas por código;
+
+  ## Padronização de código
+
+  ### ESLint (necessário extensão vscode)
+  - Ferramenta que padroniza o código de acordo com o padrão de alguma empresa;
+  ...
+  > Modulo 2, aula 6
+
+  ### Prettier (integração com ESLint)
+  - Deixa o código mais bonito. Separa linhas muito grandes;
+  ...
+  > Modulo 2, aula 6
+
+  ### Editor config (extensão vscode)
+  - Padronização entre ambiente com diferentes editores de código;
+  - Na pasta raiz do projeto, botão direito: `generate .editorconfig`
+  - Adicionar no `.editorconfig`
+
 
 ### Frontend
   - ReactJS
