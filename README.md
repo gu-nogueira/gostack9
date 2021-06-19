@@ -73,6 +73,24 @@ Meu setup de ambiente de desenvolvimento web
 
 ## Criando um novo projeto
 
+  
+  ## Padronização de código
+
+  ### ESLint (necessário extensão vscode)
+  - Ferramenta que padroniza o código de acordo com o padrão de alguma empresa;
+  ...
+  > Modulo 2, aula 6
+
+  ### Prettier (integração com ESLint)
+  - Deixa o código mais bonito. Separa linhas muito grandes;
+  ...
+  > Modulo 2, aula 6
+
+  ### Editor config (extensão vscode)
+  - Padronização entre ambiente com diferentes editores de código;
+  - Na pasta raiz do projeto, botão direito: `generate .editorconfig`
+  - Adicionar no `.editorconfig`
+
   ## Backend
   - `mkdir backend`
   - `cd \backend`
@@ -245,25 +263,30 @@ Meu setup de ambiente de desenvolvimento web
   };
   ```
 
-
-
-  ## Padronização de código
-
-  ### ESLint (necessário extensão vscode)
-  - Ferramenta que padroniza o código de acordo com o padrão de alguma empresa;
-  ...
-  > Modulo 2, aula 6
-
-  ### Prettier (integração com ESLint)
-  - Deixa o código mais bonito. Separa linhas muito grandes;
-  ...
-  > Modulo 2, aula 6
-
-  ### Editor config (extensão vscode)
-  - Padronização entre ambiente com diferentes editores de código;
-  - Na pasta raiz do projeto, botão direito: `generate .editorconfig`
-  - Adicionar no `.editorconfig`
-
+  ### Criando uma migration
+  - Criar uma tabela: `yarn sequelize migration:create --name-create-tabela`
+  - Configurar os campos da tabela no arquivo gerado, exemplo:
+  ```js
+  module.exports = {
+  up: async (queryInterface, Sequelize) => {
+    await queryInterface.createTable('users', {
+      id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+      },
+      name: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+    });
+  },
+    down: async (queryInterface) => {
+     await queryInterface.dropTable('users');
+    }
+  };
+  ```
 
 ### Frontend
   - ReactJS
