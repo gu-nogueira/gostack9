@@ -150,7 +150,7 @@ Meu setup de ambiente de desenvolvimento web
     docker ps
 
     -a > lista todos os containers (até desligados):
-    ```
+    ``` 
   - Listar todas as imagens de containers:
     ```
     docker image ls
@@ -192,6 +192,12 @@ Meu setup de ambiente de desenvolvimento web
     User: postgres
     Pass: docker
     ```
+
+    ### Sequelize
+    - ORM para bancos de dados relacionais (SQLs);
+    - Tabelas do banco viram models (ex: tabela.js);
+    - Migrations
+
 ### Frontend
   - ReactJS
 ### Mobile
