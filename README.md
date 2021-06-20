@@ -27,6 +27,24 @@ Meu setup de ambiente de desenvolvimento web
 ### Powershell 7
   - Link para download: https://github.com/PowerShell/PowerShell
 
+### WSL2 (Windows Sub-system Linux)
+  - Necessário para rodar o docker;
+  - Como instalar o `WSL2` no Windows: https://docs.microsoft.com/pt-br/windows/wsl/install-win10
+  - Instalar o Ubuntu 20 pela Microsoft Store
+  - Configurando o `WSL2`: https://docs.microsoft.com/pt-br/windows/wsl/wsl-config
+    * Basta criar no diretório `C:\Users\<Usuário>` o arquivo `.wslconfig`
+    * Utilizaremos as seguintes configurações:
+    ```
+    [wsl2]
+    memory=3GB # Limita a memória da VM para 3GB
+    processors=1 # Monta a VM do WSL2 com 2 processadores virtuais
+    ```
+  - Listar todas as instâncias WSL rodando: `wsl -l -v`
+  - Iniciar uma instância específica: `wsl -d <instancia>`
+  - Desligar uma instância específica: `wsl -t <instancia>`
+  - Desligar o WSL: `wsl --shutdown`
+  - Listar todos os comandoss: `wsl --help`
+
 ### Windows Terminal
   - Baixar na Microsoft Store;
 
@@ -153,7 +171,6 @@ Meu setup de ambiente de desenvolvimento web
   ### Docker
   - Link para download: https://docs.docker.com/get-docker/
     * No windows é necessário utilizar o `WSL` ou o `Hyper-V` para virtualizar o docker
-    * Como instalar o `WSL` no Windows: https://docs.microsoft.com/pt-br/windows/terminal/get-started
   - Iniciar (criar) um container:
     ```
     docker run
@@ -287,6 +304,11 @@ Meu setup de ambiente de desenvolvimento web
     }
   };
   ```
+  - Rodando a migration no banco de dados: `yarn sequelize db:migrate`
+  - No pgAdmin, as tables ficam em databases > gobarber > Schemas > public > Tables
+  - O sequelize cria uma tabela `sequelizeMeta`, onde ficam registradas as migrations que rodaram
+  - Revertendo uma migration no banco de dados: `yarn sequelize db:migrate:undo`
+  - Revertendo todas as migrations no banco de dados: `...:undo:all`
 
 ### Frontend
   - ReactJS
