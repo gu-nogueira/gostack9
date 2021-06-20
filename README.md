@@ -37,7 +37,7 @@ Meu setup de ambiente de desenvolvimento web
     ```
     [wsl2]
     memory=3GB # Limita a memória da VM para 3GB
-    processors=1 # Monta a VM do WSL2 com 2 processadores virtuais
+    processors=1 # Monta a VM do WSL2 com 1 processador virtual
     ```
   - Listar todas as instâncias WSL rodando: `wsl -l -v`
   - Iniciar uma instância específica: `wsl -d <instancia>`
