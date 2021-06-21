@@ -1,6 +1,6 @@
-// Aqui devemos a sintaxe do commonJS, pois o sequelize-cli não interpreta nova sintaxe de 'import' e 'export'
+// Aqui devemos uasr a sintaxe do commonJS, pois o sequelize-cli não interpreta nova sintaxe de 'import' e 'export'
 module.exports = {
-  // Define o tipo de banco de dados que irá trabalhar, porém também suporta MySQL, MariaDB, etc.
+  // Define o tipo de banco de dados que irá trabalhar. Também suporta MySQL, MariaDB, SQLite.
   dialect: 'postgres',
   host: 'localhost',
   username: 'postgres',
