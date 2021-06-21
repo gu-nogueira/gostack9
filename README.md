@@ -86,7 +86,9 @@ Meu setup de ambiente de desenvolvimento web
   - Link para instalação via package manager (chocolatey): https://nodejs.org/en/download/package-manager/#windows
 ### Yarn
   - Link para instalação via npm: https://yarnpkg.com/getting-started/install
+  - Comandos equivalentes de yarn e npm: https://shift.infinite.red/npm-vs-yarn-cheat-sheet-8755b092e5cc
   - Checar versão do yarn: `yarn -v`
+  - Checar e instalar se necessário todas as dependências de um projeto: `yarn`
 
 
 ## Criando um novo projeto
@@ -107,7 +109,11 @@ Meu setup de ambiente de desenvolvimento web
   ### Editor config (extensão vscode)
   - Padronização entre ambiente com diferentes editores de código;
   - Na pasta raiz do projeto, botão direito: `generate .editorconfig`
-  - Adicionar no `.editorconfig`
+  - Adicionar no `.editorconfig`:
+  ```js
+  trim_trailing_whitespace = true
+  insert_final_newline = true
+  ```
 
   ## Backend
   - `mkdir backend`
