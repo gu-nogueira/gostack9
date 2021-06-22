@@ -1,8 +1,8 @@
 // Model da tabela Users
 import Sequelize, { Model } from 'sequelize';
 
-// 'extends' define a classe 'User' como uma classe filha de 'Model'
-class User extends Model {
+// 'extends' define a classe 'Users' como uma classe filha de 'Model'
+class Users extends Model {
   // Um método estático, não pode ser instanciado. Init será chamado automaticamente pelo sequelize
   static init(sequelize) {
     // Chamamos super, que é a classe pai 'Model'. Ou seja, chamamos init de Model
@@ -22,5 +22,5 @@ class User extends Model {
   };
 }
 
-// Aqui exportamos a classe User para utilizar em outros arquivos
-export default User;
+// Aqui exportamos a classe Users para utilizar em outros arquivos
+export default Users;

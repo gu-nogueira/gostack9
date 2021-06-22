@@ -361,13 +361,43 @@ Meu setup de ambiente de desenvolvimento web
   }
   export default new Database();
   ```
-  - Agora vamos adicionar a rota do novo model criado em `routes.js`
-  ```js
-  import User from './app/models/Users';
-  ```
   - E por fim, vamos importar o index do database em `app.js`
   ```js
   import './database';
+  ```
+
+  ### Criação de um controller (inserção)
+  - Vamos criar em controllers um novo arquivo `UsersController.js` e inserir:
+  ```js
+  import Users from '../models/Users';
+
+  class UsersController {
+    async store(req, res) {
+      // Verifica se o email já existe
+      const userExists = await Users.findOne({ where: { email: req.body.email } });
+      if (userExists) {
+        return res.status(400).json({ error: 'User already exists.' });
+      }
+      
+      const { id, name, email, provider } = await Users.create(req.body);
+      return res.json({
+        id,
+        name,
+        email,
+        provider,
+      });
+    }
+  };
+
+  export default new UsersController ();
+  ```
+  - Agora, em `routes.js` vamos importar o controller e inserir a rota `'/users'` com método POST :
+  ```js
+  import UsersController from './app/controllers/UsersController';
+
+  ...
+
+  routes.post('/users', UsersController.store);
   ```
 ### Frontend
   - ReactJS
