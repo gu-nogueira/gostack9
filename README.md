@@ -316,6 +316,31 @@ Meu setup de ambiente de desenvolvimento web
   - Revertendo uma migration no banco de dados: `yarn sequelize db:migrate:undo`
   - Revertendo todas as migrations no banco de dados: `...:undo:all`
 
+  ### Criando uma model
+  - Utilizamos a arquitetura MVC para manipular o banco
+  - Vamos criar em models o arquivo `tabela.js` e inserir o código:
+  ```js
+  import Sequelize, { Model } from 'sequelize';
+
+  class User extends Model {
+    static init(sequelize) {
+      super.init({
+        name: Sequelize.STRING,
+        email: Sequelize.STRING,
+        password_hash: Sequelize.STRING,
+        provider: Sequelize.BOOLEAN,
+      },
+      {
+        sequelize,
+      });
+    };
+  }
+  export default User;
+  ```
+
+  ### Criando loader de models
+  - Este arquivo será responsável por criar a conexão com o banco e carregar todos os models que temos em nossa aplicação
+  - Vamos criar em database um arquivo `index.js`
 ### Frontend
   - ReactJS
 ### Mobile
