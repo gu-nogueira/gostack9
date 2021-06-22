@@ -2,7 +2,8 @@
 import express from 'express';
 // Aqui é importado o arquivo routes.js
 import routes from './routes';
-
+// Preciso agora chamar a minha database, somente import sem o from pois não preciso pegar o retorno dele
+import './database'; // Detalhe: não preciso passar index.js pois vai pegar automaticamente
 
 // Classe em javascript
 class App {

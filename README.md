@@ -341,6 +341,34 @@ Meu setup de ambiente de desenvolvimento web
   ### Criando loader de models
   - Este arquivo será responsável por criar a conexão com o banco e carregar todos os models que temos em nossa aplicação
   - Vamos criar em database um arquivo `index.js`
+  ```js
+  import Sequelize from 'sequelize';
+  // Models
+  import Users from '../app/models/Users';
+
+  import databaseConfig from '../config/database';
+
+  const models = [Users];
+
+  class Database {
+    constructor() {
+      this.init();
+    }
+    init() {
+      this.connection = new Sequelize(databaseConfig);
+      models.map(model => model.init(this.connection));
+    }
+  }
+  export default new Database();
+  ```
+  - Agora vamos adicionar a rota do novo model criado em `routes.js`
+  ```js
+  import User from './app/models/Users';
+  ```
+  - E por fim, vamos importar o index do database em `app.js`
+  ```js
+  import './database';
+  ```
 ### Frontend
   - ReactJS
 ### Mobile
