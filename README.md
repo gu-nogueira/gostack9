@@ -399,6 +399,9 @@ Meu setup de ambiente de desenvolvimento web
 
   routes.post('/users', UsersController.store);
   ```
+
+  ### Encriptografar um dado
+  - Vamos utilizar a biblioteca bcryptjs, portanto `yarn add bcryptjs`
 ### Frontend
   - ReactJS
 ### Mobile

@@ -1,6 +1,9 @@
 // Model da tabela Users
 import Sequelize, { Model } from 'sequelize';
 
+// Importando o bcrypt para gerar a hash do password
+import bcrypt from 'bcryptjs';
+
 // 'extends' define a classe 'Users' como uma classe filha de 'Model'
 class Users extends Model {
   // Um método estático, não pode ser instanciado. Init será chamado automaticamente pelo sequelize
@@ -8,9 +11,14 @@ class Users extends Model {
     // Chamamos super, que é a classe pai 'Model'. Ou seja, chamamos init de Model
     super.init({
       /** No primeiro parâmetro deste método vamos enviar as colunas do banco de dados
-      Podemos evitar enviar PK, FK, created_at e updated_at */
+      Podemos evitar enviar PK, FK, created_at e updated_at
+
+      Esses campos não precisam refletir aos campos que existem no banco de dados
+      Eles são os campos que o usuário poderia preencher no front*/
       name: Sequelize.STRING,
       email: Sequelize.STRING,
+      // VIRTUAL, discrimina uma campo que nunca existirá na base de dados, existe somente no lado do código
+      password: Sequelize.VIRTUAL,
       password_hash: Sequelize.STRING,
       provider: Sequelize.BOOLEAN,
     },
@@ -19,6 +27,17 @@ class Users extends Model {
     {
       sequelize,
     });
+    // 'addHook' é uma funcionalidade do Sequelize, que é executado de forma automático baseado na ação passada como parâmetro na função
+    this.addHook('beforeSave', async (user) => {
+      // Isso se aplica a condição de que só irá gerar um novo password_hash se eu quero gerar ou alterar uma senha
+      if (user.password) {
+        user.password_hash = await bcrypt.hash(user.password, 8); // '8' é o número de ROUNDS da criptografia, em um range de 0 a 100
+      }
+    });
+
+    // Retorna o model que acabou de ser inicializado
+    return this; // Não vejo a necessidade de usar isso, pois a classe retorna automaticamente o this caso não haja nenhum return
+
   };
 }
 
