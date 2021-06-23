@@ -115,7 +115,7 @@ Meu setup de ambiente de desenvolvimento web
   insert_final_newline = true
   ```
 
-  ## Backend
+# Backend
   - `mkdir backend`
   - `cd \backend`
   - Iniciar o package.json para cuidar das dependências do projeto com o parâmetro -y, aceitando todas as questões `yarn init -y`
@@ -237,6 +237,8 @@ Meu setup de ambiente de desenvolvimento web
   User: postgres
   Pass: docker
   ```
+
+  ## Continuando a aplicação
 
   ### Sequelize
   - ORM para bancos de dados relacionais (SQLs)
@@ -401,7 +403,7 @@ Meu setup de ambiente de desenvolvimento web
   ```
 
   ### Encriptografar um dado
-  - Vamos utilizar a biblioteca bcryptjs, portanto `yarn add bcryptjs`
+  - Instalar a biblioteca bcryptjs: `yarn add bcryptjs`
   - Para utilizálo, vamos user o método `addHook()` do Sequelize. Em um model, da seguinte forma:
   ```js
   import bcrypt from 'bcryptjs';
@@ -418,8 +420,13 @@ Meu setup de ambiente de desenvolvimento web
   ```
   
   ### Lidando com autenticação JWT
-  - Vamos utilizar a biblioteca JWT, portanto `yarn add jsonwebtoken`
-  - Vamos criar em controllers o arquivo `SessionController.js`
+  - Instalar a biblioteca JWT: `yarn add jsonwebtoken`
+  - Vamos criar em controllers o arquivo `SessionController.js` para autenticar o usuário e retornar o token
+  - Para checar se o usuário está autenticado usando middlewares, vamos criar a pasta `middlewares` em `app`
+  - Vamos criar o arquivo `auth.js` para verificar se o usuário está autenticado ao tentar acessar qualquer rota
+
+  ### Validando dados de entrada no backend
+  - Vamos utilizar a biblioteca Yup: `yarn add yup`
 ### Frontend
   - ReactJS
 ### Mobile
