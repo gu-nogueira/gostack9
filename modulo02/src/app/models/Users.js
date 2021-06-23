@@ -39,6 +39,12 @@ class Users extends Model {
     return this; // Não vejo a necessidade de usar isso, pois a classe retorna automaticamente o this caso não haja nenhum return
 
   };
+
+  /** Podemos criar métodos novos dentro da classe, de acordo com a necessidade da aplicação
+  'compare()' faz uma comparação entre a senha que será passada por parâmetro na função (senha digitada pelo usuário) com a senha deste usuário que está cadastrado no banco */
+  checkPassword(password) {
+    return bcrypt.compare(password, this.password_hash); // Dentro de 'this' tenho todas as informações do usuário
+  }
 }
 
 // Aqui exportamos a classe Users para utilizar em outros arquivos

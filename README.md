@@ -402,6 +402,24 @@ Meu setup de ambiente de desenvolvimento web
 
   ### Encriptografar um dado
   - Vamos utilizar a biblioteca bcryptjs, portanto `yarn add bcryptjs`
+  - Para utilizálo, vamos user o método `addHook()` do Sequelize. Em um model, da seguinte forma:
+  ```js
+  import bcrypt from 'bcryptjs';
+
+  ...
+
+  this.addHook('beforeSave', async (user) => {   
+    if (user.password) {
+      user.password_hash = await bcrypt.hash(user.password, 8);
+    }
+  });
+
+  return this;
+  ```
+  
+  ### Lidando com autenticação JWT
+  - Vamos utilizar a biblioteca JWT, portanto `yarn add jsonwebtoken`
+  - Vamos criar em controllers o arquivo `SessionController.js`
 ### Frontend
   - ReactJS
 ### Mobile

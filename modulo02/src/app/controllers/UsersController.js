@@ -31,5 +31,5 @@ class UsersController {
 };
 
 export default new UsersController ();
-
+// Devemos instanciar a classe para utilizá-la
 // Todo controller vai seguir esse formato
