@@ -2,6 +2,7 @@
 
 // A importação vai acima da de usuário pois é uma importação de módulo
 import jwt from 'jsonwebtoken';
+import * as Yup from 'yup';
 
 import Users from '../models/Users';
 
@@ -9,6 +10,17 @@ import authConfig from '../../config/auth';
 class SessionController {
   // Método store para criação da sessão
   async store(req, res) {
+
+    // Fazemos a validação dos dados antes da tratativa com yup para o login também
+    const schema = Yup.object().shape({
+      email: Yup.string().email().required(),
+      password: Yup.string().required(),
+    });
+
+    if (!(await schema.isValid(req.body))) {
+      return res.status(400).json({ error: 'Validation fails.' })
+    }
+
     const { email, password } = req.body;
     /** Aqui vamos verificar se o usuário está tentando logar com um email existente
      * 'findOne()' pois quero apenas um registro de usuário, pois email é único

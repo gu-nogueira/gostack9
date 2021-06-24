@@ -11,8 +11,15 @@ class UsersController {
     // VALIDAÇÃO DE DADOS
     // O yup segue o 'schema validation' // '.object()' pois o 'req.body' é um objeto // '.shape()' é o formato do objeto
     const schema = Yup.object().shape({
-
+      name: Yup.string().required(),
+      email: Yup.string().email().required(),
+      password: Yup.string().required().min(6),
     });
+
+    // Usamos await pois isValid é assíncnrono. Deve retornar true se satisfazer as condições passadas acima no schema
+    if (!(await schema.isValid(req.body))) {
+      return res.status(400).json({ error: 'Validation fails.' })
+    }
 
     /** Aqui faço uma verificação antes de passar para o model o user da requisição
     Utilizando o método '.findOne()' para tentar encontrar o email passado na requisição no banco, se encontrar, retorno erro 400, bad request, com mensagem de erro */
@@ -40,6 +47,33 @@ class UsersController {
 
   // Método para atualização de usuário
   async update (req, res) {
+
+    // Copiamos o trecho de código do schema, porém com algumas alterações
+    // 'name' e 'email' não precisa mais ser required, pois o usuário pode não necessariamente estar editando o nome
+    const schema = Yup.object().shape({
+      name: Yup.string(),
+      email: Yup.string().email(),
+      oldPassword: Yup.string().min(6),
+      // Aqui utilizamos .when(), uma validação condicional
+      password: Yup.string().min(6).when('oldPassword', (oldPassword, field) =>
+        // Aqui é a mesmaa coisa que: if (oldPassowrd) { field.required() } else { field }
+        oldPassword ? field.required() : field
+        // Como não passamos chaves no corpo desta função, é o mesmo que ela estivesse retornando os valores
+      ),
+      /** Para fixar o uso de .when, vamos construir uma confirmação de senha
+        * não é necessário usar .min pois já usamos no campo password */
+      confirmPassword: Yup.string().when('password', (password, field) =>
+        /** Verifica se há valor no password, se houver se torna required
+         * oneOf() quer dizer que eu quero que meu campo field seja igual ao meu campo referenciado (Yup.ref(password))
+         * Caso não satisfaça, somente retorna o field */
+        password ? field.required().oneOf([Yup.ref('password')]) : field
+      )
+    });
+
+    if (!(await schema.isValid(req.body))) {
+      return res.status(400).json({ error: 'Validation fails.' })
+    }
+
     // Temos aqui o userId pois tratamos o token do usuário logado no middleware auth
     const { email, oldPassword } = req.body;
 
