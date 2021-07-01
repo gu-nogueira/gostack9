@@ -12,7 +12,7 @@ class App {
     // Isso é o mesmo que declarar a const server = express();
     this.server = express();
 
-    // Necessário para chamar os métodos metodos, os executa, da mesma forma como executa as funções
+    // Necessário para chamar os métodos, os executa, da mesma forma como executa as funções
     this.middlewares();
     this.routes();
     console.log('Server is running...');

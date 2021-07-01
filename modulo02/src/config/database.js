@@ -4,7 +4,7 @@
 module.exports = {
   // Define o tipo de banco de dados que irá trabalhar. Também suporta MySQL, MariaDB, SQLite.
   dialect: 'postgres',
-  host: 'localhost',
+  host: '10.0.10.140',
   username: 'postgres',
   password: 'docker',
   database: 'gobarber',

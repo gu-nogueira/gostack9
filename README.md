@@ -289,7 +289,7 @@ Meu setup de ambiente de desenvolvimento web
   ```
 
   ### Criando uma migration
-  - Criar uma tabela: `yarn sequelize migration:create --name-create-tabela`
+  - Criar uma tabela: `yarn sequelize migration:create --name=create-tabela`
   - Configurar os campos da tabela no arquivo gerado, exemplo:
   ```js
   module.exports = {
