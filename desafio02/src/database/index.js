@@ -14,8 +14,10 @@ class Database {
   }
   init() {
     // Conexão com o banco
-    this.connection = new Sequelize(databaseConfig);
+    this.connection = new Sequelize({databaseConfig});
 
     models.map(model => model.init(this.connection));
   }
 }
+
+export default new Database();

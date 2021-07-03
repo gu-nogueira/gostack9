@@ -10,7 +10,7 @@ class Users extends Model {
   static init(sequelize) {
     // Chamamos super, que é a classe pai 'Model'. Ou seja, chamamos init de Model
     super.init({
-      /** No primeiro parâmetro deste método vamos enviar as colunas do banco de dados
+      /** No primeiro parâmetro deste método vamos enviar as colunas da tabela Users do banco de dados
       Podemos evitar enviar PK, FK, created_at e updated_at
 
       Esses campos não precisam refletir aos campos que existem no banco de dados
@@ -27,7 +27,7 @@ class Users extends Model {
     {
       sequelize,
     });
-    // 'addHook' é uma funcionalidade do Sequelize, que é executado de forma automático baseado na ação passada como parâmetro na função
+    // 'addHook' é uma funcionalidade do Sequelize, que é executado de forma automática baseada na ação passada como parâmetro na função
     this.addHook('beforeSave', async (user) => {
       // Isso se aplica a condição de que só irá gerar um novo password_hash se eu quero gerar ou alterar uma senha
       if (user.password) {
