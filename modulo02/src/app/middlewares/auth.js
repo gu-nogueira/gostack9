@@ -23,7 +23,7 @@ export default async (req, res, next) => {
 
   try {
     /** decoded é nossa constante que vai receber await, portanto irá aguardar ser executada, passando na função 'promisify' a função 'jwt.verify'
-     *  Depois disso, sem precisar passar o callback, chamamos a função retornada pelo mromisify(), portanto vai ficar promisify()(), pois o segundo parênteses é a função retornada */
+     *  Depois disso, sem precisar passar o callback, chamamos a função retornada pelo promisify(), portanto vai ficar promisify()(), pois o segundo parênteses é a função retornada */
     const decoded = await promisify(jwt.verify)(token, authConfig.secret);
     // Se o toke estiver incorreto, vai cair no catch, pois estamos utilizando await no promisify
 

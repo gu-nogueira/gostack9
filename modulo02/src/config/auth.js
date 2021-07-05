@@ -3,3 +3,4 @@ export default {
   secret: '0e9250887fd461704fe299627cc3edd9',
   expiresIn: '7d',
 };
+// Site de criptofragia: md5 online

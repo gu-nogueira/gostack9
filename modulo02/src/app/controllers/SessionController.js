@@ -51,7 +51,7 @@ class SessionController {
       },
       /** Vamos retornar mais uma variável, agora token, para gerar esse token vamos utilizar o método 'sign()' do jwt
        *  O primeiro parâmetro deste método: { id } é o payload (header), são informações adicionais, vamos passar o id para poder reutilizá-lo depois
-       *  O segundo parâmetro precisar uma string (hash) único e ninguem pode ter acesso, portanto vamos gerar um no md5 online: guzango = 0e9250887fd461704fe299627cc3edd9
+       *  O segundo parâmetro será uma string (hash) único e ninguem pode ter acesso, portanto vamos gerar um no md5 online: guzango = 0e9250887fd461704fe299627cc3edd9
        *  O terceiro parâmetro serão passados algumas configurações: iremos definir primeiro uma data de expiração para esse token (padrão 7 dias) */
       token: jwt.sign({ id }, authConfig.secret, {
         expiresIn: authConfig.expiresIn,

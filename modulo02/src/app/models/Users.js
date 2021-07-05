@@ -27,6 +27,7 @@ class Users extends Model {
     {
       sequelize,
     });
+
     // 'addHook' é uma funcionalidade do Sequelize, que é executado de forma automática baseada na ação passada como parâmetro na função
     this.addHook('beforeSave', async (user) => {
       // Isso se aplica a condição de que só irá gerar um novo password_hash se eu quero gerar ou alterar uma senha
