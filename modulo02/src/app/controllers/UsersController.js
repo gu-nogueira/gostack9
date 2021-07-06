@@ -97,7 +97,7 @@ class UsersController {
 
     // Se todas as condições foram satisfeitas
 
-    // Passa todas as informações do corpor requisicao para atualizar no banco
+    // Passa todas as informações do corpo requisicao para atualizar no banco
     const { id, name, provider } = await user.update(req.body);
 
     return res.json({

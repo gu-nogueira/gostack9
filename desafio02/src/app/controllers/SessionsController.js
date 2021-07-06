@@ -22,7 +22,7 @@ class SessionsController {
 
     // Verifica se o usuário existe no banco
 
-    const user = await Users.findOne({ where: { email: email } });
+    const user = await Users.findOne({ where: { email } });
 
     if (!user) {
       return res.status(401).json({ error: 'User not found'});

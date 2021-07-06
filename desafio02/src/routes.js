@@ -2,6 +2,7 @@ import { Router } from 'express';
 
 // Controllers
 import SessionsController from './app/controllers/SessionsController';
+import RecipientsController from './app/controllers/RecipientsController';
 
 // Middlewares
 import authMiddleware from './app/middlewares/auth';
@@ -12,6 +13,8 @@ routes.post('/sessions', SessionsController.store);
 
 routes.use(authMiddleware);
 
-routes.get('/teste', (req, res) => {return res.json({ message: 'Teste verificação se o usuário está autenticado.' })})
+routes.post('/recipients', RecipientsController.store);
+routes.put('/recipients', RecipientsController.update);
+routes.get('/recipients', RecipientsController.index);
 
 export default routes;
