@@ -1,0 +1,8 @@
+Explicação do nodemon.json:
+Após instalar a biblioteca do sucrase com `yarn add sucrase` para interpretar código com sintaxe nova no node, para fazê-lo rodar com nodemon automaticamente, é necessário criar um arquivo na pasta raiz do projeto (backend), informando que todo arquivo que for da extensão 'JS', informará para o node registrar o sucrase para compilar.
+
+{
+  "execMap": {
+    "js": "node -r sucrase/register"
+  }
+}
