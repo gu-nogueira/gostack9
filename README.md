@@ -427,6 +427,40 @@ Meu setup de ambiente de desenvolvimento web
 
   ### Validando dados de entrada no backend
   - Vamos utilizar a biblioteca Yup: `yarn add yup`
+
+  ## Lidando com requisições de arquivos físicos
+  - O único tipo de corpo de requisição que suporta arquivos físicos é o multipart/form-database
+  - Para isso, vamos utilizar a biblioteca Multer: `yarn add multer`
+  - Com o multer, vamos hospedar o arquivo no servidor e geral um index para este arquivo no banco
+  - Vamos criar na raiz do projeto as pastas `temp > uploads`
+  - Vamos criar dentro de `src > config` o arquivo `multer.js`:
+  ```js
+  import multer from 'multer';
+  import crypto from 'crypto';
+  import { extname, resolve } from 'path';
+
+  export default {
+    storage: multer.diskStorage({
+      destination: resolve(__dirname, '..', '..', 'tmp', 'uploads'),
+      filename: (req, file, cb) => {
+        crypto.randomBytes(16, (err, res) => {
+          if (err) return cb(err);
+          return cb(null, res.toString('hex') + extname(file.originalname));
+        })
+      },
+    }),
+  }
+  ```
+  - Agora vamos testar inserindo em `routes.js`:
+  ```js
+  import multer from 'multer';
+  import multerConfig from './config/multer';
+  ...
+  const upload = multer(multerConfig);
+  ...
+  routes.post('/files', upload.single('file'), (req, res) => { res.json({ ok: true }) })
+  ```
+
 ### Frontend
   - ReactJS
 ### Mobile
