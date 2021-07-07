@@ -8,6 +8,7 @@ import multerConfig from './config/multer';
 // Agora vamos importar os controllers para manipular os models
 import UsersController from './app/controllers/UsersController';
 import SessionController from './app/controllers/SessionController';
+import FileController from './app/controllers/FileController';
 
 // Importando os Middlewares
 import authMiddleware from './app/middlewares/auth';
@@ -30,7 +31,7 @@ routes.use(authMiddleware);
 
 routes.put('/users', /**Posso passar o middleware localmente aqui: authMiddleware, */ UsersController.update);
 
-routes.post('/files', upload.single('file'), (req, res) => { res.json({ ok: true }) })
+routes.post('/files', upload.single('file'), FileController.store);
 
 // Exporta o routes para app.js
 export default routes;

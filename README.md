@@ -402,6 +402,44 @@ Meu setup de ambiente de desenvolvimento web
   routes.post('/users', UsersController.store);
   ```
 
+  ### Criando um relacionamento entre Tabelas
+  - Temos duas formas de fazer isso:
+    1. Desfazendo todas as migrations e adicionando as alterações nas Tabelas
+    2. Criar uma nova migration informando as alterações nas tabelas (conseguimos fazer isso pois as migrations funcionam como uma linha do tempo)
+  - Vamos criar uma nova migration com um nome bem descritivo: `yarn sequelize migration:create --name=add-avatar-field-to-users` e inserir nesta migration
+  ```js
+  'use strict';
+  module.exports = {
+    up: async (queryInterface, Sequelize) => 
+      await queryInterface.addColumn(
+        'users',
+        'avatar_id',
+        {
+          type: Sequelize.INTEGER,
+          references: { model: 'files', key: 'id' },
+          onUpdate: 'CASCADE',
+          onDelete: 'SET NULL',
+          allowNull: true,
+        }
+      )
+    },
+    down: async (queryInterface) => {
+      await queryInterface.removeColumn('users', 'avatar_id');
+    }
+  };
+  ```
+  - Agora vamos rodar `yarn sequelize db:migrate`
+  - Agora vamos montar o relacionamento nos models. Primeiro, em `Users.js`
+  ```js
+  static associate(models) {
+    this.belongsTo(models.File, { foreignKey: 'avatar_id' });
+  }
+  ```
+  - Agora, vamos inserir um novo `.map()` no array models de `database > index.js`
+  ```js
+  .map(model => model.associate && model.associate(this.connection.models));
+  ```
+
   ### Encriptografar um dado
   - Instalar a biblioteca bcryptjs: `yarn add bcryptjs`
   - Para utilizálo, vamos user o método `addHook()` do Sequelize. Em um model, da seguinte forma:
@@ -460,6 +498,7 @@ Meu setup de ambiente de desenvolvimento web
   ...
   routes.post('/files', upload.single('file'), (req, res) => { res.json({ ok: true }) })
   ```
+  - Vamos criar uma nova tabela (migration), model e controller
 
 ### Frontend
   - ReactJS

@@ -41,6 +41,13 @@ class Users extends Model {
 
   };
 
+  // associate() recebe todos os models da aplicação
+  static associate(models) {
+    // belongsTo é um tipo de relacionamento, entre vários outros
+    // avatar_id pertence a models.file
+    this.belongsTo(models.File, { foreignKey: 'avatar_id' });
+  }
+
   /** Podemos criar métodos novos dentro da classe, de acordo com a necessidade da aplicação
   'compare()' faz uma comparação entre a senha que será passada por parâmetro na função (senha digitada pelo usuário) com a senha deste usuário que está cadastrado no banco */
   checkPassword(password) {
