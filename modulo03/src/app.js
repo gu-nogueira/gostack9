@@ -1,5 +1,7 @@
 // Essa sintaxe de import express from 'express', faz a MESMA coisa que const express = require('express');
 import express from 'express';
+// Vamos importar o path do node para levar até a nossa pasta de uploads
+import path from 'path';
 // Aqui é importado o arquivo routes.js
 import routes from './routes';
 // Preciso agora chamar a minha database, somente import sem o from pois não preciso pegar o retorno dele
@@ -22,6 +24,8 @@ class App {
   middlewares() {
     // Também pode ser App.server.use... Que equivale também ao antigo server.use...
     this.server.use(express.json());
+    // Vamos utilizar um recurso .static do express que permite servir arquivos estáticos como imagens, css, html, etc... Arquivos que podem ser acessados diretamente do navegador
+    this.server.use('/files', express.static(path.resolve(__dirname, '..', 'tmp', 'uploads')))
   }
 
   // Neste método ficarão as rotas da aplicação

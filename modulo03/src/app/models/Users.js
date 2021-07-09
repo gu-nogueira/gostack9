@@ -45,7 +45,8 @@ class Users extends Model {
   static associate(models) {
     // belongsTo é um tipo de relacionamento, entre vários outros
     // avatar_id pertence a models.file
-    this.belongsTo(models.File, { foreignKey: 'avatar_id' });
+    // Passamos -> as: 'avatar', que é um codinome para nosso relacionamento 'File'
+    this.belongsTo(models.File, { foreignKey: 'avatar_id', as: 'avatar' });
   }
 
   /** Podemos criar métodos novos dentro da classe, de acordo com a necessidade da aplicação

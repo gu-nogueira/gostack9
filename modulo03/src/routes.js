@@ -9,6 +9,7 @@ import multerConfig from './config/multer';
 import UsersController from './app/controllers/UsersController';
 import SessionController from './app/controllers/SessionController';
 import FileController from './app/controllers/FileController';
+import ProviderController from './app/controllers/ProviderController';
 
 // Importando os Middlewares
 import authMiddleware from './app/middlewares/auth';
@@ -30,6 +31,9 @@ routes.post('/sessions', SessionController.store);
 routes.use(authMiddleware);
 
 routes.put('/users', /**Posso passar o middleware localmente aqui: authMiddleware, */ UsersController.update);
+
+// Criando nova rota para providers
+routes.get('/providers', ProviderController.index);
 
 routes.post('/files', upload.single('file'), FileController.store);
 
