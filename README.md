@@ -500,6 +500,8 @@ Meu setup de ambiente de desenvolvimento web
   ```
   - Vamos criar uma nova tabela (migration), model e controller
 
+  ## Lidando com datas no node
+  - Vamos instalar o date-fns em sua versão atual: `yarn add date-fns@next`
 ### Frontend
   - ReactJS
 ### Mobile
