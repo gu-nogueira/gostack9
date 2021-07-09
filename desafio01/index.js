@@ -39,7 +39,7 @@ function logRequests(req, res, next) {
 
   return next();
 }
-// É possível dara .use em funções passadas como argumento, sem os '()'
+// É possível usar .use em funções passadas como argumento, sem os '()'
 server.use(logRequests);
 
 // Criação de um project
