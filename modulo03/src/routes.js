@@ -10,6 +10,7 @@ import UsersController from './app/controllers/UsersController';
 import SessionController from './app/controllers/SessionController';
 import FileController from './app/controllers/FileController';
 import ProviderController from './app/controllers/ProviderController';
+import AppointmentController from './app/controllers/AppointmentController';
 
 // Importando os Middlewares
 import authMiddleware from './app/middlewares/auth';
@@ -34,6 +35,8 @@ routes.put('/users', /**Posso passar o middleware localmente aqui: authMiddlewar
 
 // Criando nova rota para providers
 routes.get('/providers', ProviderController.index);
+
+routes.post('/appointments', AppointmentController.store);
 
 routes.post('/files', upload.single('file'), FileController.store);
 
