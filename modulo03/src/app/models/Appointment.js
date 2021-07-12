@@ -18,7 +18,7 @@ class Appointment extends Model {
     // Esta tabela Appointment pertencerá (belongsTo) ao model de usuário, pois o usuário marcou este agendamento
     // Aponta user_id da tabela Appointments como sendo chave estrangeira com apelido (codinome) de 'user'
 
-    // IMPORTANTE: precisamos usar apelidos nas chaves estrangeiras quando temos mais de um relacionamento se não o sequelize não entende
+    // IMPORTANTE: precisamos usar apelidos nas chaves estrangeiras quando temos mais de um relacionamento se não o sequelize não entende (burro)
 
     this.belongsTo(models.Users, { foreignKey: 'user_id', as: 'user' });
     this.belongsTo(models.Users, { foreignKey: 'provider_id', as: 'provider' });

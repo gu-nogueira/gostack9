@@ -17,7 +17,6 @@ import authMiddleware from './app/middlewares/auth';
 
 // Instancia o item Router do express (inicia) e armazena na const routes
 const routes = new Router();
-
 // Vamos iniciar o multer com uma variável upload
 const upload = multer(multerConfig);
 
@@ -35,6 +34,8 @@ routes.put('/users', /**Posso passar o middleware localmente aqui: authMiddlewar
 
 // Criando nova rota para providers
 routes.get('/providers', ProviderController.index);
+// Importante lembrar, sempre que criarmos um novo método no controller, devemos lembrar que o mesmo precisará de uma rota de saída
+routes.get('/appointments', AppointmentController.index);
 
 routes.post('/appointments', AppointmentController.store);
 

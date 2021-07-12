@@ -1,10 +1,41 @@
 import Users from '../models/Users';
+import File from '../models/File';
 import Appointment from '../models/Appointment';
 
 import { startOfHour, parseISO, isBefore } from 'date-fns';
 import * as Yup from 'yup';
 
 class AppointmentController {
+
+  // Index é o método de listagem
+  async index (req, res) {
+    const appointments = await Appointment.findAll({
+      // Vamos buscar todos os agendamentos feitos pelo usuário de id req.userId, e que não foram cancelados, portanto canceled_at: null
+      where: { user_id: req.userId, canceled_at: null },
+      // Vamos ordenar esses agendamentos pela data
+      order: ['date'],
+      // Vamos escolher os campos que queremos dos appointments
+      attributes: ['id', 'date'],
+      // Vamos incluir os dados dos prestadores de serviços
+      include: [{
+        model: Users,
+        // Precisamos usar 'as' pois temos mais de um relacionamento que utiliza users
+        as: 'provider',
+        // Agora, vamos escolher os atributos para trabalhar dessa tabela linkada
+        attributes: ['id', 'name',],
+        // Vamos atribuir outro include para incluir o AVATAR do usuário
+        include: [{
+          model: File,
+          as: 'avatar',
+          // Precisamos incluir os campos id e path além da url se não a inclusão não funciona sem o id e não funciona pois path é necessário dentro do model de file
+          attributes: ['id', 'path', 'url'],
+        }]
+      }],
+    });
+
+    return res.json(appointments);
+  }
+
   async store(req, res) {
 
     const schema = Yup.object().shape({
