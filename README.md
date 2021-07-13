@@ -214,7 +214,7 @@ Meu setup de ambiente de desenvolvimento web
 
   ## Banco de dados
 
-  ### PostgreSQL
+  ### Bancos relacionais | PostgreSQL
   - Link para montar o container: https://hub.docker.com/_/postgres
   `docker run --name database -e POSTGRES_PASSWORD=docker -p 5432:5432 -d postgres`
   - Aqui, montamos o container conversando com o host na porta 5432
@@ -502,6 +502,24 @@ Meu setup de ambiente de desenvolvimento web
 
   ## Lidando com datas no node
   - Vamos instalar o date-fns em sua versão atual: `yarn add date-fns@next`
+
+  ## Bancos não-relacionais | MongoDB
+  - Não se pode fazer relacionamentos entre tabelas em um banco não relacional
+  - Extremamente performático
+  - Vamos subir uma nova imagem docker para o mongoDB: `docker run --name=mongodatabase -p 27017:27017 -d -t mongo`
+  - Vamos conectar o MongoDB em `database > index.js`:
+  ```js
+  mongo() {
+    this.mongoConnection = Mongoose.connect(
+      'mongodb://10.0.10.140:27017/gobarber',
+      { useNewUrlParser: true, useFindAndModify: true, useUnifiedTopology: true }
+    )
+  }
+  ```
+
+  ### Mongoose
+  - ODM para bancos não relacionais (mais especificamente para o MongoDB)
+  - Vamos instalar com `yarn add mongose`
 ### Frontend
   - ReactJS
 ### Mobile

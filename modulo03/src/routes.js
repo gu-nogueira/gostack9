@@ -11,6 +11,7 @@ import SessionController from './app/controllers/SessionController';
 import FileController from './app/controllers/FileController';
 import ProviderController from './app/controllers/ProviderController';
 import AppointmentController from './app/controllers/AppointmentController';
+import ScheduleController from './app/controllers/ScheduleController';
 
 // Importando os Middlewares
 import authMiddleware from './app/middlewares/auth';
@@ -36,8 +37,9 @@ routes.put('/users', /**Posso passar o middleware localmente aqui: authMiddlewar
 routes.get('/providers', ProviderController.index);
 // Importante lembrar, sempre que criarmos um novo método no controller, devemos lembrar que o mesmo precisará de uma rota de saída
 routes.get('/appointments', AppointmentController.index);
-
 routes.post('/appointments', AppointmentController.store);
+
+routes.get('/schedule', ScheduleController.index);
 
 routes.post('/files', upload.single('file'), FileController.store);
 
