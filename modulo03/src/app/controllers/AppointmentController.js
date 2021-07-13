@@ -9,6 +9,11 @@ class AppointmentController {
 
   // Index é o método de listagem
   async index (req, res) {
+
+    // IMPORTANTE: pegamos os parâmetros do query, exemplo: 'http://localhost:2000/appointments?page=1' dentro de req.query
+    // E se page não for informado o usuário estará na página 1 por padrão
+    const { page = 1 } = req.query;
+
     const appointments = await Appointment.findAll({
       // Vamos buscar todos os agendamentos feitos pelo usuário de id req.userId, e que não foram cancelados, portanto canceled_at: null
       where: { user_id: req.userId, canceled_at: null },
@@ -16,6 +21,10 @@ class AppointmentController {
       order: ['date'],
       // Vamos escolher os campos que queremos dos appointments
       attributes: ['id', 'date'],
+      // Vamos listar no máximo 20 registros
+      limit: 20,
+      // Vamos definir quantos registros vamos pular
+      offset: (page - 1) * 20,
       // Vamos incluir os dados dos prestadores de serviços
       include: [{
         model: Users,
@@ -27,7 +36,7 @@ class AppointmentController {
         include: [{
           model: File,
           as: 'avatar',
-          // Precisamos incluir os campos id e path além da url se não a inclusão não funciona sem o id e não funciona pois path é necessário dentro do model de file
+          // Precisamos incluir os campos id e path além da url se não a inclusão não funciona sem o id e não funciona pois path é necessário dentro do model de files
           attributes: ['id', 'path', 'url'],
         }]
       }],
