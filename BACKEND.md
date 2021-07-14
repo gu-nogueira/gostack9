@@ -106,7 +106,12 @@ mongo() {
 
 ### mongo-express | MongoDB admin queryInterface
 - Link para montar o container: https://hub.docker.com/_/mongo-express
-`docker run --name=mongodbgui --network mongo-network -p 27018:8081 -e ME_CONFIG_BASICAUTH_USERNAME="gustavo@onmai.com.br" -e  ME_CONFIG_MONGODB_ADMINPASSWORD="docker" -e ME_CONFIG_OPTIONS_EDITORTHEME="dracula" -d mongo-express`
+- Antes de mais nada, iremos pegar o ip do container: `docker inspect <nome_do_container> | grep IPAddress`
+- É necessário substituí-lo em `"mongodb://ip_do_container:27017"`
+`docker run --name=mongodbgui -p 27018:8081 -e ME_CONFIG_MONGODB_URL="mongodb://172.17.0.4:27017" -e ME_CONFIG_MONGODB_ENABLE_ADMIN=true -e ME_CONFIG_BASICAUTH_USERNAME=gustavo@onmai.com.br -e  ME_CONFIG_BASICAUTH_PASSWORD=docker -e ME_CONFIG_OPTIONS_EDITORTHEME="dracula" -d mongo-express`
+- Após rodar o container, vamos configurar os privilégios de administrador. Primeiro vamos acessar o container: `docker exec -it mongodbgui bash`
+- Vamos acessar o arquivo `config.js` em: `vi /node_modules/mongo-express/config.js`
+- E alterar o valor de enable admin na linha `116` para `true`
 
 
 ## Continuando a aplicação

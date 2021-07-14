@@ -117,7 +117,7 @@ Meu setup de ambiente de desenvolvimento web
 ## Servidor
   - Escolher uma solução:
     * GCP (USD 300,00 3 meses grátis): https://cloud.google.com/free
-    * Azure (BRL 670,00 12 meses grátis): https://azure.microsoft.com/free/
+    * Azure (BRL 980,00 12 meses grátis): https://azure.microsoft.com/free/
     * AWS?
     * Oracle?
     * Digital Ocean?
@@ -125,6 +125,13 @@ Meu setup de ambiente de desenvolvimento web
   - VM Ubuntu ou CentOS:
     * CPU 2 a 4 cores;
     * 2 a 4 GB RAM;
+  - Acessar bash administrativo e setar login via SSH: `sudo vim /etc/ssh/sshd_config`
+  - Descomentar e mudar (opcional): `Port 22`
+  - Descomentar e definir: `PermitRootLogin yes`
+  - Reiniciar o serviço de ssh: `service ssh restart`
+  - Mudar a senha do usuário root: `sudo root passwd`
+  - Reiniciar a máquina: `sudo reboot`
+  - Criar nova sessão SSH (Moba): `ssh root@<ip_do_servidor> [ENTER] <senha_root>`
 
 ### Docker | Podman
   - Link para download: https://docs.docker.com/get-docker/
@@ -160,7 +167,10 @@ Meu setup de ambiente de desenvolvimento web
     ```
     docker logs <NAME>
     ```
-
+  - Entrar no bash de um container:
+    ```
+    docker exec -it <nome_do_container> bash
+    ```
     
 # Criando um novo projeto
 
