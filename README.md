@@ -219,7 +219,7 @@ Meu setup de ambiente de desenvolvimento web
   `docker run --name database -e POSTGRES_PASSWORD=docker -p 5432:5432 -d postgres`
   - Aqui, montamos o container conversando com o host na porta 5432
 
-  ### pgAdmin
+  ### pgAdmin | PostgreSQL admin interface
   - Link para download: https://www.pgadmin.org/download/
   - Link para montar o container *recomendado*: https://www.pgadmin.org/docs/pgadmin4/latest/container_deployment.html
   ```bash
@@ -238,7 +238,35 @@ Meu setup de ambiente de desenvolvimento web
   Pass: docker
   ```
 
+  ### Bancos não-relacionais | MongoDB
+  - Link para montar o container: https://hub.docker.com/_/mongo
+  - Não se pode fazer relacionamentos entre tabelas em um banco não relacional
+  - Extremamente performático
+  - Os schemas são como as tabelas de um banco SQL
+  - Schemas não precisam necessariamente possuir todas as "colunas" da tabela (schema free)
+  - Não utiliza migrations
+  - Vamos subir uma nova imagem docker para o mongoDB: `docker run --name=mongodb -p 27017:27017 -d -t mongo`
+  - Vamos conectar o MongoDB em `database > index.js`:
+  ```js
+  mongo() {
+    this.mongoConnection = Mongoose.connect(
+      'mongodb://10.0.10.140:27017/gobarber',
+      { useNewUrlParser: true, useFindAndModify: true, useUnifiedTopology: true }
+    )
+  }
+  ```
+  - E criar uma pasta em `app > schemas`
+
+  ### mongo-express | MongoDB admin queryInterface
+  - Link para montar o container: https://hub.docker.com/_/mongo-express
+  `docker run --name=mongodbgui --network mongo-network -p 27018:8081 -e ME_CONFIG_BASICAUTH_USERNAME="gustavo@onmai.com.br" -e  ME_CONFIG_MONGODB_ADMINPASSWORD="docker" -e ME_CONFIG_OPTIONS_EDITORTHEME="dracula" -d mongo-express`
+  
+
   ## Continuando a aplicação
+
+  ### Mongoose
+  - ODM para bancos não relacionais (mais especificamente para o MongoDB)
+  - Vamos instalar com `yarn add mongose`
 
   ### Sequelize
   - ORM para bancos de dados relacionais (SQLs)
@@ -440,7 +468,7 @@ Meu setup de ambiente de desenvolvimento web
   .map(model => model.associate && model.associate(this.connection.models));
   ```
 
-  ### Encriptografar um dado
+  ## Encriptografar um dado
   - Instalar a biblioteca bcryptjs: `yarn add bcryptjs`
   - Para utilizálo, vamos user o método `addHook()` do Sequelize. Em um model, da seguinte forma:
   ```js
@@ -457,13 +485,13 @@ Meu setup de ambiente de desenvolvimento web
   return this;
   ```
   
-  ### Lidando com autenticação JWT
+  ## Lidando com autenticação JWT
   - Instalar a biblioteca JWT: `yarn add jsonwebtoken`
   - Vamos criar em controllers o arquivo `SessionController.js` para autenticar o usuário e retornar o token
   - Para checar se o usuário está autenticado usando middlewares, vamos criar a pasta `middlewares` em `app`
   - Vamos criar o arquivo `auth.js` para verificar se o usuário está autenticado ao tentar acessar qualquer rota
 
-  ### Validando dados de entrada no backend
+  ## Validando dados de entrada no backend
   - Vamos utilizar a biblioteca Yup: `yarn add yup`
 
   ## Lidando com requisições de arquivos físicos
@@ -503,23 +531,6 @@ Meu setup de ambiente de desenvolvimento web
   ## Lidando com datas no node
   - Vamos instalar o date-fns em sua versão atual: `yarn add date-fns@next`
 
-  ## Bancos não-relacionais | MongoDB
-  - Não se pode fazer relacionamentos entre tabelas em um banco não relacional
-  - Extremamente performático
-  - Vamos subir uma nova imagem docker para o mongoDB: `docker run --name=mongodatabase -p 27017:27017 -d -t mongo`
-  - Vamos conectar o MongoDB em `database > index.js`:
-  ```js
-  mongo() {
-    this.mongoConnection = Mongoose.connect(
-      'mongodb://10.0.10.140:27017/gobarber',
-      { useNewUrlParser: true, useFindAndModify: true, useUnifiedTopology: true }
-    )
-  }
-  ```
-
-  ### Mongoose
-  - ODM para bancos não relacionais (mais especificamente para o MongoDB)
-  - Vamos instalar com `yarn add mongose`
 ### Frontend
   - ReactJS
 ### Mobile

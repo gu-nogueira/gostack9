@@ -1,8 +1,11 @@
 import Users from '../models/Users';
 import File from '../models/File';
 import Appointment from '../models/Appointment';
+import Notification from '../schemas/Notification';
 
-import { startOfHour, parseISO, isBefore } from 'date-fns';
+import { startOfHour, parseISO, isBefore, format } from 'date-fns';
+// Para transformar data em português brasil
+import pt from 'date-fns/locale/pt';
 import * as Yup from 'yup';
 
 class AppointmentController {
@@ -101,6 +104,29 @@ class AppointmentController {
       // Vamos passar o hourStart para criar o campo date no appointment, assim asseguraremos que os campos minutos e segundos ficarão zerados
       date: hourStart,
     });
+
+    /**
+     * Notify appointment provider
+     */
+
+    // Vamos buscar todos os dados do usuário que realizou o agendamento para criar a notificação para o prestador de serviços
+    const user = await Users.findByPk(req.userId);
+    // Vamos usar o date-fns para formatar hourStart
+    const formattedDate = format(
+      hourStart,
+      // O date fns não formata o que estiver dentro de ''
+      "'dia' dd 'de' MMMM', às' H:mm'h'",
+      // Vamos formatar a data para pt-BR
+      { locale: pt }
+      );
+
+    // Utilizando schema do mongoDB
+    await Notification.create({
+      // Uma coisa que precisamos ter claro quando utilizamos bancos não relacionais é a vantagem de NÃO utilizar relacionamentos e tornar a aplicação performática
+      content: `Novo agendamento de ${user.name} para o ${formattedDate}`,
+      // O único relacionamento que vamos armazenar aqui é o id do usuário que precisa receber a notificação
+      user: provider_id,
+    })
 
     return res.json(appointment);
   }
