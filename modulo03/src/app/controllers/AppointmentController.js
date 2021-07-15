@@ -3,7 +3,7 @@ import File from '../models/File';
 import Appointment from '../models/Appointment';
 import Notification from '../schemas/Notification';
 
-import { startOfHour, parseISO, isBefore, format } from 'date-fns';
+import { startOfHour, parseISO, isBefore, format, subHours } from 'date-fns';
 // Para transformar data em português brasil
 import pt from 'date-fns/locale/pt';
 import * as Yup from 'yup';
@@ -64,12 +64,23 @@ class AppointmentController {
     /**
      * Check if provider_id is a provider
      */
+
     const checkIsProvider = await Users.findOne({
       where: { id: provider_id, provider: true },
     })
 
     if (!checkIsProvider) {
       return res.status(401).json({ error: 'Please create appointments only with providers' });
+    }
+
+    /**
+     * Check if user id and provider_id are different
+     */
+
+    const checkUsersId = (req.userId === provider_id);
+
+    if (checkUsersId) {
+      return res.status(401).json({error: 'Cannot create appointments for yourself'});
     }
 
     // parseISO transforma a string UTC num objeto 'date' do javascript, e aí então ele poderá ser usado no startOfHour
@@ -129,6 +140,36 @@ class AppointmentController {
     })
 
     return res.json(appointment);
+  }
+
+  async delete(req, res) {
+
+    const appointment = await Appointment.findByPk(req.params.id);
+
+    /**
+     * Check if appointment user_id is the same of logged in user id
+     */
+
+    if (appointment.user_id != req.userId) {
+      return res.status(401).json({ error: 'You do not have permission to cancel this appointment'});
+    }
+
+    // Vamos usar o subHours do date-fns para reduzir a quantidade de horas de um campo date para menos duas horas
+    const dateWithSub = subHours(appointment.date, 2);
+
+    // Agora, vamos checar se o usuário pode cancelar o agendamento, com prazo máximo de até duas horas restantes
+    if (isBefore(dateWithSub, new Date())) {
+      return res.status(401).json({ error: 'You can only cancel appointments 2 hours in advance'});
+    }
+
+    // Feitas todas as verificações, vamos setar a data de cancelamento para a data atual do sistema
+    appointment.canceled_at = new Date();
+
+    // Agora vamos salvar o appointment novamente no banco com sequelize
+    await appointment.save();
+
+    return res.json(appointment);
+
   }
 }
 
