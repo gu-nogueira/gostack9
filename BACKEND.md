@@ -382,3 +382,10 @@ routes.post('/files', upload.single('file'), (req, res) => { res.json({ ok: true
 
 ## Lidando com datas no node
 - Vamos instalar o date-fns em sua versão atual: `yarn add date-fns@next`
+
+## Lidando com envios de e-mail
+- Vamos instalar a biblioteca: `yarn add nodemailer`
+- Vamos criar um arquivo em `config > mail.js`
+```js
+
+```
