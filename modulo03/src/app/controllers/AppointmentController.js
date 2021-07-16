@@ -6,8 +6,10 @@ import Notification from '../schemas/Notification';
 import { startOfHour, parseISO, isBefore, format, subHours } from 'date-fns';
 // Para transformar data em português brasil
 import pt from 'date-fns/locale/pt';
-import * as Yup from 'yup';
 
+import * as Yup from 'yup';
+// Importando módulo de email
+import Mail from '../../lib/Mail';
 class AppointmentController {
 
   // Index é o método de listagem
@@ -144,7 +146,16 @@ class AppointmentController {
 
   async delete(req, res) {
 
-    const appointment = await Appointment.findByPk(req.params.id);
+    const appointment = await Appointment.findByPk(req.params.id, {
+      // Ao usar o findByPk, depois do primeiro parâmetro vamos passar uma vírgula e passar um objeto para utilizar o INNER JOIN do Sequelize
+      // O INNER JOIN do Sequelize é o include:[] (é sempre array)
+      include: [{
+        model: Users,
+        // Passamos 'as:' pois temos dois relacionamentos como User dentro do model de Appointment
+        as: 'provider',
+        atributes: ['name', 'email'],
+      }],
+    });
 
     /**
      * Check if appointment user_id is the same of logged in user id
@@ -167,6 +178,16 @@ class AppointmentController {
 
     // Agora vamos salvar o appointment novamente no banco com sequelize
     await appointment.save();
+
+    // Após salvo o cancelamento, vamos enviar um email informando ao provider o cancelamento
+    await Mail.sendMail({
+      // Vamos definir aqui para quem vamos enviar o email, no formato to: `Nome <email@dominio.com>`
+      to: `${appointment.provider.name} <${appointment.provider.email}>`,
+      // Vamos enviar o subject do e-mail (cabeçalho)
+      subject: 'Agendamento cancelado',
+      // Corpo do email ((Pode ser html: ou text:)
+      text: 'Você tem um novo cancelamento (ultimo teste)',
+    });
 
     return res.json(appointment);
 

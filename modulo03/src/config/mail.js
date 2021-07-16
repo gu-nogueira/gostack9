@@ -1,11 +1,14 @@
 export default {
+  name: 'onmai.com',
   host: 'br644.hostgator.com.br',
   port: '465',
-  // Vamos deixar false por padrão
-  secure: 'ssl',
+  // Também pode ser secure: false,
+  secure: true,
   auth: {
     user: 'gustavo@onmai.com.br',
     pass: 'PuBT^c*a@Y~C',
   },
-  default: {}
-}
+  default: {
+    from: 'Equipe GoBarber <noreply@gobarber.com>',
+  },
+};

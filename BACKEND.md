@@ -387,5 +387,35 @@ routes.post('/files', upload.single('file'), (req, res) => { res.json({ ok: true
 - Vamos instalar a biblioteca: `yarn add nodemailer`
 - Vamos criar um arquivo em `config > mail.js`
 ```js
-
+export default {
+  host: 'br644.hostgator.com.br',
+  port: '465',
+  secure: true,
+  auth: {
+    user: 'gustavo@onmai.com.br',
+    pass: 'PuBT^c*a@Y~C',
+  },
+  default: {
+    from: 'Equipe GoBarber <noreply@gobarber.com>',
+  },
+};
 ```
+- Serviços de e-mail:
+* Amazon SES;
+* Mailgun;
+* Sparkpost;
+* Mandril (Mailchimp);
+* Hostgator;
+* Mailtrap.io (Funciona somente p/ ambiente de desenvolvimento);
+- Vamos criar uma pasta `src > lib`, onde vamos configurar coisas adicionais da aplicação. Dentro de lib ficará todas as configurações de serviços adicionais que iremos utilizar, para não criarmos controllers para isso;
+- Vamos criar em `lib > Mail.js`:
+```js
+import nodemailer from 'nodemailer';
+class Mail {
+  constructor() {
+    
+  }
+}
+export default new Mail();
+```
+
