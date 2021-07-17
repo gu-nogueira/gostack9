@@ -1,5 +1,5 @@
 export default {
-  name: 'onmai.com',
+  name: 'gobarber.com',
   host: 'br644.hostgator.com.br',
   port: '465',
   // Também pode ser secure: false,

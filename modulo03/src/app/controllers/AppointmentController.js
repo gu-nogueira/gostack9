@@ -154,7 +154,13 @@ class AppointmentController {
         // Passamos 'as:' pois temos dois relacionamentos como User dentro do model de Appointment
         as: 'provider',
         atributes: ['name', 'email'],
-      }],
+      },
+      {
+        model: Users,
+        as: 'user',
+        atributes: ['name'],
+      }
+    ],
     });
 
     /**
@@ -186,7 +192,17 @@ class AppointmentController {
       // Vamos enviar o subject do e-mail (cabeçalho)
       subject: 'Agendamento cancelado',
       // Corpo do email ((Pode ser html: ou text:)
-      text: 'Você tem um novo cancelamento (ultimo teste)',
+      // Neste caso, usaremos template:, para enviar o cancellation.hbs
+      template: 'cancellation',
+      // Dentro de context iremo passar as variáveis que estamos utilizando dentro dos templates
+      context: {
+        provider: appointment.provider.name,
+        user: appointment.user.name,
+        // Vamos passar agora, no appointment.date
+        date: format(appointment.date ,"'dia' dd 'de' MMMM', às' H:mm'h'", {
+          locale: pt
+        }),
+      },
     });
 
     return res.json(appointment);

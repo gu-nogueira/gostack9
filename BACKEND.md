@@ -419,3 +419,45 @@ class Mail {
 export default new Mail();
 ```
 
+## Templates de e-mail com Handlebars
+- Vamos utilizar template engines para criar e-mails com html / css, utilizando também variáveis do node
+- Instalando Handlebars, integrado com express e com nodemailer `yarn add express-handlebars nodemailer-express-handlebars`
+- Vamos criar os seguintes diretórios: `app > views > emails > layouts & partials`
+- E os seguintes arquivos: `layouts > default.hbs` e `partials > cancellation.hbs`
+- Agora, em `lib > Mail.js`, vamos inserir o seguinte método:
+```js
+configureTemplates() {
+  const viewPath = resolve(__dirname, '..', 'src', 'app', 'views', 'emails');
+  this.transporter.use('compile', nodemailerhbs({
+    viewEngine: exphbs.create({
+      layoutsDir: resolve(viewPath, 'layouts'),
+      partialsDir: resolve(viewPath, 'partials'),
+      defaultLayout: 'default',
+      extname: '.hbs',
+    }),
+    viewPath,
+    extName: '.hbs',
+  }));
+}
+```
+- Feito isso, vamos configurar o layout padrão para ser usado em todos os e-mails em `layouts > default.hbs`
+```hbs
+<div style="font-family: Arial, Helvetica, sans-serif; font-size: 16px; line-height: 1.6; color: #222; max-width: 600px;">
+  {{{ body }}}
+</div>
+```
+- Agora vamos criar os partials, que serão utilizados em tipos específicos de e-mail em `partials > footer.hbs`
+```hbs
+<br />
+Equipe GoBarber
+```
+- Por fim, finalmente importamos o partial `footer.hbs` dentro de `default.hbs`, inserindo-o como `{{> footer }}`
+- Podemos inserir uma variável também com `{{ nome_da_variável }}`
+
+## Filas em background com Redis
+- Também chamados de background jobs
+- Usado para:
+  * Controlar ações que levam um pouco mais de tempo e não precisam finalizar no mesmo momento da resposta para o cliente
+  * Controle de erros
+  * Retentativas automáticas
+  * Prioridades na fila
