@@ -8,8 +8,12 @@ import { startOfHour, parseISO, isBefore, format, subHours } from 'date-fns';
 import pt from 'date-fns/locale/pt';
 
 import * as Yup from 'yup';
-// Importando módulo de email
-import Mail from '../../lib/Mail';
+
+// Importando filas
+import Queue from '../../lib/Queue';
+// Importando jobs de fila
+import CancellationMail from '../jobs/CancellationMail';
+
 class AppointmentController {
 
   // Index é o método de listagem
@@ -153,14 +157,14 @@ class AppointmentController {
         model: Users,
         // Passamos 'as:' pois temos dois relacionamentos como User dentro do model de Appointment
         as: 'provider',
-        atributes: ['name', 'email'],
+        // Corrigido attributes é com dois 't'
+        attributes: ['name', 'email'],
       },
       {
         model: Users,
         as: 'user',
-        atributes: ['name'],
-      }
-    ],
+        attributes: ['name'],
+      }]
     });
 
     /**
@@ -184,25 +188,11 @@ class AppointmentController {
 
     // Agora vamos salvar o appointment novamente no banco com sequelize
     await appointment.save();
-
-    // Após salvo o cancelamento, vamos enviar um email informando ao provider o cancelamento
-    await Mail.sendMail({
-      // Vamos definir aqui para quem vamos enviar o email, no formato to: `Nome <email@dominio.com>`
-      to: `${appointment.provider.name} <${appointment.provider.email}>`,
-      // Vamos enviar o subject do e-mail (cabeçalho)
-      subject: 'Agendamento cancelado',
-      // Corpo do email ((Pode ser html: ou text:)
-      // Neste caso, usaremos template:, para enviar o cancellation.hbs
-      template: 'cancellation',
-      // Dentro de context iremo passar as variáveis que estamos utilizando dentro dos templates
-      context: {
-        provider: appointment.provider.name,
-        user: appointment.user.name,
-        // Vamos passar agora, no appointment.date
-        date: format(appointment.date ,"'dia' dd 'de' MMMM', às' H:mm'h'", {
-          locale: pt
-        }),
-      },
+    // Aqui, onde antes estávamos enviando um e-mail com 'Mail.sendMail', vamos enviar para fila 'Queue.add'
+    // Poderiamos referenciar aqui diretamente a chave de CancellationMail, mas se algum dia essa chave mudar não será necessário mudar nada aqui
+    await Queue.add(CancellationMail.key, {
+      // Aqui passamos os dados do appointment dentro de um objeto
+      appointment,
     });
 
     return res.json(appointment);

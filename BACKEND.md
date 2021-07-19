@@ -440,13 +440,13 @@ configureTemplates() {
   }));
 }
 ```
-- Feito isso, vamos configurar o layout padrão para ser usado em todos os e-mails em `layouts > default.hbs`
+- Feito isso, vamos configurar o layout padrão para ser usado em todos os e-mails em `layouts > default.hbs`:
 ```hbs
 <div style="font-family: Arial, Helvetica, sans-serif; font-size: 16px; line-height: 1.6; color: #222; max-width: 600px;">
   {{{ body }}}
 </div>
 ```
-- Agora vamos criar os partials, que serão utilizados em tipos específicos de e-mail em `partials > footer.hbs`
+- Agora vamos criar os partials, que serão utilizados em tipos específicos de e-mail em `partials > footer.hbs`:
 ```hbs
 <br />
 Equipe GoBarber
@@ -454,10 +454,113 @@ Equipe GoBarber
 - Por fim, finalmente importamos o partial `footer.hbs` dentro de `default.hbs`, inserindo-o como `{{> footer }}`
 - Podemos inserir uma variável também com `{{ nome_da_variável }}`
 
-## Filas em background com Redis
+## Bancos chave-valor | Redis
+- Será utilizado para a funcionalidade de filas (background jobs) dentro da aplicação
+- Banco não relacional (noSQL) assim como mongoDB, porém só aceita chaves e valores, tornando-o extremamente performático e robusto 
+- Vamos iniciar um container com `docker run --name redis -p 6379:6379 -d -t redis:alpine`
+- Vamos criar um arquivo de configuração em `config > redis.js`:
+```js
+export default {
+  host: '10.0.10.140',
+  port: 6379,
+}
+```
+
+## Filas com Redis
 - Também chamados de background jobs
 - Usado para:
   * Controlar ações que levam um pouco mais de tempo e não precisam finalizar no mesmo momento da resposta para o cliente
   * Controle de erros
   * Retentativas automáticas
   * Prioridades na fila
+- Vamos utilizar uma biblioteca (ferramenta) de filas. Temos as seguintes opções:
+  * Bee Queue (Mais performático, porém não aceita prioridades de filas);
+  * Kue (Menos performático, porém consegue lidar com prioridades);
+  * Bull
+- Vamos instalá-lo com `yarn add bee-queue`
+- Vamos criar um arquivo em `lib > Queue.js`:
+```js
+import Bee from 'bee-queue';
+import redisConfig from '../config/redis';
+// Jobs
+import CancellationMail from '../app/jobs/CancellationMail';
+
+const jobs = [CancellationMail];
+class Queue {
+  constructor() {
+    this.queues = {};
+    this.init();
+  }
+  init() {
+    jobs.forEach(({ key, handle }) => {
+      this.queues[key] = {
+        bee: new Bee(key, {
+          redis: redisConfig,
+        }),
+        handle,
+      };
+    });
+  }
+  add(queue, job) {
+    return this.queues[queue].bee.createJob(job).save();
+  }
+  processQueue() {
+    jobs.forEach(job => {
+      const { bee, handle } = this.queues[job.key];
+      bee.process(handle);
+    });
+  }
+}
+export default new Queue();
+```
+- Após isso, vamos configurar os Jobs da aplicação, criando um novo diretório em `app > jobs`
+- Por fim, vamos criar um novo job dentro dessa pasta chamado `CancellationMail.js`:
+```js
+import { format, parseISO } from 'date-fns';
+import pt from 'date-fns/locale/pt';
+import Mail from '../../lib/Mail';
+
+class CancellationMail {
+  get key() {
+    return 'CancellationMail';
+  }
+  async handle({ data }) {
+    const { appointment } = data;
+    console.log('A fila executou!');
+     await Mail.sendMail({
+      to: `${appointment.provider.name} <${appointment.provider.email}>`,
+      subject: 'Agendamento cancelado',
+      template: 'cancellation',
+      context: {
+        provider: appointment.provider.name,
+        user: appointment.user.name,
+        date: format(parseISO(appointment.date),"'dia' dd 'de' MMMM', às' H:mm'h'", {
+          locale: pt
+        }),
+      },
+    });
+  }
+}
+export default new CancellationMail ();
+```
+- E por fim, vamos importar nossa fila em `<any>Controller.js`:
+```js
+import Queue from '../../lib/Queue';
+// Importando jobs
+import CancellationMail from '../jobs/CancellationMail';
+...
+  await Queue.add(CancellationMail.key, {
+    appointment,
+  });
+```
+- Com isso, temos uma receita de bolo de fila replicável em qualquer aplicação, podendo repassar qualquer dado pelo `Queue.add` no nossos arquivos de controller, podendo pegá-lo dentro da `const = { <variáveis> } = data;` em nossos arquivos de jobs
+- E por fim, vamos criar um arquivo em `src > queue.js`:
+```js
+import Queue from './lib/Queue';
+Queue.processQueue();
+```
+- Fazemos isso pois não iremos executar as filas no mesmo node (no mesmo processo) que a aplicação principal. Pois dessa forma podemos rodar nossas filas em outro servidor, num outro core do processador, totalmente a parta da aplicação principal. Dessa forma a fila nunca influenciará na performance do restante da aplicação
+- Podemos executar o nosso arquivo de filas a parte agora com `node src/queue.js`. Lembrando que esse comando pode retornar um erro caso esteja utilizando Sucrase na aplicação. Para resolver esse problema, basta adicionar no arquivo `package.json` dentro de `"scripts:"{...}`:
+```json
+"queue": "nodemon src/queue.js"
+```
