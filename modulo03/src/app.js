@@ -15,9 +15,10 @@ class App {
     this.server = express();
 
     // Necessário para chamar os métodos, os executa, da mesma forma como executa as funções
+    console.log('Loading routes...');
     this.middlewares();
     this.routes();
-    console.log('Server is running...');
+    console.log('Complete!');
   }
 
   // Neste método serão inseridos todos os middlewares da aplicação

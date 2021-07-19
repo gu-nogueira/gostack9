@@ -13,6 +13,7 @@ import ProviderController from './app/controllers/ProviderController';
 import AppointmentController from './app/controllers/AppointmentController';
 import ScheduleController from './app/controllers/ScheduleController';
 import NotificationController from './app/controllers/NotificationController';
+import AvailableController from './app/controllers/AvailableController';
 
 // Importando os Middlewares
 import authMiddleware from './app/middlewares/auth';
@@ -36,6 +37,9 @@ routes.put('/users', /**Posso passar o middleware localmente aqui: authMiddlewar
 
 // Criando nova rota para providers
 routes.get('/providers', ProviderController.index);
+
+// Vamos criar uma rota para capturar todos os horários disponíveis para um determinado provider (prestador de serviço)
+routes.get('/providers/:providerId/available', AvailableController.index);
 // Importante lembrar, sempre que criarmos um novo método no controller, devemos lembrar que o mesmo precisará de uma rota de saída
 routes.get('/appointments', AppointmentController.index);
 routes.post('/appointments', AppointmentController.store);
