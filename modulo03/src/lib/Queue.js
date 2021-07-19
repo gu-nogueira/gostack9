@@ -59,10 +59,18 @@ class Queue {
       const { bee, handle } = this.queues[job.key];
 
       // Feito isso, temos a fila e o handle (trabalho), vamos processar 'bee' com '.process' que é um método de bee-queue, passando como parâmetro o trabalho, então '(handle)'
-      bee.process(handle);
-
-
+      // Vamos adicionar '.on('failed')' para monitorar possíveis eventos de falha que possam haver em nossa fila. O Bee-queue há diversos outros eventos que podemos monitorar, como 'succeeded', 'progress', 'error', 'ready' entre outros. Podemos consultar todos os eventos no repositório do github do Bee-Queue
+      // Neste caso o evento 'failed', quer dizer que o bee-queue fez todas as tentativas e mesmo assim falhou o processo
+      // '.on()' receberá como segundo parâmetro nosso método craido handleFailure
+      bee.on('failed', this.handleFailure).process(handle);
     });
+  }
+
+  // handleFailure recebe job e o erro como parâmetro
+  handleFailure(job, err) {
+    // Por fim, exibimos o possível erro no console da execução de fila (Queue.js)
+    // Mais para frente colocaremos este log em um lugar onde conseguiremos acessar com a aplicação em produção
+    console.log(`Queue ${job.queue.name}: FAILED`, err);
   }
 }
 
