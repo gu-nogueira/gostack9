@@ -1,10 +1,27 @@
 import Sequelize, { Model } from 'sequelize';
+import { isBefore, subHours } from 'date-fns';
 
 class Appointment extends Model {
   static init(sequelize) {
     super.init({
       date: Sequelize.DATE,
       canceled_at: Sequelize.DATE,
+      past: {
+        // Para definir o type de uma variável no objeto
+        type: Sequelize.VIRTUAL,
+        // Pelo método get podemos fazer qualquer coisa para retornar um valor aqui
+        get () {
+          // Vamos usar o método 'isBefore' do date-fns para checar se a data registrada no appointment no campo date está antes da data atual. Retorna true se sim e false se não
+          return isBefore(this.date, new Date());
+        },
+      },
+      cancelable: {
+        type: Sequelize.VIRTUAL,
+        get () {
+          // Checa se agora (new Date ()) está antes da data do appointment, menos duas horas com 'subHours()', retorna true se sim e false se não
+          return isBefore(new Date(), subHours(this.date, 2));
+        }
+      },
     },
     {
       sequelize,

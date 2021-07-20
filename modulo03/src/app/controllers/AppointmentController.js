@@ -29,7 +29,7 @@ class AppointmentController {
       // Vamos ordenar esses agendamentos pela data
       order: ['date'],
       // Vamos escolher os campos que queremos dos appointments
-      attributes: ['id', 'date'],
+      attributes: ['id', 'date', 'past', 'cancelable'],
       // Vamos listar no máximo 20 registros
       limit: 20,
       // Vamos definir quantos registros vamos pular
