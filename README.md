@@ -11,7 +11,7 @@
 * [x] Modulo 1, 2 e 3;
 * [ ] Aplicação Go Barber;
     - Desenvolvendo backend [OK];
-* [ ] Desafio 1, 2...
+* [ ] Desafio 1, 2 e 3;
 
 ## ReactJS
 

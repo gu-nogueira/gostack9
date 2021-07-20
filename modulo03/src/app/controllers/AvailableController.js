@@ -16,7 +16,7 @@ class AvailableController {
     const searchDate = parseInt(date);
     // const searchDate = Number(date); --> É a mesma coisa
 
-    const appointments = await Appointment.finddAll({
+    const appointments = await Appointment.findAll({
       where: {
         provider_id: req.params.providerId,
         canceled_at: null,
