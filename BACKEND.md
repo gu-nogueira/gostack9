@@ -104,7 +104,7 @@ mongo() {
 ```
 - E criar uma pasta em `app > schemas`
 
-### mongo-express | MongoDB admin queryInterface
+### mongo-express | MongoDB admin Interface
 - Link para montar o container: https://hub.docker.com/_/mongo-express
 - Antes de mais nada, iremos pegar o ip do container: `docker inspect <nome_do_container> | grep IPAddress`
 - É necessário substituí-lo em `"mongodb://ip_do_container:27017"`
@@ -120,8 +120,10 @@ mongo() {
 - ODM para bancos não relacionais (mais especificamente para o MongoDB)
 - Vamos instalar com `yarn add mongose`
 
-### Sequelize
-- ORM para bancos de dados relacionais (SQLs)
+### ORMs | Sequelize
+- ORM para bancos de dados relacionais (SQLs);
+  * Sequelize;
+  * Prisma;
 - Tabelas do banco viram models (ex: tabela.js)
 - Migrations
   * Controle de versionamento do banco de dados
@@ -466,7 +468,7 @@ export default {
 }
 ```
 
-## Filas com Redis
+## Filas com Bee Queue
 - Também chamados de background jobs
 - Usado para:
   * Controlar ações que levam um pouco mais de tempo e não precisam finalizar no mesmo momento da resposta para o cliente
@@ -563,4 +565,48 @@ Queue.processQueue();
 - Podemos executar o nosso arquivo de filas a parte agora com `node src/queue.js`. Lembrando que esse comando pode retornar um erro caso esteja utilizando Sucrase na aplicação. Para resolver esse problema, basta adicionar no arquivo `package.json` dentro de `"scripts:"{...}`:
 ```json
 "queue": "nodemon src/queue.js"
+```
+
+# Backend | Tratando Exceções
+
+- Ferramentas utilizadas para monitorar estabilidade, bugs e erros da aplicação
+  * [Bugsnag](www.bugsnag.com);
+  * [Sentry](sentry.io) - Possui uma ótima integração com Node.js;
+- Para este caso, vamos utilizar o Sentry;
+- Vamos criar um novo projeto, selecionar Node.js ou ExpressJS;
+- O Sentry passará todas as instruções para integrar a monitoria no projeto. Neste exemplo, vamos rodar `yarn add @sentry/node @sentry/tracing`;
+- Vamos precisar criar um novo arquivo em `config > sentry.js`, passando o dsn gerado pelo sentry:
+```js
+export default {
+  dsn: 'https://22f00432e0a647f0b1f4da12e01b8b33@o923985.ingest.sentry.io/5871871',
+};
+```
+- Depois, vamos importar o sentry em `src > app.js` e iniciá-lo depois de instanciar o express:
+```js
+import * as Sentry from '@sentry/node';
+import * as Tracing from "@sentry/tracing";
+import sentryConfig from './config/sentry';
+...
+this.server = express();
+// Inicializando o Sentry
+Sentry.init({sentryConfig,
+  integrations: [
+    // enable HTTP calls tracing
+    new Sentry.Integrations.Http({ tracing: true }),
+    // enable Express.js middleware tracing
+    new Tracing.Integrations.Express( this ),
+  ],
+  tracesSampleRate: 1.0,
+});
+// Before any middewares or routes
+this.server.use(Sentry.Handlers.requestHandler());
+this.server.use(Sentry.Handlers.tracingHandler());
+// After all routes
+this.server.use(Sentry.Handlers.errorHandler());
+// Error handler (optional)
+app.use(function onError(err, req, res, next) {
+  // Error id is attached to `res.sentry`
+  res.statusCode = 500;
+  res.end(res.sentry + "\n");
+});
 ```

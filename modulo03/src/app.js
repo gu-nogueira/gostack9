@@ -2,6 +2,10 @@
 import express from 'express';
 // Vamos importar o path do node para levar até a nossa pasta de uploads
 import path from 'path';
+// Vamos importar o sentry para monitoria do projeto
+import * as Sentry from '@sentry/node';
+import * as Tracing from "@sentry/tracing";
+import sentryConfig from './config/sentry';
 // Aqui é importado o arquivo routes.js
 import routes from './routes';
 // Preciso agora chamar a minha database, somente import sem o from pois não preciso pegar o retorno dele
@@ -14,8 +18,22 @@ class App {
     // Isso é o mesmo que declarar a const server = express();
     this.server = express();
 
-    // Necessário para chamar os métodos, os executa, da mesma forma como executa as funções
+    // Inicializando o Sentry
+    Sentry.init({sentryConfig,
+      integrations: [
+        // enable HTTP calls tracing
+        new Sentry.Integrations.Http({ tracing: true }),
+        // enable Express.js middleware tracing
+        new Tracing.Integrations.Express( this ),
+      ],
+      tracesSampleRate: 1.0,
+    });
+
     console.log('Loading routes...');
+
+
+
+    // Necessário para chamar os métodos, os executa, da mesma forma como executa as funções
     this.middlewares();
     this.routes();
     console.log('Complete!');
@@ -23,6 +41,9 @@ class App {
 
   // Neste método serão inseridos todos os middlewares da aplicação
   middlewares() {
+    // Defino os middlewares Sentry antes de qualquer middlewares
+    this.server.use(Sentry.Handlers.requestHandler());
+    this.server.use(Sentry.Handlers.tracingHandler());
     // Também pode ser App.server.use... Que equivale também ao antigo server.use...
     this.server.use(express.json());
     // Vamos utilizar um recurso .static do express que permite servir arquivos estáticos como imagens, css, html, etc... Arquivos que podem ser acessados diretamente do navegador
@@ -33,6 +54,7 @@ class App {
   routes() {
     // Aqui pode ser usado o '.use' para as rotas, pois elas também são consideradas middlewares
     this.server.use(routes);
+    this.server.use(Sentry.Handlers.errorHandler());
   }
 }
 
