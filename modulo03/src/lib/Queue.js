@@ -1,3 +1,4 @@
+import 'dotenv/config';
 // Vamos importar e criar o bee queue aqui, pois ele será também uma 'lib' extra da aplicação
 import Bee from 'bee-queue';
 // Vamos importar o CancellationMail que acabamos de criar, assim como importamos os models dentro de database > index.js, é o Queue.js que irá gerenciar e tratar todas as queues da nossa aplicação

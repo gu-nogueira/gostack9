@@ -10,7 +10,7 @@ class File extends Model {
         // Definimos este método get, para como queremos formatar este valor
         get() {
           // Temos acesso a variável this do método init, portanto temos acesso a name e path
-          return `http://localhost:2000/files/${this.path}`;
+          return `${process.env.APP_URL}/files/${this.path}`;
         }
       },
     },

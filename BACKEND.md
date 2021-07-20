@@ -567,9 +567,11 @@ Queue.processQueue();
 "queue": "nodemon src/queue.js"
 ```
 
-# Backend | Tratando Exceções
+# Tratando Exceções
 
 - Ferramentas utilizadas para monitorar estabilidade, bugs e erros da aplicação
+- Será utilizado em ambiente de produção
+- Integrável com Slack, Email, GitHub (Issues) etc...
   * [Bugsnag](www.bugsnag.com);
   * [Sentry](sentry.io) - Possui uma ótima integração com Node.js;
 - Para este caso, vamos utilizar o Sentry;
@@ -629,3 +631,112 @@ import 'express-async-errors';
 ```js
 import Youch from 'youch';
 ```
+
+# Produção
+Preparando aplicação para ambiente de produção (servidor).
+
+## Configurando variáveis ambiente
+- São variáveis que mudam de acordo com o ambiente (máquina), variáveis de conexão com banco, portas, etc...
+- Todas as funcionalidades da aplicação que puderem variar de acordo com ambiente serão feitas dessa forma para padronizar
+- Vamos criar um arquivo na raiz do projeto `.env`, este nome é global para qualquer aplicação de qualquer linguagem
+- Deve ser adicionado ao `.gitignore` (caso haja), pois não deve ir para o repositório do GitHub
+```r
+APP_URL=http://localhost:2000
+NODE_ENV=development
+
+# Auth
+
+# Até 32 caracteres
+APP_SECRET=xvoip321
+
+# Database
+
+DB_HOST=10.0.10.140
+DB_USER=postgres
+DB_PASS=docker
+DB_NAME=gobarber
+
+# Mongo
+
+MONGO_URL=mongodb://10.0.10.140:27017/gobarber
+
+# Redis
+
+REDIS_HOST=10.0.10.140
+REDIS_PORT=6379
+
+# Mail
+
+MAIL_NAME=gobarber.com
+MAIL_HOST=br644.hostgator.com.br
+MAIL_PORT=465
+MAIL_SECURE=true
+MAIL_USER=gustavo@onmai.com.br
+MAIL_PASS=PuBT^c*a@Y~C
+
+# Sentry
+
+SENTRY_DSN=
+# Only for production: https://22f00432e0a647f0b1f4da12e01b8b33@o923985.ingest.sentry.io/5871871
+```
+- Feito isso, vamos instalar a biblioteca dotenv `yarn add dotenv`
+- E importá-lo para carregar as variáveis ambientes nos seguintes arquivos:
+```js
+src > app.js
+src > config > database.js
+lib > queue.js
+
+import 'dotenv/config';
+// ou
+require('dotenv/config');
+```
+- Dessa forma, todas as variáveis ambientes poderão ser acessadas da variável global do node `process.env.`, agora vamos configurá-lo nos arquivos:
+```js
+src > app > models > File.js
+// url que retorna o caminho dos arquivos
+return `${process.env.APP_URL}/files`[...];
+
+src > app.js
+// verifica se o ambiente é de desenvolvimento para retornar erros por JSON
+if (process.env.NODE_ENV == 'development') {
+  const errors = await new Youch(err, req).toJSON();
+  return res.status(500).json(errors);
+}
+return res.status(500).json({ error: 'Internal server error' });
+
+src > config > auth.js
+// secret para gerar hash de password
+secret: process.env.APP_SECRET,
+
+src > config > database.js
+// conexão com postgreSQL
+host: process.env.DB_HOST,
+username: process.env.DB_USER,
+password: process.env.DB_PASS,
+database: process.env.DB_NAME,
+
+src > database > index.js
+// conexão com mongoDB
+process.env.MONGO_URL,
+
+src > config > redis.js
+// Conexão com Redis
+host: process.env.REDIS_HOST,
+port: process.env.REDIS_PORT,
+
+src > config > mail.js
+// Conexão com email
+name: process.env.MAIL_NAME,
+host: process.env.MAIL_HOST,
+port: process.env.MAIL_PORT,
+secure: process.env.MAIL_SECURE,
+auth: {
+  user: process.env.MAIL_USER,
+  pass: process.env.MAIL_PASS,
+},
+
+src > config > sentry.js
+// Integração com Sentry
+dsn: process.env.SENTRY_DSN,
+```
+- Vamos deixar um arquivo na raiz `.env.example` para servir de exemplo para novas configurações. Com as variáveis mas com valores que são sensíveis vazios.

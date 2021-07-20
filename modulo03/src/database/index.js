@@ -44,7 +44,7 @@ class Database {
       // Aqui vamos passar a url de conexão do MongoDB
       // Como criamos o container sem usuário e senha para o banco, vamos passar diretamente o host
       // Não precisamos criar uma base de dados pois o MongoDB fará isso automaticamente
-      'mongodb://10.0.10.140:27017/gobarber',
+      process.env.MONGO_URL,
       // Vamos passar agora um objeto com mais algumas configurações
       // useNewUrlParser é o formato novo de URL que passamos 'mongodb://'
       // useUnifiedTopology é a engine nova para descobrir e monitorar o servidor, a antiga será descontinuada

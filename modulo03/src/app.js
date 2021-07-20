@@ -1,3 +1,5 @@
+import 'dotenv/config';
+
 // Essa sintaxe de import express from 'express', faz a MESMA coisa que const express = require('express');
 import express from 'express';
 // Vamos importar o path do node para levar até a nossa pasta de uploads
@@ -68,9 +70,14 @@ class App {
     // Vamos cadastrar um novo middleware. Para que os erros assíncronos caiam neste método é necessário passar 'err' antes de tudo. O Express entende que quando um middleware possui 4 parâmetros a ser recebido ele é um middleware de tratamento de exceções
     this.server.use(async (err, req, res, next) => {
       // vamos instanciar Youch e passar como parâmetro para ele o erro e a requisiçao. Vamos usar o '.toJSON' pois estamos desenvolvendo uma API Rest, mas há também a versão em html com '.toHTML()'
-      const errors = await new Youch(err, req).toJSON();
 
-      return res.status(500).json(errors);
+      if (process.env.NODE_ENV == 'development') {
+        const errors = await new Youch(err, req).toJSON();
+        return res.status(500).json(errors);
+      }
+
+      return res.status(500).json({ error: 'Internal server error' });
+
     });
   }
 }

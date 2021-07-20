@@ -1,12 +1,12 @@
 export default {
-  name: 'gobarber.com',
-  host: 'br644.hostgator.com.br',
-  port: '465',
+  name: process.env.MAIL_NAME,
+  host: process.env.MAIL_HOST,
+  port: process.env.MAIL_PORT,
   // Também pode ser secure: false,
-  secure: true,
+  secure: process.env.MAIL_SECURE,
   auth: {
-    user: 'gustavo@onmai.com.br',
-    pass: 'PuBT^c*a@Y~C',
+    user: process.env.MAIL_USER,
+    pass: process.env.MAIL_PASS,
   },
   default: {
     from: 'Equipe GoBarber <noreply@gobarber.com>',
