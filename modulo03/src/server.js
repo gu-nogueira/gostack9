@@ -1,3 +1,4 @@
+console.time("Load time");
 console.log('Loading app...');
 // Importanmos o server do app.js (onde exportamos com o module.exports)
 import app from './app';

@@ -577,8 +577,19 @@ Queue.processQueue();
 - O Sentry passará todas as instruções para integrar a monitoria no projeto. Neste exemplo, vamos rodar `yarn add @sentry/node @sentry/tracing`;
 - Vamos precisar criar um novo arquivo em `config > sentry.js`, passando o dsn gerado pelo sentry:
 ```js
+import * as Sentry from '@sentry/node';
+import * as Tracing from "@sentry/tracing";
+import app from './../app';
+
 export default {
   dsn: 'https://22f00432e0a647f0b1f4da12e01b8b33@o923985.ingest.sentry.io/5871871',
+  integrations: [
+    // enable HTTP calls tracing
+    new Sentry.Integrations.Http({ tracing: true }),
+    // enable Express.js middleware tracing
+    new Tracing.Integrations.Express( app ),
+  ],
+  tracesSampleRate: 1.0,
 };
 ```
 - Depois, vamos importar o sentry em `src > app.js` e iniciá-lo depois de instanciar o express:
@@ -589,24 +600,32 @@ import sentryConfig from './config/sentry';
 ...
 this.server = express();
 // Inicializando o Sentry
-Sentry.init({sentryConfig,
-  integrations: [
-    // enable HTTP calls tracing
-    new Sentry.Integrations.Http({ tracing: true }),
-    // enable Express.js middleware tracing
-    new Tracing.Integrations.Express( this ),
-  ],
-  tracesSampleRate: 1.0,
-});
+Sentry.init(sentryConfig);
 // Before any middewares or routes
-this.server.use(Sentry.Handlers.requestHandler());
+this.server.use(Sentry.Handlers.requestHandler({
+  ip: true,
+}));
 this.server.use(Sentry.Handlers.tracingHandler());
 // After all routes
 this.server.use(Sentry.Handlers.errorHandler());
-// Error handler (optional)
-app.use(function onError(err, req, res, next) {
+// Error handler for response (optional)
+this.server.use(function exceptionHandler(err, req, res, next) {
   // Error id is attached to `res.sentry`
-  res.statusCode = 500;
-  res.end(res.sentry + "\n");
+  return res.status(500).json(errors);
 });
+```
+
+## Monitorando eventos assíncronos com Express
+- Por padrão o Express não consegue captar eventos e erros assíncronos com async e await. Vamos resolver isso instalando `yarn add express-async-errors`
+- Agora vamos importar em `src > app.js` antes de routes:
+```js
+import 'express-async-errors';
+```
+
+## Youch
+- Biblioteca que dá uma tratativa dos logs de erros melhor para o desenvolvedor visualizar
+- Instalando Youch: `yarn add youch`
+- Importamos em `src > app.js`:
+```js
+import Youch from 'youch';
 ```

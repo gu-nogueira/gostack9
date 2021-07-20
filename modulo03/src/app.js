@@ -2,12 +2,21 @@
 import express from 'express';
 // Vamos importar o path do node para levar até a nossa pasta de uploads
 import path from 'path';
+
+// Importando a monitoria de erros assíncronos do express
+import 'express-async-errors';
+
+// Aqui é importado o arquivo routes.js
+import routes from './routes';
+
+// Importando Youch para tratativa de erros no console
+import Youch from 'youch';
+
 // Vamos importar o sentry para monitoria do projeto
 import * as Sentry from '@sentry/node';
 import * as Tracing from "@sentry/tracing";
 import sentryConfig from './config/sentry';
-// Aqui é importado o arquivo routes.js
-import routes from './routes';
+
 // Preciso agora chamar a minha database, somente import sem o from pois não preciso pegar o retorno dele
 import './database'; // Detalhe: não preciso passar index.js pois vai pegar automaticamente
 
@@ -19,16 +28,9 @@ class App {
     this.server = express();
 
     // Inicializando o Sentry
-    Sentry.init({sentryConfig,
-      integrations: [
-        // enable HTTP calls tracing
-        new Sentry.Integrations.Http({ tracing: true }),
-        // enable Express.js middleware tracing
-        new Tracing.Integrations.Express( this ),
-      ],
-      tracesSampleRate: 1.0,
-    });
+    Sentry.init(sentryConfig);
 
+    console.timeLog("Load time");
     console.log('Loading routes...');
 
 
@@ -36,13 +38,17 @@ class App {
     // Necessário para chamar os métodos, os executa, da mesma forma como executa as funções
     this.middlewares();
     this.routes();
+    this.exceptionHandler();
+    console.timeEnd("Load time");
     console.log('Complete!');
   }
 
   // Neste método serão inseridos todos os middlewares da aplicação
   middlewares() {
     // Defino os middlewares Sentry antes de qualquer middlewares
-    this.server.use(Sentry.Handlers.requestHandler());
+    this.server.use(Sentry.Handlers.requestHandler({
+      ip: true,
+    }));
     this.server.use(Sentry.Handlers.tracingHandler());
     // Também pode ser App.server.use... Que equivale também ao antigo server.use...
     this.server.use(express.json());
@@ -55,6 +61,17 @@ class App {
     // Aqui pode ser usado o '.use' para as rotas, pois elas também são consideradas middlewares
     this.server.use(routes);
     this.server.use(Sentry.Handlers.errorHandler());
+  }
+
+  // Vamos criar um novo método para tratar as exceções
+  exceptionHandler() {
+    // Vamos cadastrar um novo middleware. Para que os erros assíncronos caiam neste método é necessário passar 'err' antes de tudo. O Express entende que quando um middleware possui 4 parâmetros a ser recebido ele é um middleware de tratamento de exceções
+    this.server.use(async (err, req, res, next) => {
+      // vamos instanciar Youch e passar como parâmetro para ele o erro e a requisiçao. Vamos usar o '.toJSON' pois estamos desenvolvendo uma API Rest, mas há também a versão em html com '.toHTML()'
+      const errors = await new Youch(err, req).toJSON();
+
+      return res.status(500).json(errors);
+    });
   }
 }
 
