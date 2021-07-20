@@ -64,6 +64,8 @@ class Queue {
       // '.on()' receberá como segundo parâmetro nosso método craido handleFailure
       bee.on('failed', this.handleFailure).process(handle);
     });
+
+    console.log('Complete!');
   }
 
   // handleFailure recebe job e o erro como parâmetro
