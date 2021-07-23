@@ -4,7 +4,7 @@ console.log('Loading app...');
 import app from './app';
 
 // Definimos a porta 2000 para receber as requests http
-app.listen(2000);
+app.listen(process.env.PORT || 2000);
 
-console.log('Listening in: http://localhost:2000');
+console.log(`Listening in: ${process.env.APP_URL}`);
 // Fazemos essa separação, para quando formos fazer testes automatizados, não iremos inicializar o servidor numa porta mas sim fazer os testes diretamente na classe app no nosso arquivo app.js

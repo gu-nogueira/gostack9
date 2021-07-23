@@ -3,21 +3,28 @@ import Sequelize from 'sequelize';
 // Models
 import Users from '../app/models/Users';
 import Recipients from '../app/models/Recipients';
+import Files from '../app/models/Files';
+import Deliverymen from '../app/models/Deliverymen';
 
 import databaseConfig from '../config/database';
 
 // Array de models
-const models = [Users, Recipients];
+const models = [Users, Recipients, Files, Deliverymen];
 
 class Database {
+
   constructor() {
     this.init();
   }
+
   init() {
-    // Conexão com o banco
+    // Conexão postgreSQL
     this.connection = new Sequelize(databaseConfig);
 
-    models.map(model => model.init(this.connection));
+    models
+      .map(model => model.init(this.connection))
+      // map de associate() de models
+      .map(model => model.associate && model.associate(this.connection.models));
   }
 }
 

@@ -14,6 +14,10 @@ class Deliverymen extends Model {
     });
     return this;
   };
+
+  associate() {
+
+  }
 }
 
 export default Deliverymen;
