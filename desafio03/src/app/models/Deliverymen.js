@@ -12,6 +12,11 @@ class Deliverymen extends Model {
     });
     return this;
   };
+
+  // Foreign key com tabela files
+  static associate(models) {
+    this.belongsTo(models.Files, { foreignKey: 'avatar_id', as: 'avatar' });
+  }
 }
 
 export default Deliverymen;
