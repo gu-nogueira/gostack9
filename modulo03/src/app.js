@@ -16,7 +16,6 @@ import Youch from 'youch';
 
 // Vamos importar o sentry para monitoria do projeto
 import * as Sentry from '@sentry/node';
-import * as Tracing from "@sentry/tracing";
 import sentryConfig from './config/sentry';
 
 // Preciso agora chamar a minha database, somente import sem o from pois não preciso pegar o retorno dele

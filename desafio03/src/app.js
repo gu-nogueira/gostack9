@@ -6,8 +6,13 @@ class App {
   constructor() {
     this.server = express();
 
+    console.timeLog("Load time");
+    console.log('Loading routes...');
+
     this.middlewares();
     this.routes();
+
+    console.timeEnd("Load time");
     console.log('App build: OK');
   }
   middlewares() {
