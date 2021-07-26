@@ -352,7 +352,7 @@ return this;
 - O único tipo de corpo de requisição que suporta arquivos físicos é o multipart/form-database
 - Para isso, vamos utilizar a biblioteca Multer: `yarn add multer`
 - Com o multer, vamos hospedar o arquivo no servidor e geral um index para este arquivo no banco
-- Vamos criar na raiz do projeto as pastas `temp > uploads`
+- Vamos criar na raiz do projeto as pastas `tmp > uploads`
 - Vamos criar dentro de `src > config` o arquivo `multer.js`:
 ```js
 import multer from 'multer';
