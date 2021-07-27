@@ -1,7 +1,7 @@
+import * as Yup from 'yup';
+
 import Deliverymen from "../models/Deliverymen";
 import Files from "../models/Files";
-
-import * as Yup from 'yup';
 
 class DeliverymenController {
 

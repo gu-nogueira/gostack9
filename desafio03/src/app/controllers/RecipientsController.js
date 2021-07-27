@@ -4,6 +4,28 @@ import Recipients from '../models/Recipients';
 
 class RecipientsController {
 
+  async index(req, res) {
+
+    const { page = 1 } = req.query;
+    const recipients = await Recipients.findAll({
+      attributes: [
+        'id',
+        'destiny_name',
+        'address',
+        'number',
+        'complement',
+        'state',
+        'city',
+        'cep',
+      ],
+      limit: 20,
+      offset: (page - 1) * 20,
+    });
+
+    return res.json(recipients);
+
+  }
+
   async store(req, res) {
 
     const schema = Yup.object().shape({
@@ -80,24 +102,6 @@ class RecipientsController {
 
   }
 
-  async index(req, res) {
-
-    const schema = Yup.object().shape({
-      select: Yup.string().required(),
-    });
-    if (!(await schema.isValid(req.body))) {
-      return res.status(400).json({ error: 'Validation fails, please verify request body'});
-    }
-
-    if (req.body.select !== "*") {
-      return res.status(400).json({ error: 'Syntax error' });
-    }
-
-    const recipients = await Recipients.findAll();
-
-    return res.json({ recipients });
-
-  }
 }
 
 export default new RecipientsController();
