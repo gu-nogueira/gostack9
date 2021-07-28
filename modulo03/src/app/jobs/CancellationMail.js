@@ -33,7 +33,7 @@ class CancellationMail {
       // Corpo do email ((Pode ser html: ou text:)
       // Neste caso, usaremos template:, para enviar o cancellation.hbs
       template: 'cancellation',
-      // Dentro de context iremo passar as variáveis que estamos utilizando dentro dos templates
+      // Dentro de context iremos passar as variáveis que estamos utilizando dentro dos templates
       context: {
         provider: appointment.provider.name,
         user: appointment.user.name,

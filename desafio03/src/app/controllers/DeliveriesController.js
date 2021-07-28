@@ -7,10 +7,12 @@ import Recipients from '../models/Recipients';
 import Deliverymen from '../models/Deliverymen';
 import Files from '../models/Files';
 
+import Queue from '../../lib/Queue';
+import OrderMail from '../jobs/OrderMail';
+
 class DeliveriesController {
 
   async index(req, res) {
-
     const { page = 1 } = req.query;
 
     // const deliveries = await Deliveries.findAll({ include: { all: true }});
@@ -58,11 +60,9 @@ class DeliveriesController {
     });
 
     return res.json(deliveries);
-
   }
 
   async store(req, res) {
-
     const schema = Yup.object().shape({
       product: Yup.string().required(),
       recipient_id: Yup.number().required(),
@@ -78,28 +78,41 @@ class DeliveriesController {
     const deliveryman = await Deliverymen.findByPk(deliveryman_id);
 
     if(!recipient) {
-      return res.status(400).json({ error: 'Recipient not found'});
+      return res.status(400).json({ error: 'Recipient not found' });
     }
 
     if(!deliveryman) {
-      return res.status(400).json({ error: 'Deliveryman not found'});
+      return res.status(400).json({ error: 'Deliveryman not found' });
     }
 
-    await Deliveries.create({
+    const { id } = await Deliveries.create({
       product,
       recipient_id,
       deliveryman_id,
+    });
+
+    // E-mail queue
+    await Queue.add(OrderMail.key, {
+      product,
+      recipient,
+      deliveryman,
     });
 
     return res.json({
+      id,
       product,
       recipient_id,
       deliveryman_id,
     });
-
   }
 
   async update(req, res) {
+
+    const schema = Yup.object().shape({
+      product: Yup.string().required(),
+      recipient_id: Yup.number().required(),
+      deliveryman_id: Yup.number().required(),
+    });
 
     return res.json();
   }

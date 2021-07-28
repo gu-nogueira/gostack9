@@ -412,10 +412,25 @@ export default {
 - Vamos criar uma pasta `src > lib`, onde vamos configurar coisas adicionais da aplicação. Dentro de lib ficará todas as configurações de serviços adicionais que iremos utilizar, para não criarmos controllers para isso;
 - Vamos criar em `lib > Mail.js`:
 ```js
+import { resolve } from 'path';
 import nodemailer from 'nodemailer';
+import mailConfig from '../config/mail';
 class Mail {
   constructor() {
-    
+    const { name, host, port, secure, auth } = mailConfig;
+    this.transporter = nodemailer.createTransport({
+      name,
+      host,
+      port,
+      secure,
+      auth: auth.user ? auth : null,
+    });
+  }
+  sendMail(message) {
+    return this.transporter.sendMail({
+      ...mailConfig.default,
+      ...message,
+    });
   }
 }
 export default new Mail();
@@ -425,7 +440,12 @@ export default new Mail();
 - Vamos utilizar template engines para criar e-mails com html / css, utilizando também variáveis do node
 - Instalando Handlebars, integrado com express e com nodemailer `yarn add express-handlebars nodemailer-express-handlebars`
 - Vamos criar os seguintes diretórios: `app > views > emails > layouts & partials`
-- E os seguintes arquivos: `layouts > default.hbs` e `partials > cancellation.hbs`
+- E os seguintes arquivos: `layouts > default.hbs` e `partials > footer.hbs`
+- Em `lib > Mail.js`, precisaremos importar as integrações do handlebars com o express e o nodemailer, para isso:
+```js
+import exphbs from 'express-handlebars';
+import nodemailerhbs from 'nodemailer-express-handlebars';
+```
 - Agora, em `lib > Mail.js`, vamos inserir o seguinte método:
 ```js
 configureTemplates() {
@@ -485,9 +505,9 @@ export default {
 import Bee from 'bee-queue';
 import redisConfig from '../config/redis';
 // Jobs
+import OrderMail from '../app/jobs/OrderMail';
 import CancellationMail from '../app/jobs/CancellationMail';
-
-const jobs = [CancellationMail];
+const jobs = [OrderMail, CancellationMail];
 class Queue {
   constructor() {
     this.queues = {};
@@ -509,8 +529,12 @@ class Queue {
   processQueue() {
     jobs.forEach(job => {
       const { bee, handle } = this.queues[job.key];
-      bee.process(handle);
+      bee.on('failed', this.handleFailure).process(handle);
     });
+    console.log('Complete!');
+  }
+  handleFailure(job, err) {
+    console.log(`Queue ${job.queue.name}: FAILED`, err);
   }
 }
 export default new Queue();
@@ -561,8 +585,8 @@ import CancellationMail from '../jobs/CancellationMail';
 import Queue from './lib/Queue';
 Queue.processQueue();
 ```
-- Fazemos isso pois não iremos executar as filas no mesmo node (no mesmo processo) que a aplicação principal. Pois dessa forma podemos rodar nossas filas em outro servidor, num outro core do processador, totalmente a parta da aplicação principal. Dessa forma a fila nunca influenciará na performance do restante da aplicação
-- Podemos executar o nosso arquivo de filas a parte agora com `node src/queue.js`. Lembrando que esse comando pode retornar um erro caso esteja utilizando Sucrase na aplicação. Para resolver esse problema, basta adicionar no arquivo `package.json` dentro de `"scripts:"{...}`:
+- Fazemos isso pois não iremos executar as filas no mesmo node (no mesmo processo) que a aplicação principal. Pois dessa forma podemos rodar nossas filas em outro servidor, num outro core do processador, totalmente a parte da aplicação principal. Dessa forma a fila nunca influenciará na performance do restante da aplicação
+- Podemos executar o nosso arquivo de filas a parte agora com `node src/queue.js`. Lembrando que esse comando pode retornar um erro caso esteja utilizando `Sucrase` na aplicação. Para resolver esse problema, basta adicionar no arquivo `package.json` dentro de `"scripts:"{...}`:
 ```json
 "queue": "nodemon src/queue.js"
 ```

@@ -81,8 +81,8 @@ class DeliverymenController {
       }
     }
 
-    // Checa se o avatar foi alterado
-    if (avatar_id !== deliveryman.avatar_id) {
+    // Checa se há avatar
+    if (avatar_id && avatar_id !== deliveryman.avatar_id) {
       const checkFileExists = await Files.findByPk(req.body.avatar_id);
       if (!checkFileExists) {
         return res.status(400).json({ error: 'File not found' });
