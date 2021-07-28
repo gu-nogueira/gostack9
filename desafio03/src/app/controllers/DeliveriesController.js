@@ -5,7 +5,7 @@ import { isBefore } from 'date-fns';
 import Deliveries from '../models/Deliveries';
 import Recipients from '../models/Recipients';
 import Deliverymen from '../models/Deliverymen';
-import Files from '../models/Deliverymen';
+import Files from '../models/Files';
 
 class DeliveriesController {
 
@@ -13,6 +13,7 @@ class DeliveriesController {
 
     const { page = 1 } = req.query;
 
+    // const deliveries = await Deliveries.findAll({ include: { all: true }});
     const deliveries = await Deliveries.findAll({
       order: ['id'],
       attributes: [
