@@ -1,18 +1,26 @@
-# Go Stack Bootcamp
+# Repo de estudos
 
 * [x] Curso Javascript;
   - Estudar prototypes nativos;
   - Estudar estrutura classe > método / atributos;
   - Estudar CommonJS;
   - Estudar ES6;
+  - Estudar expressão regular*;
 
-## NodeJS
+## Backend [Node]
 
-* [x] Modulo 1, 2 e 3;
-* [ ] Aplicação Go Barber;
-    - Desenvolvendo backend [OK];
-* [ ] Desafio 1, 2 e 3;
+* [x] Modulo 1;
+* [x] Modulo 2;
+* [x] Modulo 3;
+  - Aplicação Go Barber [OK];
+  - Documentação [OK];
+* [x] Desafio 1;
+* [x] Desafio 2;
+* [ ] Desafio 3;
+  - Aplicação Fast Feet [];
+  - Repositório no GitHub [];
+  - Documentação [];
 
-## ReactJS
+## Web frontend [React]
 
-## React Native
+## Mobile [React-Native]
