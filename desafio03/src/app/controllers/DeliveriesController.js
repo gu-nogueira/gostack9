@@ -106,7 +106,6 @@ class DeliveriesController {
   }
 
   async update(req, res) {
-
     const schema = Yup.object().shape({
       product: Yup.string(),
       recipient_id: Yup.number(),
@@ -115,7 +114,7 @@ class DeliveriesController {
       end_date: Yup.date(),
     });
     if (!(await schema.isValid(req.body))) {
-      return res.status(400).json({ error: 'Validation fails, verify request body'});
+      return res.status(400).json({ error: 'Validation fails, verify request body' });
     }
 
 
@@ -143,33 +142,38 @@ class DeliveriesController {
     if (signature_id) {
       const signatureExists = await Files.findByPk(signature_id);
       if (!signatureExists) {
-        return res.status(400).json({ error: 'Signature does not exists'});
+        return res.status(400).json({ error: 'Signature does not exists' });
       }
     }
 
     if (start_date && start_date != delivery.start_date) {
-      const parsedStartDate = getHours(parseISO(start_date));
-      console.log(parsedStartDate);
-      if (parsedStartDate < 8 || parsedStartDate >= 18) {
-        return res.status(400).json({ error: 'The start date must be between 08:00 and 18:00'});
+
+      if (parseISO(start_date) < 8 || parseISO(start_date) >= 18) {
+        return res.status(400).json({ error: 'The start date must be between 08:00 and 18:00' });
+      }
+      if (isBefore(parseISO(start_date), new Date())) {
+        return res.status(400).json({ error: 'Cannot create new orders with past date' });
       }
     }
 
     if (end_date && !start_date) {
       if (!delivery.start_date) {
-        return res.status(400).json({ error: 'The delivery has not been picked yet'});
+        return res.status(400).json({ error: 'The delivery has not been picked yet' });
       }
     }
 
     if (start_date && end_date) {
       if (isBefore(parseISO(end_date),parseISO(start_date))) {
-        return res.status(400).json({ error: 'The end date cannot be before start date'});
+        return res.status(400).json({ error: 'The end date cannot be before start date' });
       }
     }
 
     if (end_date) {
       if (isBefore(parseISO(end_date),delivery.start_date)) {
-        return res.status(400).json({ error: 'The end date cannot be before start date'});
+        return res.status(400).json({ error: 'The end date cannot be before start date' });
+      }
+      if (isBefore(parseISO(end_date), new Date())) {
+        return res.status(400).json({ error: 'Cannot end orders with past date' });
       }
     }
 
@@ -186,7 +190,6 @@ class DeliveriesController {
   }
 
   async delete(req, res) {
-
     const delivery = await Deliveries.findByPk(req.params.id);
 
     if (!delivery) {
@@ -195,7 +198,7 @@ class DeliveriesController {
 
     delivery.canceled_at = new Date();
     await delivery.save();
-    return res.json(delivery);
+    return res.status(200).json({ message:` Delivery nº:${delivery.id} has been canceled` });
   }
 
 }

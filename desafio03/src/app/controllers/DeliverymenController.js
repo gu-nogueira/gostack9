@@ -5,6 +5,23 @@ import Files from "../models/Files";
 
 class DeliverymenController {
 
+  async show(req, res) {
+    const deliveryman = await Deliverymen.findByPk(req.params.id, {
+      attributes: ['name', 'email'],
+      include: [{
+        model: Files,
+        as: 'avatar',
+        attributes: ['name', 'path', 'url'],
+      }],
+    });
+
+    if (!deliveryman) {
+      return res.status(400).json({ error: 'Deliveryman not found'});
+    }
+
+    return res.json(deliveryman);
+  }
+
   async index(req, res) {
 
     const { page = 1 } = req.query;
@@ -115,7 +132,7 @@ class DeliverymenController {
 
     deliveryman.destroy();
 
-    return res.json({ message: `${deliveryman.name} has been deleted` });
+    return res.status(204).json({ message: `${deliveryman.name} has been deleted` });
 
   }
 

@@ -65,7 +65,6 @@ class RecipientsController {
   async update(req, res) {
 
     const schema = Yup.object().shape({
-      id: Yup.number().required(),
       destiny_name: Yup.string(),
       address: Yup.string(),
       number: Yup.number(),
@@ -78,8 +77,12 @@ class RecipientsController {
       return res.status(400).json({ error: 'Validation fails, please verify request body'});
     }
 
-    // Verifica se alterou destiny_name
-    const recipient = await Recipients.findByPk(req.body.id);
+    const recipient = await Recipients.findByPk(req.params.id);
+
+    if (!recipient) {
+      return res.status(400).json({ error: 'Recipient not found'});
+    }
+
     if (req.body.destiny_name != recipient.destiny_name) {
       const destinyExists = await Recipients.findOne({ where: { destiny_name: req.body.destiny_name } });
       if (destinyExists) {
@@ -87,10 +90,9 @@ class RecipientsController {
       }
     }
 
-    const { id, destiny_name, address, number, complement, state, city, cep } = await recipient.update(req.body);
+    const { destiny_name, address, number, complement, state, city, cep } = await recipient.update(req.body);
 
     return res.json({
-      id,
       destiny_name,
       address,
       number,
@@ -99,6 +101,20 @@ class RecipientsController {
       city,
       cep,
     });
+
+  }
+
+  async delete(req, res) {
+
+    const recipient = await Recipients.findByPk(req.params.id);
+
+    if (!recipient) {
+      return res.status(400).json({ error: 'Recipient not found' });
+    }
+
+    await recipient.destroy();
+
+    return res.status(204).json({ message: `${recipient.destiny_name} has been deleted`});
 
   }
 
