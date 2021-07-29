@@ -1,6 +1,5 @@
 import * as Yup from 'yup';
-import { Op } from 'sequelize';
-import { isBefore } from 'date-fns';
+import { parseISO, isBefore, getHours } from 'date-fns';
 
 import Deliveries from '../models/Deliveries';
 import Recipients from '../models/Recipients';
@@ -109,17 +108,94 @@ class DeliveriesController {
   async update(req, res) {
 
     const schema = Yup.object().shape({
-      product: Yup.string().required(),
-      recipient_id: Yup.number().required(),
-      deliveryman_id: Yup.number().required(),
+      product: Yup.string(),
+      recipient_id: Yup.number(),
+      deliveryman_id: Yup.number(),
+      start_date: Yup.date(),
+      end_date: Yup.date(),
     });
+    if (!(await schema.isValid(req.body))) {
+      return res.status(400).json({ error: 'Validation fails, verify request body'});
+    }
 
-    return res.json();
+
+    const { recipient_id, deliveryman_id, signature_id, start_date, end_date } = req.body;
+    const delivery = await Deliveries.findByPk(req.params.id);
+
+    if(!delivery) {
+      return res.status(400).json({ error: 'Delivery not found' });
+    }
+
+    if (recipient_id && recipient_id != delivery.recipient_id) {
+      const recipientExists = await Recipients.findByPk(recipient_id);
+      if (!recipientExists) {
+        return res.status(400).json({ error: 'Recipient does not exists' });
+      }
+    }
+
+    if (deliveryman_id && deliveryman_id != delivery.deliveryman_id) {
+      const deliverymanExists = await Deliverymen.findByPk(deliveryman_id);
+      if (!deliverymanExists) {
+        return res.status(400).json({ error: 'Deliveryman does not exists' });
+      }
+    }
+
+    if (signature_id) {
+      const signatureExists = await Files.findByPk(signature_id);
+      if (!signatureExists) {
+        return res.status(400).json({ error: 'Signature does not exists'});
+      }
+    }
+
+    if (start_date && start_date != delivery.start_date) {
+      const parsedStartDate = getHours(parseISO(start_date));
+      console.log(parsedStartDate);
+      if (parsedStartDate < 8 || parsedStartDate >= 18) {
+        return res.status(400).json({ error: 'The start date must be between 08:00 and 18:00'});
+      }
+    }
+
+    if (end_date && !start_date) {
+      if (!delivery.start_date) {
+        return res.status(400).json({ error: 'The delivery has not been picked yet'});
+      }
+    }
+
+    if (start_date && end_date) {
+      if (isBefore(parseISO(end_date),parseISO(start_date))) {
+        return res.status(400).json({ error: 'The end date cannot be before start date'});
+      }
+    }
+
+    if (end_date) {
+      if (isBefore(parseISO(end_date),delivery.start_date)) {
+        return res.status(400).json({ error: 'The end date cannot be before start date'});
+      }
+    }
+
+    const { product } = await delivery.update(req.body);
+
+    return res.json({
+      product,
+      recipient_id,
+      deliveryman_id,
+      signature_id,
+      start_date,
+      end_date,
+    });
   }
 
   async delete(req, res) {
 
-    return res.json();
+    const delivery = await Deliveries.findByPk(req.params.id);
+
+    if (!delivery) {
+      return res.status(400).json({ error: 'Delivery not found' });
+    }
+
+    delivery.canceled_at = new Date();
+    await delivery.save();
+    return res.json(delivery);
   }
 
 }

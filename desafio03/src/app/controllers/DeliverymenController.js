@@ -74,7 +74,7 @@ class DeliverymenController {
     }
 
     // Checa se o e-mail foi alterado
-    if (email !== deliveryman.email) {
+    if (email && email !== deliveryman.email) {
       const deliverymanExists = await Deliverymen.findOne({ where: { email: req.body.email } });
       if (deliverymanExists) {
         return res.status(400).json({ error: 'Deliveryman already exists' });
@@ -82,10 +82,10 @@ class DeliverymenController {
     }
 
     // Checa se há avatar
-    if (avatar_id && avatar_id !== deliveryman.avatar_id) {
+    if (avatar_id && avatar_id != deliveryman.avatar_id) {
       const checkFileExists = await Files.findByPk(req.body.avatar_id);
       if (!checkFileExists) {
-        return res.status(400).json({ error: 'File not found' });
+        return res.status(400).json({ error: 'File does not exists' });
       }
     }
 
