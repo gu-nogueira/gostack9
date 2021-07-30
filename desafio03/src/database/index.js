@@ -6,11 +6,12 @@ import Recipients from '../app/models/Recipients';
 import Files from '../app/models/Files';
 import Deliverymen from '../app/models/Deliverymen';
 import Deliveries from '../app/models/Deliveries';
+import DeliveryProblems from '../app/models/DeliveryProblems';
 
 import databaseConfig from '../config/database';
 
 // Array de models
-const models = [Users, Recipients, Files, Deliverymen, Deliveries];
+const models = [Users, Recipients, Files, Deliverymen, Deliveries, DeliveryProblems];
 
 class Database {
 

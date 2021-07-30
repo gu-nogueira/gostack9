@@ -4,7 +4,6 @@ import Recipients from '../models/Recipients';
 import Files from '../models/Files';
 
 import { Op } from 'sequelize';
-import * as Yup from 'yup';
 import { startOfDay, endOfDay, parseISO, format, isBefore, setHours, setMinutes } from 'date-fns';
 
 class OrderController {
@@ -50,25 +49,28 @@ class OrderController {
   }
 
   async store (req, res) {
-    const schema = Yup.object().shape({
-      start_date: Yup.date().required(),
-    });
-    if (!(await schema.isValid(req.body))) {
-      return res.status(400).json({ error: 'Validation fails, verify request body' });
-    }
 
     const { id, deliveryId } = req.params;
-    const { start_date } = req.body;
+    const { start_date: startDate } = req.query;
+
+    /**
+     * Check deliveryman id
+     */
 
     const deliveryman = await Deliverymen.findByPk(id);
     if (!deliveryman) {
       return res.status(400).json({ error: 'Deliveryman not found'});
     }
 
+    /**
+     * Check delivery id
+     */
+
     const delivery = await Deliveries.findByPk(deliveryId, {
       where: {
         deliveryman_id: deliveryman.id,
         canceled_at: null,
+        start_date: null,
         end_date: null,
       },
     });
@@ -76,14 +78,38 @@ class OrderController {
       return res.status(404).json({ error: 'Delivery not found' });
     }
 
+    /**
+     * Check start date
+     */
+
+     if (!startDate) {
+      return res.status(404).json({ error: 'Invalid date' });
+    }
+
+    /**
+     * Check if delivery has already started
+     */
+
+    if (delivery.start_date != null) {
+      return res.status(400).json({ error: 'This delivery has already been started' });
+    }
+
+    /**
+     * Check if delivery belongs to deliveryman
+     */
+
     if (deliveryman.id != delivery.deliveryman_id) {
       return res.status(400).json({ error: 'You do not have permission to deliver this delivery' });
     }
 
+    /**
+     * Check limit per day
+     */
+
     const checkOrderLimit = await Deliveries.count({
       where: {
         deliveryman_id: deliveryman.id,
-        start_date: { [Op.between]: [startOfDay(parseISO(start_date)), endOfDay(parseISO(start_date))] },
+        start_date: { [Op.between]: [startOfDay(parseISO(startDate)), endOfDay(parseISO(startDate))] },
         // canceled_at: null,
       }
     });
@@ -91,40 +117,49 @@ class OrderController {
       return res.status(400).json({ error: 'Exceeded limit of 5 orders per day' });
     }
 
-    if (start_date && start_date != delivery.start_date) {
-      const parsedDate = format(parseISO(start_date), 'HH:mm');
+    /**
+     * Check hour of end date
+     */
+
+    if (startDate && startDate != delivery.start_date) {
+      const parsedDate = format(parseISO(startDate), 'HH:mm');
       const startDay = format(setMinutes(setHours(new Date(),8),0), 'HH:mm');
       const endDay = format(setMinutes(setHours(new Date(),18),0), 'HH:mm');
       if (parsedDate < startDay || parsedDate > endDay) {
         return res.status(400).json({ error: 'The start date must be between 08:00 and 18:00' });
       }
-      if (isBefore(parseISO(start_date), new Date())) {
+      if (isBefore(parseISO(startDate), new Date())) {
         return res.status(400).json({ error: 'Cannot create new orders with past date' });
       }
     }
 
-    delivery.start_date = start_date;
+    delivery.start_date = startDate;
     await delivery.save();
 
     return res.json(delivery);
   }
 
   async update(req, res) {
-    const schema = Yup.object().shape({
-      end_date: Yup.date().required(),
-      signature_id: Yup.number().required(),
-    });
-    if (!(await schema.isValid(req.body))) {
-      return res.status(400).json({ error: 'Validation fails, verify request body' });
-    }
+
+    /**
+     * Yup validation
+     */
 
     const { id, deliveryId } = req.params;
-    const { end_date } = req.body;
+    const { end_date: endDate } = req.query;
+
+    /**
+     * Check deliveryman id
+     */
 
     const deliveryman = await Deliverymen.findByPk(id);
     if (!deliveryman) {
       return res.status(400).json({ error: 'Deliveryman not found'});
     }
+
+    /**
+     * Check delivery id
+     */
 
     const delivery = await Deliveries.findByPk(deliveryId, {
       where: {
@@ -137,14 +172,46 @@ class OrderController {
       return res.status(404).json({ error: 'Delivery not found' });
     }
 
+    /**
+     * Check end date
+     */
+
+    if (!endDate) {
+      return res.status(404).json({ error: 'Invalid date' });
+    }
+
+    /**
+     * Check if delivery has already endend
+     */
+
+    if (delivery.end_date != null) {
+      return res.status(400).json({ error: 'This delivery has already been ended' });
+    }
+
+    /**
+     * Check if has signature
+     */
+
+    if (!req.fileId) {
+      return res.status(404).json({ error: 'Signature not found' });
+    }
+
+    /**
+     * Check if delivery belongs to deliveryman
+     */
+
     if (deliveryman.id != delivery.deliveryman_id) {
       return res.status(400).json({ error: 'You do not have permission to deliver this delivery' });
     }
 
+    /**
+     * Check limit per day
+     */
+
     const checkOrderLimit = await Deliveries.count({
       where: {
         deliveryman_id: deliveryman.id,
-        end_date: { [Op.between]: [startOfDay(parseISO(end_date)), endOfDay(parseISO(end_date))] },
+        end_date: { [Op.between]: [startOfDay(parseISO(endDate)), endOfDay(parseISO(endDate))] },
         // canceled_at: null,
       }
     });
@@ -152,19 +219,27 @@ class OrderController {
       return res.status(400).json({ error: 'Exceeded limit of 5 orders per day' });
     }
 
-    if (end_date && end_date != delivery.end_date) {
-      const parsedDate = format(parseISO(end_date), 'HH:mm');
+    /**
+     * Check hour of end date
+     */
+
+    if (endDate && endDate != delivery.end_date) {
+      const parsedDate = format(parseISO(endDate), 'HH:mm');
       const startDay = format(setMinutes(setHours(new Date(),8),0), 'HH:mm');
       const endDay = format(setMinutes(setHours(new Date(),18),0), 'HH:mm');
       if (parsedDate < startDay || parsedDate > endDay) {
         return res.status(400).json({ error: 'The start date must be between 08:00 and 18:00' });
       }
-      if (isBefore(parseISO(end_date), new Date())) {
+      if (isBefore(parseISO(endDate),delivery.start_date)) {
+        return res.status(400).json({ error: 'The end date cannot be before start date' });
+      }
+      if (isBefore(parseISO(endDate), new Date())) {
         return res.status(400).json({ error: 'Cannot create new orders with past date' });
       }
     }
 
-    delivery.end_date = end_date;
+    delivery.signature_id = req.fileId;
+    delivery.end_date = endDate;
     await delivery.save();
 
     return res.json(delivery);

@@ -24,9 +24,9 @@ server.use((req, res, next) => {
   console.time(`Request ${counter}`);
   console.log(`Método: ${req.method}; URL: ${req.url}; `);
 
-  // Com isso, ele não bloqueia o fluxo da nossa aplicaçaão. Podemos usar isso para satisfazer condições (if)
   // Isto é um middleware, ele INTERCEPTA as requisições
   // return next();
+  // Com isso, ele não bloqueia o fluxo da nossa aplicaçaão. Podemos usar isso para satisfazer condições (if)
   next();
 
   // o '.timeEnd()' funciona somente se a mesma informação for passada no 'console.time'. Assim ele faz o cálculo de quanto tempo levou para executar aquele trecho de código.

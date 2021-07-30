@@ -10,10 +10,12 @@ import RecipientsController from './app/controllers/RecipientsController';
 import FilesController from './app/controllers/FilesController';
 import DeliverymenController from './app/controllers/DeliverymenController';
 import DeliveriesController from './app/controllers/DeliveriesController';
-import OrderController from './app/controllers/OrderController';
+import OrdersController from './app/controllers/OrdersController';
+import ProblemsController from './app/controllers/ProblemsController';
 
 // Middlewares
 import authMiddleware from './app/middlewares/auth';
+import fileMiddleware from './app/middlewares/file';
 
 const routes = new Router();
 const upload = multer(multerConfig);
@@ -23,10 +25,10 @@ routes.post('/sessions', SessionsController.store);
 routes.post('/files', upload.single('file'), FilesController.store);
 
 routes.get('/deliverymen/:id', DeliverymenController.show);
-routes.get('/deliverymen/:id/deliveries', OrderController.index);
-routes.get('/deliverymen/:id/delivered', OrderController.index);
-routes.post('/deliverymen/:id/deliveries/:deliveryId', OrderController.store);
-routes.put('/deliverymen/:id/deliveries/:deliveryId', upload.single('file'), OrderController.update);
+routes.get('/deliverymen/:id/deliveries', OrdersController.index);
+routes.get('/deliverymen/:id/delivered', OrdersController.index);
+routes.post('/deliverymen/:id/deliveries/:deliveryId', OrdersController.store);
+routes.put('/deliverymen/:id/deliveries/:deliveryId', upload.single('file'), fileMiddleware, OrdersController.update);
 
 routes.use(authMiddleware);
 
@@ -44,5 +46,7 @@ routes.get('/deliveries', DeliveriesController.index);
 routes.post('/deliveries', DeliveriesController.store);
 routes.put('/deliveries/:id', DeliveriesController.update);
 routes.delete('/deliveries/:id', DeliveriesController.delete);
+
+routes.get('/deliveries/problems', ProblemsController.index);
 
 export default routes;

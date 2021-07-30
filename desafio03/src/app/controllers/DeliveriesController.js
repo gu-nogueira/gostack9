@@ -12,11 +12,10 @@ import OrderMail from '../jobs/OrderMail';
 class DeliveriesController {
 
   async index(req, res) {
-    const { page = 1 } = req.query;
 
-    // const deliveries = await Deliveries.findAll({ include: { all: true }});
+    const { page = 1 } = req.query;
     const deliveries = await Deliveries.findAll({
-      order: ['id'],
+      order: [['id', 'DESC']],
       attributes: [
         'id',
         'product',
