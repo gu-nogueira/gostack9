@@ -147,7 +147,6 @@ class DeliveriesController {
     }
 
     if (start_date && start_date != delivery.start_date) {
-
       if (parseISO(start_date) < 8 || parseISO(start_date) >= 18) {
         return res.status(400).json({ error: 'The start date must be between 08:00 and 18:00' });
       }
