@@ -17,9 +17,9 @@
 * [x] Desafio 1;
 * [x] Desafio 2;
 * [x] Desafio 3;
-  - Aplicação Fast Feet [];
-  - Repositório no GitHub [];
-  - Documentação [];
+  - Aplicação Fast Feet [OK];
+  - Repositório no GitHub [OK];
+  - Documentação [OK];
 
 ## Web frontend [React]
 
