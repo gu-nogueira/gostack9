@@ -16,11 +16,13 @@
   - Documentação [OK];
 * [x] Desafio 1;
 * [x] Desafio 2;
-* [ ] Desafio 3;
+* [x] Desafio 3;
   - Aplicação Fast Feet [];
   - Repositório no GitHub [];
   - Documentação [];
 
 ## Web frontend [React]
+
+* [ ] Modulo 4;
 
 ## Mobile [React-Native]
