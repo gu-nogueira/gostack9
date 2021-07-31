@@ -29,6 +29,7 @@ routes.get('/deliverymen/:id/deliveries', OrdersController.index);
 routes.get('/deliverymen/:id/delivered', OrdersController.index);
 routes.post('/deliverymen/:id/deliveries/:deliveryId', OrdersController.store);
 routes.put('/deliverymen/:id/deliveries/:deliveryId', upload.single('file'), fileMiddleware, OrdersController.update);
+routes.put('/deliverymen/:id/deliveries/:deliveryId/problems/', ProblemsController.update);
 
 routes.use(authMiddleware);
 
@@ -48,5 +49,7 @@ routes.put('/deliveries/:id', DeliveriesController.update);
 routes.delete('/deliveries/:id', DeliveriesController.delete);
 
 routes.get('/deliveries/problems', ProblemsController.index);
+routes.get('/deliveries/:id/problems/', ProblemsController.show);
+routes.delete('/deliveries/:id/problems/', ProblemsController.delete);
 
 export default routes;

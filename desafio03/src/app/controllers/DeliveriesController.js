@@ -194,9 +194,8 @@ class DeliveriesController {
       return res.status(400).json({ error: 'Delivery not found' });
     }
 
-    delivery.canceled_at = new Date();
-    await delivery.save();
-    return res.status(200).json({ message:` Delivery nº:${delivery.id} has been canceled` });
+    await delivery.destroy();
+    return res.status(200).json({ message:` Delivery nº:${delivery.id} has been deleted` });
   }
 
 }
