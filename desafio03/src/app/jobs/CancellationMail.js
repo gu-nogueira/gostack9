@@ -12,20 +12,32 @@ class CancellationMail {
 
   // Job 'constructor'
   async handle({ data }) {
-    const { appointment } = data;
+    const { delivery, problemsDescription } = data;
+
     console.log("A fila executou!");
+
      await Mail.sendMail({
-      to: `${appointment.provider.name} <${appointment.provider.email}>`,
-      subject: 'Agendamento cancelado',
+      to: `${delivery.deliveryman.name} <${delivery.deliveryman.email}>`,
+      subject: 'Entrega cancelada',
       template: 'cancellation',
       context: {
-        recipient: appointment.provider.name,
-        user: appointment.user.name,
-        date: format(parseISO(appointment.date),"'dia' dd 'de' MMMM', às' H:mm'h'", {
+        deliveryman: delivery.deliveryman.name,
+        id: delivery.id,
+        recipient: delivery.recipient.destiny_name,
+        product: delivery.product,
+        problems: problemsDescription,
+        address: delivery.recipient.address,
+        number: delivery.recipient.number,
+        city: delivery.recipient.city,
+        state: delivery.recipient.state,
+        date: format(parseISO(delivery.canceled_at),"'dia' dd 'de' MMMM', às' H:mm'h'", {
           locale: pt
         }),
       },
     });
+
+    console.log(`Enviando email de nova entrega para: ${ delivery.deliveryman.email }`);
+    console.log("E-mail enviado com sucesso!");
   }
 
 }

@@ -35,7 +35,6 @@ class OrderMail {
     });
 
     console.log(`Enviando email de nova entrega para: ${deliveryman.email}`);
-
     console.log("E-mail enviado com sucesso!");
   }
 

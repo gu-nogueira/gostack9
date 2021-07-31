@@ -116,7 +116,6 @@ class DeliveriesController {
       return res.status(400).json({ error: 'Validation fails, verify request body' });
     }
 
-
     const { recipient_id, deliveryman_id, signature_id, start_date, end_date } = req.body;
     const delivery = await Deliveries.findByPk(req.params.id);
 
