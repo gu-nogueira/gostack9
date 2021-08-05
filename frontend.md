@@ -4,7 +4,7 @@ Montagem de frontend consumindo a api desenvolvida em node.js
 ## Conceitos React
 - Componentização: separar blocos de códigos estruturais / estilização / comportamentos em componentes, para serem reutilizados sem interferir na lógica da aplicação;
 - Propriedades;
-- Estados;
+- Estados: são variáveis do javascript, de um componente a qual são manipuladas pelo mesmo, essas são chamadas de estado;
 - Ciclo de vida;
 - Debugs;
 - JSX (HTML no Javascript);
@@ -155,4 +155,39 @@ import './App.css';
 import profile from './assets/profile.jpeg';
 ...
 return <img src={profile} />;
+```
+
+### Class components
+- Vamos criar um novo diretório em `src > components`;
+- Nele vamos criar um novo componente de exemplo: `TechList.js`:
+```js
+import React, { Component } from 'react';
+
+class TechList extends Component {
+  state = {
+    techs: [
+      'Node.js',
+      'ReactJS',
+      'Javascript',
+    ]
+  };
+  render() {
+    console.log(this.state);
+    return (
+      <ul>
+        <li>Node.js</li>
+        <li>ReactJS</li>
+        <li>Javascript</li>
+      </ul>
+    );
+  }
+}
+
+export default TechList;
+```
+- E tambéem vamos importá-lo e retorná-lo dentro de `App.js`:
+```js
+import TechList from './components/TechList';
+...
+return <TechList />;
 ```
