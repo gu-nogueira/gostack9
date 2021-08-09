@@ -4,3 +4,25 @@ body {
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   font-size: 18px;
 }
+
+li button {
+  margin: 5px 10px;
+}
+
+button {
+  border: none;
+  padding: 4px 8px;
+  background-color: aliceblue;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+input {
+  padding: 3px 7px;
+  border: aliceblue 1px solid;
+  border-radius: 3px 0px 0px 3px;
+}
+
+input + button {
+  border-radius: 0px 3px 3px 0px;
+}
