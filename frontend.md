@@ -103,8 +103,8 @@ devServer: {
 ```
 
 ## Criando componente raiz
-- Nossa aplicação já entende código react graças ao preset no `babel.config.js`;
-- Vamos iniciar no index.js:
+- Nossa aplicação já entende código react graças ao `preset` no `babel.config.js`;
+- Vamos iniciar no `index.js`:
 ```js
 import React from 'react';
 import { render } from 'react-dom';

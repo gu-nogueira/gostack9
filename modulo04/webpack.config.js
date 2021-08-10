@@ -37,7 +37,7 @@ module.exports = {
         ],
       },
       {
-        // o pipe simboliza OU gif OU png OU jpeg, com '?' depois do e para sinalizar que o 'e' é opcional (pode haver .jpg também). Tudo isso com 'i' no final para simbolizar que é case INSENSITIVE
+        // o pipe simboliza OU gif OU png OU jpeg, com '?' depois do 'jpe' para sinalizar que o 'e' é opcional (pode haver .jpg também). Tudo isso com 'i' no final para simbolizar que é case INSENSITIVE
         test: /.*\.(gif|png|jpe?g)$/i,
         use: {
           loader: 'file-loader',
