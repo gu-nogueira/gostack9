@@ -1,0 +1,60 @@
+@font-face {
+  font-family: 'Lato', sans-serif; 
+  src: url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
+}
+
+body {
+  background-color: #F2F2F2;
+  font-family: 'Lato', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  margin: 0;
+}
+
+/* Header */
+
+header {
+  background-color: #4A90E2;
+  padding: 15px 45px 15px 45px;
+  color: #F2F2F2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+header img.logo {
+  width: 35px;
+  height: 35px;
+  color: #F2F2F2;
+  filter: invert(100%);
+}
+
+header a {
+  font-size: 18px;
+}
+
+header a:link,
+header a:active,
+header a:visited
+{
+  color: #F2F2F2;
+  font-weight: 400;
+  text-decoration: none;  
+}
+
+header a span {
+  vertical-align: middle;
+}
+
+header a .icon {
+  margin-left: 10px;
+  font-size: 22px;
+  vertical-align: middle;
+}
+
+/* PostList */
+
+.container {
+  min-width: 350px;
+  max-width: 950px;
+  margin: 25px auto 0 auto;
+  padding: 5px;
+}

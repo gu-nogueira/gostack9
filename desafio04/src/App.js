@@ -1,6 +1,17 @@
 import React from 'react';
 
+import './css/App.css';
+
+import Header from './components/Header';
+import PostList from './components/PostList';
+
 function App() {
-  return <h1>Opa</h1>;
+  return(
+    <>
+      <Header />
+      <PostList />
+    </>
+  );
 }
+
 export default App;

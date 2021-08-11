@@ -81,6 +81,7 @@ module.exports = {
   <title>Modulo 04</title>
 </head>
 <body>
+  <div id="app"></div>
   <script src="./bundle.js"></script>
 </body>
 </html>
@@ -122,15 +123,15 @@ export default App;
 ```
 
 ## Importando CSS
-- Vamos instalar 2 novos loaders: `yarn add style-loader css-loader -D`;
+- Vamos instalar 2 novos loaders: `yarn add style-loader css-loader -D`
 - Também vamos criar uma nova rule dentro de `webpack.config.js`:
 ```js
 {
   test: /\.css$/,
   exclude: /node_modules/,
   use: [
-    { loader: 'style-loader'},
-    { loader: 'css-loader'},
+    { loader: 'style-loader' },
+    { loader: 'css-loader' },
   ],
 }
 ```
