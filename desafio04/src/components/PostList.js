@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 // Components
-
+import Post from './Post';
 
 class PostList extends Component {
 
@@ -46,7 +46,8 @@ class PostList extends Component {
   render() {
     return (
       <div className="container">
-        <h1>Opa</h1>
+        <Post/>
+        <Post/>
       </div>
     );
   }

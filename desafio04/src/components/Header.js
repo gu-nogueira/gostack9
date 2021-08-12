@@ -2,8 +2,8 @@ import React from 'react';
 
 import Logo from '../assets/facebook-logo.png';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUserCircle } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
 
 function Header() {
   return (
