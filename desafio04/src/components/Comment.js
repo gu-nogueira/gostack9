@@ -1,13 +1,12 @@
 import React from 'react';
 
-import Profile from '../assets/profile2.png'
-
-function Comment() {
+function Comment({ data }) {
   return (
     <div className="comment">
+      <hr />
       <div className="profile">
-          <img src={Profile} className="logo" />
-          <span><b>Piá: </b>Oia que interessante rapai, oia que interessante rapai, oia que interessante rapai, oia que interessante rapai, oia que interessante rapai, oia que interessante rapai, oia que interessante rapai, oia que interessante rapai, oia que interessante rapai, oia que interessante rapai,s</span>
+          <img src={ data.author.avatar } className="logo" />
+          <span><b>{ data.author.name }: </b>{ data.content }</span>
       </div>
     </div>
   ); 

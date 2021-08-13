@@ -1,5 +1,10 @@
 import React, { Component } from 'react';
 
+// Images
+import Profile from '../assets/profile.png';
+import Profile2 from '../assets/profile2.png';
+import Profile3 from '../assets/profile3.png';
+
 // Components
 import Post from './Post';
 
@@ -10,26 +15,31 @@ class PostList extends Component {
       {
         id: 1,
         author: {
-          name: "Julio Alcantara",
-          avatar: "http://url-da-imagem.com/imagem.jpg"
+          name: "Guguinha",
+          avatar: Profile,
         },
-        date: "04 Jun 2019",
-        content: "Pessoal, alguém sabe se a Rocketseat está contratando?",
+        date: "03 Out 2007",
+        content: "É só o começo?",
         comments: [
           {
             id: 1,
             author: {
-              name: "Diego Fernandes",
-              avatar: "http://url-da-imagem.com/imagem.jpg"
+              name: "Guzango o Guzera",
+              avatar: Profile2
             },
-            content: "Conteúdo do comentário"
-          }
+            content: "Rapazinho, é sim com certeza."
+          },
         ]
       },
       {
-        id: 2
-        // Restante dos dados de um novo post
-      }
+        id: 2,
+        author: {
+          name: "Gustavo Nogueira",
+          avatar: Profile3
+        },
+        date: "12 Ago 2021",
+        content: "Estou aqui pra te afirmar.",
+      },
     ]
   };
 
@@ -46,8 +56,7 @@ class PostList extends Component {
   render() {
     return (
       <div className="container">
-        <Post/>
-        <Post/>
+        { this.state.posts.map(post => <Post key={post.id} data={post} />) };
       </div>
     );
   }

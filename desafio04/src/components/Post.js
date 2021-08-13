@@ -1,23 +1,25 @@
 import React from 'react';
-
-import Profile from '../assets/profile.png';
+import PropTypes from 'prop-types';
 
 import Comment from './Comment';
 
-function Post() {
+function Post({ data }) {
+
   return (
     <section className="card">
       <div className="profile">
-        <img src={Profile} className="logo" />
-        <p><b>Guguinha</b> <br/>
-        <small>11 Ago 2021</small></p>
+        <img src={ data.author.avatar } className="logo" />
+        <p><b>{ data.author.name }</b> <br/>
+        <small>{ data.date }</small></p>
       </div>
-      <p>Opa pessoal to apenas fazendo um layout aqui meu bls</p>
-      <hr />
-      <Comment />
-      <Comment />
+      <p>{ data.content }</p>
+      { data.comments ? data.comments.map(comment => <Comment key={comment.id} data={comment} />) : null }
     </section>
   );
+}
+
+Post.propTypes = {
+  data: PropTypes.object.isRequired,
 }
 
 export default Post;
