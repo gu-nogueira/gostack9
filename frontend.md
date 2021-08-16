@@ -1,6 +1,10 @@
 # Frontend
 Montagem de frontend consumindo a api desenvolvida em node.js
 
+## Rocketseat ReactJS snippets
+- Vamos utilizar as extensões do VScode disponibilizadas pela Rocketseat para criar componentes entre outras coisas de maneira ágil, assim como no html por exemplo há o `tag.classe`
+- Criar um functionar component: `rfc`
+
 ## Conceitos React
 - Componentização: separar blocos de códigos estruturais / estilização / comportamentos em componentes, para serem reutilizados sem interferir na lógica da aplicação;
 - Propriedades;
@@ -317,3 +321,42 @@ componentDidUpdate(_, prevState) {
   }
 }
 ```
+
+# Criando um projeto react do zero
+- Iremos construir uma aplicação mais robusta
+- Conteitos:
+  * Padronização de código;
+  * Navegação;
+  * Styled components;
+  * Local storage;
+  * Requisições HTTP;
+- Podemos executar um comando do react que cria todo o projeto com webpack, babel configurado já: `yarn create react-app modulo05`
+- Agora as configurações de webpack e babel ficam dentro da dependência `react-scripts` no `package.json`
+- Commandos:
+  * `yarn start` para rodar em ambiente de desenvolvimento
+  * `yarn build` para produção
+  * `yarn test` para rodar testes
+  * `yarn eject` caso precisemos realizar alguma configuração específica no webpack ou no babel, o react-scripts irá ejetar essas configurações para o nosso projeto para manusearmos
+- Vamos remover as configurações de `"eslintConfig"` no `package.json`
+- Como não estamos vendo PWAs neste módulo, pdoemos acessar `public` e deletar o `manifest.json` e remover a tag no `index.html` que referencia o manifest
+- Vamos zerar todo o conteúdo do projeto deletando os seguintes arquivos:
+  * `App.css`
+  * `App.test.js`
+  * `index.css`
+  * `logo.svg`
+  * `serviceWorker.js` ? (Exclusivo para PWAs mas. Não vem mais por padrão);
+
+## Configurando padronização de código
+- Configurando o padrão de escrita de código do projeto (style guide) com  ESLint, Prettier e EditorConfig
+> Modulo 5, aula 2
+- Aqui estamos trabalhando somente com o editorconfig
+
+## Roteamento no React
+- Para construir uma SPA (Single Page Application), é necessário fazer o roteamento no React
+- Vamos adicionar o módulo `yarn add react-router-dom`
+- Vamos criar os seguintes diretórios:
+  * Arquivos de rotas em `src > routes.js`
+  * Pasta de páginas da aplicação `src > pages`
+    * Pasta `src > pages > Main`, com um arquivo `index.js`:
+    > Vamos criar este funcional component com o snippet `rfc`
+    * Pasta `src > pages > Repository`, com um arquivo `index.js`
