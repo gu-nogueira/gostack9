@@ -1,10 +1,15 @@
 import React from 'react';
 
-// import { Container } from './styles';
+import Routes from './routes';
+// Podemos dar o nome que quisermos para GlobalStyle
+import GlobalStyle from './styles/global';
 
 function Main() {
   return (
-    <h1>Opa</h1>
+    <>
+    <Routes />
+    <GlobalStyle />
+    </>
   );
 }
 

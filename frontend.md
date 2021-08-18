@@ -355,8 +355,131 @@ componentDidUpdate(_, prevState) {
 - Para construir uma SPA (Single Page Application), é necessário fazer o roteamento no React
 - Vamos adicionar o módulo `yarn add react-router-dom`
 - Vamos criar os seguintes diretórios:
-  * Arquivos de rotas em `src > routes.js`
+  * Arquivos de rotas em `src > routes.js`:
+  ```jsx
+  import React from 'react';
+  import { BrowserRouter, Switch, Route } from 'react-router-dom';
+
+  import Main from './pages/Main';
+  import Repository from './pages/Repository';
+
+  function Routes() {
+    return (
+      <BrowserRouter>
+        <Switch>
+          <Route path="/" exact component={Main} />
+          <Route path="/repository" component={Repository} />
+        </Switch>
+      </BrowserRouter>
+    );
+  }
+  export default Routes;
+  ```
   * Pasta de páginas da aplicação `src > pages`
     * Pasta `src > pages > Main`, com um arquivo `index.js`:
-    > Vamos criar este funcional component com o snippet `rfc`
     * Pasta `src > pages > Repository`, com um arquivo `index.js`
+    > Vamos criar estes dois funcional components com o snippet `rfc`
+  * Por fim, vamos importar o `routes.js` no `App.js`
+
+## Styled Components
+- Útil para fazer estilização CSS escopado (entre componentes apenas)
+> Detalhe: importante ter a extensão do styled-components no vscode para que ele entenda a sintaxe css dentro de arquivos javascript
+- Vamos instalá-lo com `yarn add styled-components`
+- No exemplo, vamos criar um arquivo em `src > pages > Main > styles.js`
+```js
+import styled from 'styled-components';
+
+export const Title = styled.h1`
+  font-size: 24px;
+  /* Conseguimos controlar propriedades do css baseado nas props que o componente recebe */
+  color: ${props => (props.error ? 'red' : '#7159c1')};
+  font-family: Arial, Helvetica, sans-serif;
+
+  small {
+    font-size: 14px;
+    color: #85a3cc;
+  }
+`;
+```
+- Depois, vamos importá-lo como um componente no nosso arquivo em `src > pages > Main > index.js`, por isso o nome `styled-components`:
+```js
+import React from 'react';
+import { Title } from './styles';
+
+function Main() {
+  return (
+    // Conseguimos manipular estilizações css passando nas props do componente
+    <Title error={false}>
+      Main
+      <small>Eu odeio styled components</small>
+    </Title>
+  );
+}
+export default Main;
+```
+
+## Criando um global style no Styled Components
+- Vamos criar um novo diretório e um arquivo em `src > styles > global.js`:
+```js
+import { createGlobalStyle } from 'styled-components';
+
+export default createGlobalStyle`
+  * {
+    margin: 0;
+    padding: 0;
+    outline: 0;
+    box-sizing: border-box;
+  }
+  html, body, #root {
+    min-height: 100%;
+  }
+  body {
+    background: #00bfff;
+    -webkit-font-smoothing: antialiased !important;
+  }
+  body, input, button {
+    color: #222;
+    font-size: 14px;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  button {
+    cursor: pointer;
+  }
+`;
+```
+
+- Agora em `App.js`, vamos importar o nosso `createGlobalStyle`:
+```js
+import GlobalStyle from './styles/global';
+...
+  return (
+    <>
+    <Routes />
+    <GlobalStyle />
+    </>
+  );
+```
+
+## Utilizando ícones no React
+- Instalando pacotes com as principais bibliotecas de ícones como font awesome, material icons, ionicons, etc: `yarn add react-icons`
+
+## Consumindo uma API no React
+- Há diversas formas de se consumir uma API. Há a API padrão do navegador chamada `fetch`, que serve para consumir um recurso externo via REST
+- Neste caso vamos utilizar uma biblioteca auxiliar chamada axios com `yarn add axios`. Utilizaremos ela tanto na Web quanto no Mobile
+- Vamos criar um arquivo num diretório novo em `src > services > api.js`:
+```js
+import axios from 'axios';
+
+const api = axios.create({
+  baseURL: 'https://api.github.com',
+});
+
+export default api;
+```
+
+- Criada essa configuração inicial, vamos importar essa api em nosso arquivo `Main > index.js`:
+```js
+import api from '../../services/api';
+...
+const response = await api.get(`/repos/${newRepo}`);
+```
