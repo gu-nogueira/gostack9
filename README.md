@@ -23,6 +23,7 @@
 
 ## Web frontend [React]
 
-* [ ] Modulo 4;
+* [x] Modulo 4;
+* [x] Modulo 5;
 
 ## Mobile [React-Native]

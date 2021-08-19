@@ -483,3 +483,30 @@ import api from '../../services/api';
 ...
 const response = await api.get(`/repos/${newRepo}`);
 ```
+
+## Navegando utilizando o React-Router-DOM
+- Não podemos utilizar a navegação padrão html ```<a href="" />``` pois ela recarrega a página
+- Vamos utilizar um componente do próprio react-router-dom:
+```js
+import { Link } from 'react-router-dom';
+...
+<Link to="/rota">Nome_do_link</Link>
+```
+
+### Recebendo uma rota com parâmetro
+- Primeiro passamos o parâmetro para dentro da rota:
+```js
+<Link to={`/rota/${parametro}`}>nome_do_link</Link>
+```
+
+- Depois configuramos em `routes.js` para a rota capturar o parâmetro da mesma forma como é feita no node:
+```js
+<Route path="/repository/:repository" component={Repository} />
+```
+
+- Por fim, vamos capturar no nosso componente final pelas `props`, nos parâmetros de `match.params`:
+```js
+export default function Repository({ match }) {
+  return <h1>Repository: {match.params.repository}</h1>
+}
+```

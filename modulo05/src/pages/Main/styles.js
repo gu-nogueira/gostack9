@@ -91,3 +91,27 @@ export const SubmitButton = styled.button.attrs(props => ({
   `}
 
 `;
+
+export const List = styled.ul`
+  list-style: none;
+  margin-top: 30px;
+
+  li {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 15px 0;
+    align-items: center;
+
+    /* Consigo referenciar ao elemento atual + alguma outra coisa no styled-components: '& + <elemento>' */
+    /* Basicamente este estilo será aplicado toda vez que houver um li antes dele (last-child) */
+    & + li {
+      border-top: 1px solid #eee;
+    }
+
+    a, a:link, a:visited, a:active {
+      color: #00bfff;
+      text-decoration: none;
+    }
+  }
+`;

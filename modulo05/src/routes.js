@@ -17,7 +17,7 @@ function Routes() {
         {/* O 'exact' entra pois o 'react-router-dom' procura pelas rotas que começam pelo parâmetro informado. Quando queremos procurar por uma rota exata temos que passar ele */}
         <Route path="/" exact component={Main} />
         {/* Cada 'Route' representa agora uma página da nossa aplicação, quando o usuário acessar o 'path="/repository"', irá acessar o componente 'Repository' */}
-        <Route path="/repository" component={Repository} />
+        <Route path="/repository/:repository" component={Repository} />
       </Switch>
     </BrowserRouter>
   );
