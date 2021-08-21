@@ -510,3 +510,9 @@ export default function Repository({ match }) {
   return <h1>Repository: {match.params.repository}</h1>
 }
 ```
+
+## Criando Commons para o Styled-Components
+- Útil para components estilizados que utilizamos bastante, como um container, por exemplo
+- Criamos em `src > components` onde ficarão todos os componentes da nossa aplicação
+- Para cada componente, iremos criar uma pasta dentro de `components`, pois dessa forma, isolamos cada componente e podemos criar o seu `index.js`, se precisarmos estilizá-lo, criamos `styles.js` e mais algum arquivo de configuração caso necessário
+- No nosso exemplo, vamos criar `src > components > Container > index.js`

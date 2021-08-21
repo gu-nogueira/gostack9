@@ -25,5 +25,7 @@
 
 * [x] Modulo 4;
 * [x] Modulo 5;
+* [x] Desafio 4;
+* [ ] Desafio 5;
 
 ## Mobile [React-Native]

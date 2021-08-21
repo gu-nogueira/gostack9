@@ -6,7 +6,9 @@ import { Link } from 'react-router-dom';
 // Importante: todas as importações que são relacionadas ao meu projeto devem ser feitas depois das importações de módulos
 import api from '../../services/api';
 
-import { Container, Form, SubmitButton, List } from './styles';
+// Este é o nosso Common styled-component
+import Container from '../../components/Container';
+import { Form, SubmitButton, List } from './styles';
 
 class Main extends Component {
 

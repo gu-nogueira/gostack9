@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-// import { Container } from './styles';
+import { Loading, Owner, IssueList } from './styles';
 
 import api from '../../services/api';
+
+// Este é o nosso Common styled-component
+import Container from '../../components/Container';
 
 class Repository extends Component {
 
@@ -63,11 +67,42 @@ class Repository extends Component {
 
     const { repository, issues, loading } = this.state;
 
+    // Vamos montar um loading para quando as informações não estiverem sido carregadas na página ainda
+    // O render() só executa um return, então caso quisermos ter mais de um return, uma forma de fazer isso é com um if
+    if (loading) {
+      return <Loading>Carregando</Loading>;
+    }
+
     return (
-      <h1>
-        {/* Caso fosse o nome do repositório, precisaríamos usar 'decodeURIComponent(match.params.repository)' */}
-        Repository
-      </h1>
+      <Container>
+        <Owner>
+          <Link to="/">Voltar aos repositórios</Link>
+          {/* 'alt' é obrigatório?? */}
+          <img src={repository.owner.avatar_url} alt={repository.owner.login} />
+          <h1>{repository.name}</h1>
+          <p>{repository.description}</p>
+        </Owner>
+        <IssueList>
+          {/* Vamos colocar parênteses na arrow function do '.map()' pois vamos retornar diversos elementos JSX */}
+          { issues.map(issue => (
+            // Lembrando, em manipulações de arrays sempre é necessário ter uma 'key' o primeiro elemento do escopo
+            // É sempre bom na key, colocarmos um valor 'String()'
+            <li key={String(issue.id)}>
+              <img src={issue.user.avatar_url} alt={issue.user.login} />
+              <div>
+                <strong>
+                  <a href={issue.html_url}>{issue.title}</a>
+                  {/* Vamos percorrer as labels de cada issue */}
+                  {issue.labels.map(label => (
+                    <span key={String(label.id)}>{label.name}</span>
+                  ))}
+                </strong>
+                <p>{issue.user.login}</p>
+              </div>
+            </li>
+          )) }
+        </IssueList>
+      </Container>
     )
   }
 }
