@@ -3,7 +3,7 @@ const express = require('express');
 
 const app = express();
 
-const publicSitePath = path.join(__dirname, '../../Onmai/sites/onmai.com.br/Public');
+const publicSitePath = path.join(__dirname, '../../Onmai/sites/onswitch.onmai.com.br');
 
 app.use(express.static(publicSitePath, {extensions: ['html']}));
 

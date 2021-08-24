@@ -13,13 +13,10 @@ const Container = styled.section`
     flex-direction: row;
     align-items: center;
 
-    /* Isso são estilos encadeados */
-    /* Interessante, usar o svg diretamente no css para ícones */
     svg {
     margin-right: 10px;
     }
   }
 `;
 
-// Trocaremos neste formato o export aqui, assim podemos pegar esse Common (componente estilizado) em qualquer lugar agora
 export default Container;

@@ -1,4 +1,3 @@
-//  snippet da rocketseat para criar um styled-component: styled-react
 import styled from 'styled-components';
 
 export const Loading = styled.div`
@@ -43,7 +42,6 @@ export const Owner = styled.div`
   }
 `;
 
-// IssueList é uma ul porque usamos li lá no Repository
 export const IssueList = styled.ul`
   padding-top: 30px;
   margin-top: 30px;
@@ -57,7 +55,6 @@ export const IssueList = styled.ul`
     border-radius: 4px;
   }
 
-  /* Vamos estilizar da segunda <li> para frente */
   & + li {
     margin-top: 10px;
   }
