@@ -13,6 +13,7 @@ class Main extends Component {
     newRepo: '',
     repositories: [],
     loading: false,
+    error: false,
   };
 
   // Carregar os dados do localStorage
@@ -42,6 +43,9 @@ class Main extends Component {
     this.setState({ loading: true });
     const { newRepo, repositories } = this.state;
     try {
+      if (repositories.some(repo => repo.name === newRepo )) {
+        throw new Error('Repositório duplicado');
+      }
       const response = await api.get(`/repos/${newRepo}`);
       const data = {
         id: response.data.id,
@@ -53,19 +57,19 @@ class Main extends Component {
         loading: false,
       });
     } catch (err) {
-
+      this.setState({ loading: false, error: true });
     }
   };
 
   render() {
-    const { newRepo, repositories, loading } = this.state;
+    const { newRepo, repositories, loading, error } = this.state;
     return (
       <Container>
         <h1>
           <FaGithub />
           Repositórios
         </h1>
-        <Form onSubmit={this.handleSubmit}>
+        <Form onSubmit={this.handleSubmit} error={error}>
           <input type="text" placeholder="Adicionar repositório" value={newRepo} onChange={this.handleInputChange} />
           <SubmitButton loading={loading}>
           { loading ? <FaSpinner color="#FFF" size={14} /> : <FaPlus color="#FFF" size={14} /> }
