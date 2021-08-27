@@ -42,6 +42,44 @@ export const Owner = styled.div`
   }
 `;
 
+export const Menu = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 30px;
+
+  select {
+    border: 1px solid #EEE;
+    padding: 10px 5px;
+    border-radius: 4px;
+    font-size: 16px;
+    margin-right: auto;
+  }
+
+  a, a:link, a:visited, a:active {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-size: 20px;
+    background: #00bfff17;
+    color:  #00bfff;
+    border: 1px solid #00bfff;
+    padding: 4px 6px;
+    border-radius: 4px;
+    transition: all 0.2s;
+  }
+
+  a:hover {
+    color: white;
+    background: #00bfff;
+  }
+
+  span {
+    margin: 0 10px;
+  }
+
+`;
+
 export const IssueList = styled.ul`
   padding-top: 30px;
   margin-top: 30px;
@@ -77,6 +115,7 @@ export const IssueList = styled.ul`
       a {
         text-decoration: none;
         color: #333;
+        transition: all 0.2s;
 
         &:hover {
           color: #00bfff;

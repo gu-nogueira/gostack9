@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
+import { FaAngleLeft, FaAngleRight } from 'react-icons/fa'
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import api from '../../services/api';
 
 import Container from '../../components/Container';
-import { Loading, Owner, IssueList } from './styles';
+import { Loading, Owner, Menu, IssueList } from './styles';
 
 class Repository extends Component {
   static propTypes = {
@@ -29,11 +30,13 @@ class Repository extends Component {
       api.get(`/repos/${repoName}`),
       api.get(`/repos/${repoName}/issues`, {
         params: {
-          state: 'open',
+          state: 'all',
           per_page: 5,
+          page: 1,
         },
       })
     ]);
+    console.log(issues);
     this.setState({
       repository: repository.data,
       issues: issues.data,
@@ -55,6 +58,20 @@ class Repository extends Component {
           <h1>{repository.name}</h1>
           <p>{repository.description}</p>
         </Owner>
+        <Menu>
+          <select name="" id="" on>
+            <option value="all">Todos</option>
+            <option value="all">Todaos</option>
+            <option value="all">Tosdos</option>
+          </select>
+          <Link to="">
+            <FaAngleLeft />
+          </Link>
+          <span> Page {  } </span>
+          <Link to="">
+            <FaAngleRight />
+          </Link>
+        </Menu>
         <IssueList>
           { issues.map(issue => (
             <li key={String(issue.id)}>

@@ -22,6 +22,7 @@ export const Form = styled.form`
     border-radius: 4px;
     font-size: 16px;
   }
+
 `;
 
 export const SubmitButton = styled.button.attrs(props => ({
