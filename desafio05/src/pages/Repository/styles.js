@@ -53,10 +53,9 @@ export const Menu = styled.div`
     padding: 10px 5px;
     border-radius: 4px;
     font-size: 16px;
-    margin-right: auto;
   }
 
-  a, a:link, a:visited, a:active {
+  button {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -64,17 +63,27 @@ export const Menu = styled.div`
     background: #00bfff17;
     color:  #00bfff;
     border: 1px solid #00bfff;
-    padding: 4px 6px;
+    padding: 5px 6px;
     border-radius: 4px;
     transition: all 0.2s;
   }
 
-  a:hover {
+  button:disabled {
+    opacity: 0.5;
+  }
+
+  button:disabled:hover {
+    background: #00bfff17;
+    color:  #00bfff;
+    cursor: not-allowed;
+  }
+
+  button:hover {
     color: white;
     background: #00bfff;
   }
 
-  span {
+  small {
     margin: 0 10px;
   }
 

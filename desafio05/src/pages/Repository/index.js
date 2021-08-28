@@ -20,7 +20,14 @@ class Repository extends Component {
   state = {
     repository: {},
     issues: [],
+    filters: [
+      { state: 'all', name: 'Todos' },
+      { state: 'open', name: 'Abertos' },
+      { state: 'closed', name: 'Fechados' },
+    ],
     loading: true,
+    filterSelected: 'all',
+    page: 1,
   };
   // Chamada a API
   async componentDidMount() {
@@ -32,11 +39,9 @@ class Repository extends Component {
         params: {
           state: 'all',
           per_page: 5,
-          page: 1,
         },
       })
     ]);
-    console.log(issues);
     this.setState({
       repository: repository.data,
       issues: issues.data,
@@ -44,8 +49,33 @@ class Repository extends Component {
     });
   }
 
+  async componentDidUpdate(_, prevState) {
+    const { filterSelected, page } = this.state;
+    if (prevState.filterSelected !== filterSelected || prevState.page !== page) {
+      const { match } = this.props;
+      const repoName = decodeURIComponent(match.params.repository);
+      const updatedIssues = await api.get(`/repos/${repoName}/issues`, {
+        params: {
+          state: filterSelected,
+          per_page: 5,
+          page: page,
+        },
+      });
+      this.setState({ issues: updatedIssues.data });
+    }
+  }
+
+  handleFilter = (e) => {
+    this.setState({ filterSelected: e.target.value });
+  }
+
+  handleNavigation = (e) => {
+    console.log(e.currentTarget.value);
+    this.setState({ page: e.currentTarget.value });
+  }
+
   render() {
-    const { repository, issues, loading } = this.state;
+    const { repository, issues, filters, page, loading } = this.state;
 
     if (loading) {
       return <Loading>Carregando</Loading>;
@@ -59,18 +89,9 @@ class Repository extends Component {
           <p>{repository.description}</p>
         </Owner>
         <Menu>
-          <select name="" id="" on>
-            <option value="all">Todos</option>
-            <option value="all">Todaos</option>
-            <option value="all">Tosdos</option>
+          <select onChange={this.handleFilter}>
+            { filters.map(filter => { return <option value={filter.state}>{filter.name}</option> }) }
           </select>
-          <Link to="">
-            <FaAngleLeft />
-          </Link>
-          <span> Page {  } </span>
-          <Link to="">
-            <FaAngleRight />
-          </Link>
         </Menu>
         <IssueList>
           { issues.map(issue => (
@@ -88,6 +109,15 @@ class Repository extends Component {
             </li>
           )) }
         </IssueList>
+        <Menu>
+          <button type="button" value={Number(page) - 1} onClick={this.handleNavigation} disabled={page < 2}>
+            <FaAngleLeft />
+          </button>
+          <small> Page { page } </small>
+          <button type="button" value={Number(page) + 1} onClick={this.handleNavigation}  >
+            <FaAngleRight />
+          </button>
+        </Menu>
       </Container>
     )
   }
