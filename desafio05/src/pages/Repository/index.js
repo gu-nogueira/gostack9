@@ -70,7 +70,6 @@ class Repository extends Component {
   }
 
   handleNavigation = (e) => {
-    console.log(e.currentTarget.value);
     this.setState({ page: e.currentTarget.value });
   }
 

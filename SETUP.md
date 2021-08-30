@@ -194,3 +194,20 @@ Meu setup de ambiente de desenvolvimento web
 trim_trailing_whitespace = true
 insert_final_newline = true
 ```
+
+# Setup para desenvolvimento Mobile
+- Consultar em: https://react-native.rocketseat.dev/
+
+## JDK11 (Java Development Kit)
+
+- No Windows, necessário verificar as permissões;
+- Vamos instalar o JDK em um terminal com acesso administrador
+- Vamos rodar o comando: `cinst -y openjdk11`
+- Reiniciar o terminal, e verificá-lo com `java -version`
+
+## Emuladores
+
+- Android Studio: https://developer.android.com
+  * É necessário setar algumas variáveis ambientes para o yarn funcionar de forma global e preparar o espaço para receber o android studio;
+- Celular android (USB):
+- Celular Android (Wi-Fi):
