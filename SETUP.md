@@ -209,5 +209,5 @@ insert_final_newline = true
 
 - Android Studio: https://developer.android.com
   * É necessário setar algumas variáveis ambientes para o yarn funcionar de forma global e preparar o espaço para receber o android studio;
-- Celular android (USB):
+- Celular android (USB): Ativar depuração por USB em configurações, plugar o cabo USB na máquina e rodar `react-native run-android`;
 - Celular Android (Wi-Fi):

@@ -41,8 +41,51 @@ Montagem de aplicativo mobile consumindo a api desenvolvida em node.js
 - Depois, basta criar o projeto com `react-native init modulo06`
 - E depois rodá-lo, já com o emulador aberto: `react-native run-android`
 
-Feito isso, caso o metro bundler (terminal) não abra, podemos rodar `react-native start` ou `npx react-native start`;
+Feito isso, caso o metro bundler (terminal) não abra, podemos rodar `react-native start` ou `npx react-native start`
 Agora, temos a aplicação instalada no emulador, para rodá-lo novamente, basta iniciar o aplicativo com `react-native start` e abrí-lo manualmente no emulador
 
 ### Habilitando o Live Reload
-- Com a aplicação rodando, basta apertar `ctrl + M`, ou chacoalhar o celular para abrir um menu e selecionar a opção `Enable Fast Refresh` caso não esteja habilitada;
+- Com a aplicação rodando, basta apertar `ctrl + M`, ou chacoalhar o celular para abrir um menu e selecionar a opção `Enable Fast Refresh` caso não esteja habilitada
+
+## Console de debug
+
+### Nativo
+- No menu de desenvolvimento do aplicativo, basta selecionar a opção Debug, assim abrirá uma aba no navegador com o console, basta acessá-lo normalmente como na web com `ctrl + shift + i`
+> Não será utilizado
+
+### Organizando diretórios do projeto
+- Vamos criar o diretório `src > index.js` e dentro deste arquivo jogaremos todo conteúdo de `App.js` e deletar o arquivo antigo
+- Agora em `index.js` da raíz do projeto, vamos importar `./src` ao invés de `./App`
+
+### Utilizando Reactotron
+- Baixar em: [Reactotron](https://github.com/infinitered/reactotron/blob/master/docs/quick-start-react-native.md)
+- Pegar a última versão (2.17.1 em 08/2021)
+- Agora em nosso projeto vamos instalar a dependência `yarn add reactotron-react-native`
+- Vamos criar `src > config > ReactotronConfig.js`:
+```js
+import Reactotron from "reactotron-react-native";
+if (__DEV__) {
+  const tron = Reactotron.configure({ /* USB only => */ host: '10.0.10.85' }).useReactNative().connect();
+  console.tron = tron;
+  tron.clear();
+}
+```
+- E importá-lo em `src > index.js`:
+```js
+import './config/ReactotronConfig';
+```
+- Caso não funcione (principalmente no Android), será necessário realizar um redirecionamento de portas do ADB: `adb reverse tcp: 9090 tcp: 9090` ou então pelo caminho `~/Android/Sdk/platform-tools/adb reverse tcp: 9090 tcp: 9090`
+- Agora, podemos realizar logs no console com `console.tron.log('Hello World!');`
+
+## React Navigation (rotas)
+- Assim como no ReactJS, vamos criar o diretório `src > pages`, onde ficarão contidas todas as telas da aplicação
+- Dentro deste diretório vamos criar `Main > index.js` e `Users > index.js`
+- Vamos criar os componentes utilizando os snippets da Rocketseat: `rnfc`
+- Vamos criar o arquivo `src > routes.js`
+- Vamos instalar a biblioteca `yarn add react-navigation` ou (atualizado) `yarn add @react-navigation/native`
+- Seguir os passos da [documentação](https://reactnavigation.org/docs/getting-started/)
+- Para bibliotecas que solicitam mudanças nativas no código do projeto, devemos remontar a aplicação com `react-native run-android`
+- Vamos utilizar a navegação por stack, então `yarn add @react-navigation/native-stack`
+
+# Resolução de problemas
+- Grande parte dos problemas com React Native são resolvidos no terminal do Metro Bundler com `react-native start --reset-cache` ou no pior dos casos com `react-native run-android` ou `react-native run-ios`
