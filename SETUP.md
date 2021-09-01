@@ -211,3 +211,9 @@ insert_final_newline = true
   * É necessário setar algumas variáveis ambientes para o yarn funcionar de forma global e preparar o espaço para receber o android studio;
 - Celular android (USB): Ativar depuração por USB em configurações, plugar o cabo USB na máquina e rodar `react-native run-android`;
 - Celular Android (Wi-Fi):
+
+### Emulando Android Virtual Device por linha de comando
+- Primeiro, precisamos achar o nome do dispositivo na pasta do SDK do android, no nosso caso: `cd C:/Android/Sdk/emulator && ./emulator -list-avds`
+- Então, rodamos `cd C:/Android/Sdk/emulator && ./emulator -avd NOME_DO_DISPOSITIVO`
+- No exemplo: `cd C:/Android/Sdk/emulator && ./emulator -avd Pixel_5_API_29_2`
+- Caso rodando em arquitetura x86, mudar o `C:/Android/Sdk/emulator` por `C:/Android/Sdk/tools`

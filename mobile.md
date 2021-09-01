@@ -74,18 +74,75 @@ if (__DEV__) {
 ```js
 import './config/ReactotronConfig';
 ```
-- Caso não funcione (principalmente no Android), será necessário realizar um redirecionamento de portas do ADB: `adb reverse tcp: 9090 tcp: 9090` ou então pelo caminho `~/Android/Sdk/platform-tools/adb reverse tcp: 9090 tcp: 9090`
+- Caso não funcione (principalmente no Android), será necessário realizar um redirecionamento de portas do ADB: `adb reverse tcp: 9090 tcp: 9090` ou então pelo caminho `C:/Android/Sdk/platform-tools/adb reverse tcp: 9090 tcp: 9090`
 - Agora, podemos realizar logs no console com `console.tron.log('Hello World!');`
 
 ## React Navigation (rotas)
 - Assim como no ReactJS, vamos criar o diretório `src > pages`, onde ficarão contidas todas as telas da aplicação
 - Dentro deste diretório vamos criar `Main > index.js` e `Users > index.js`
-- Vamos criar os componentes utilizando os snippets da Rocketseat: `rnfc`
-- Vamos criar o arquivo `src > routes.js`
-- Vamos instalar a biblioteca `yarn add react-navigation` ou (atualizado) `yarn add @react-navigation/native`
+> Snippet da Rocketseat para criação de componente React Native: `rnfc`
+- Vamos criar o arquivo `src > routes.js`. O React Navigation funciona de forma bem parecida com o React Router DOM do ReactJS:
+```js
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
+// Routes
+import Main from './pages/Main';
+import User from './pages/User';
+
+const Stack = createNativeStackNavigator();
+function Routes() {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator
+        screenOptions={{
+          headerStyle: {
+            backgroundColor: '#5dd2f8',
+          },
+          headerTintColor: '#FFF'
+        }}
+      >
+        <Stack.Screen
+          name="Main"
+          component={Main}
+          options={{
+            title: 'Usuários',
+            headerTitleAlign: 'center',
+            headerBackTitleVisible: false
+          }}
+        />
+        <Stack.Screen name="User" component={User} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}
+export default Routes;
+```
 - Seguir os passos da [documentação](https://reactnavigation.org/docs/getting-started/)
-- Para bibliotecas que solicitam mudanças nativas no código do projeto, devemos remontar a aplicação com `react-native run-android`
+- Vamos instalar a biblioteca `yarn add @react-navigation/native`
 - Vamos utilizar a navegação por stack, então `yarn add @react-navigation/native-stack`
+- Para bibliotecas que solicitam mudanças nativas no código do projeto, devemos remontar a aplicação com `react-native run-android`
+
+## Utilizando Styled Components
+- Não é necessário fazer nenhum link, apenas instalar `yarn add styled-components`
+> Snippet para criação de styled component `styled-rn`
+
+## Biblioteca de ícones
+- Instalando `yarn add react-native-vector-icons`
+- Para o Android, vamos acessar `android > app > build.gradle` e antes de `apply.from...` no final do arquivo, vamos inserir as fontes que irão ser utilizadas de acordo com a [documentação para Android](https://github.com/oblador/react-native-vector-icons#android)
+- Feito isso, basta rodar `react-native run-android`
+- Para o IOS, é necessário alterar em `ios > nome_do_projeto > info.plist` antes de `</dict>` no final do arquivo e inserir as fontes de ícones que irão ser utilizadas de acordo com a [documentação para IOS](https://github.com/oblador/react-native-vector-icons#ios)
+- Feito isso, basta ir para a pasta `ios` e rodar `pod install` e `run-ios`
+- Consultar ícones em [React Native Vector Icons Directory](https://oblador.github.io/react-native-vector-icons/)
+
+## Botões nativos
+- Vamos instalar uma biblioteca para lidar com botões com funcionalidades nativas de cada plataforma (Android & IOS) `yarn add react-native-gesture-handler`
+
+## Utilizando o async storage
+- O React Native por padrão não possui uma biblioteca para conectar com o banco de dados local assim como o `localStorage`, por exemplo. Portanto vamos usar o Async Storage
+- Instalando com `yarn add @react-native-community/async-storage`
+- No android, rodar novamente `react-native run-android`
+- No IOS, ir para a pasta `ios` e rodar `pod install`
 
 # Resolução de problemas
 - Grande parte dos problemas com React Native são resolvidos no terminal do Metro Bundler com `react-native start --reset-cache` ou no pior dos casos com `react-native run-android` ou `react-native run-ios`
