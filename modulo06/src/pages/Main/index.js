@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Keyboard, ActivityIndicator } from 'react-native';
 // Importando async storage
 import AsyncStorage from '@react-native-community/async-storage';
@@ -11,11 +12,35 @@ import { Container, Form, Input, SubmitButton, List, User, Avatar, Name, Bio, Pr
 // Criando componente usando snippet => 'rnfc'
 
 class Main extends Component {
+  // Só validamos proptypes de funções e estruturas que utilizamos
+  static propTypes = {
+    navigation: PropTypes.shape({
+      navigate: PropTypes.func,
+    }).isRequired,
+  }
+
   state = {
     newUser: '',
     users: [],
     loading: false,
   };
+
+  // Busca os dados
+  async componentDidMount() {
+    // O await será necessário aqui pois preciso do retorno para saber se há dados para exibir ou não
+    const users = await AsyncStorage.getItem('users');
+    if (users) {
+      this.setState({ users: JSON.parse(users) });
+    }
+  }
+
+  // Salva os dados no async storage
+  componentDidUpdate(_, prevState) {
+    const { users } = this.state;
+    if (prevState.users !== users) {
+      AsyncStorage.setItem('users', JSON.stringify(users));
+    }
+  }
 
   handleAddUser = async () => {
     this.setState({ loading: true });
@@ -36,6 +61,12 @@ class Main extends Component {
     });
 
     Keyboard.dismiss();
+  };
+
+  handleNavigate = (user) => {
+    const { navigation } = this.props;
+    // Podemos passar como segundo parâmetro de '.navigate()' um objeto
+    navigation.navigate('User', { user });
   };
 
   render() {
@@ -70,7 +101,8 @@ class Main extends Component {
               <Avatar source={{ uri: item.avatar }} />
               <Name>{item.name}</Name>
               <Bio>{item.bio}</Bio>
-              <ProfileButton onPress={() => {}}>
+              {/* Sempre quando é necessário passar um parâmetro deve ser passada uma arrow function */}
+              <ProfileButton onPress={() => this.handleNavigate(item)}>
                 <ProfileButtonText>Ver perfil</ProfileButtonText>
               </ProfileButton>
             </User>

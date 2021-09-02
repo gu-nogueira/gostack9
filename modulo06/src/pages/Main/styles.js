@@ -52,10 +52,10 @@ export const User = styled.View`
 `;
 
 export const Avatar = styled.Image`
-  width: 64px;
-  height: 64px;
+  width: 80px;
+  height: 80px;
   /* Aqui a porcentagem não funciona */
-  border-radius: 32px;
+  border-radius: 40px;
   /* Um background na imagem, serve para quando a imagem não tiver carregado ainda */
   background: #eee;
 `;

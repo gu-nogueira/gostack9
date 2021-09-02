@@ -31,7 +31,10 @@ function Routes() {
           headerStyle: {
             backgroundColor: '#5dd2f8',
           },
-          headerTintColor: '#FFF'
+          headerTintColor: '#FFF',
+          headerTitleAlign: 'center',
+          // Remove (no IOS) o texto da página anterior
+          headerBackTitleVisible: false
         }}
       >
         <Stack.Screen
@@ -39,12 +42,12 @@ function Routes() {
           component={Main}
           options={{
             title: 'Usuários',
-            headerTitleAlign: 'center',
-            // Remove (no IOS) o texto da página anterior
-            headerBackTitleVisible: false
           }}
         />
-        <Stack.Screen name="User" component={User} />
+        <Stack.Screen
+          name="User"
+          component={User}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

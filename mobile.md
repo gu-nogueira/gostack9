@@ -140,6 +140,7 @@ export default Routes;
 
 ## Utilizando o async storage
 - O React Native por padrão não possui uma biblioteca para conectar com o banco de dados local assim como o `localStorage`, por exemplo. Portanto vamos usar o Async Storage
+- O Async Storage possui métodos muito parecidos com o `localStorage`, com a diferença de que deve ser utilizado `await` nele
 - Instalando com `yarn add @react-native-community/async-storage`
 - No android, rodar novamente `react-native run-android`
 - No IOS, ir para a pasta `ios` e rodar `pod install`
