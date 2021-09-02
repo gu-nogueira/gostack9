@@ -30,4 +30,9 @@
 
 ## Mobile [React-Native]
 
-* [ ] Modulo 6;
+* [x] Modulo 6;
+* [x] Desafio 6;
+
+## Web frontend 2 [Arquitetura Flux e React Hooks]
+
+* [] Modulo 7;

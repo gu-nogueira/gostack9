@@ -10,6 +10,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
 import Main from './pages/Main';
 import User from './pages/User';
+import Repository from './pages/Repository';
 
 // const Routes = createAppContainer(
 //   createStackNavigator({
@@ -47,6 +48,10 @@ function Routes() {
         <Stack.Screen
           name="User"
           component={User}
+        />
+        <Stack.Screen
+          name="Repository"
+          component={Repository}
         />
       </Stack.Navigator>
     </NavigationContainer>

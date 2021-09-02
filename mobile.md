@@ -145,5 +145,9 @@ export default Routes;
 - No android, rodar novamente `react-native run-android`
 - No IOS, ir para a pasta `ios` e rodar `pod install`
 
+## Utilizando Webview no React Native
+- Consultar a [documentação](https://github.com/react-native-webview/react-native-webview/blob/master/docs/Getting-Started.md)
+- Instalar com `yarn add react-native-webview`
+
 # Resolução de problemas
 - Grande parte dos problemas com React Native são resolvidos no terminal do Metro Bundler com `react-native start --reset-cache` ou no pior dos casos com `react-native run-android` ou `react-native run-ios`

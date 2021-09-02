@@ -378,7 +378,7 @@ componentDidUpdate(_, prevState) {
   * Pasta de páginas da aplicação `src > pages`
     * Pasta `src > pages > Main`, com um arquivo `index.js`:
     * Pasta `src > pages > Repository`, com um arquivo `index.js`
-    > Vamos criar estes dois funcional components com o snippet `rfc`
+    > Vamos criar estes dois functional components com o snippet `rfc`
   * Por fim, vamos importar o `routes.js` no `App.js`
 
 ## Styled Components
