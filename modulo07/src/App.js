@@ -2,13 +2,14 @@ import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 
 import GlobalStyle from './styles/global';
+import Header from './components/Header';
 import Routes from './routes';
 
 function App() {
   return (
     // Colocamos o BrowserRouter aqui para que o componente Header tenha acesso as propriedades de navegação
     <BrowserRouter>
-      {/* <Header /> */}
+      <Header />
       <Routes />
       <GlobalStyle />
     </BrowserRouter>
