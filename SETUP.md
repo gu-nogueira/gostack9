@@ -108,6 +108,14 @@ Meu setup de ambiente de desenvolvimento web
   - Link para instalação: https://chocolatey.org/install
 ### node LTS + npm
   - Link para instalação via package manager (chocolatey): https://nodejs.org/en/download/package-manager/#windows
+
+### JSON Server
+  - Serve para criar uma API temporária baseada num arquivo JSON. Link para instalação: https://www.npmjs.com/package/json-server
+  - Nela é possível fazer inserts, deletes, updates, assim como uma API convencional em node
+  - Ótima ferramenta temporária para testes, fácil de instalar
+  - Instalando de forma global: `yarn global add json-server`
+  - Para rodar o servidor, basta: `json-server arquivo.json -p 2000`
+
 ### Yarn
   - Link para instalação via npm: https://yarnpkg.com/getting-started/install
   - Comandos equivalentes de yarn e npm: https://shift.infinite.red/npm-vs-yarn-cheat-sheet-8755b092e5cc

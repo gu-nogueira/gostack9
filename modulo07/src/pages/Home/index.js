@@ -1,78 +1,62 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import api from '../../services/api';
+import { formatPrice } from '../../utils/format';
 
 import { MdAddShoppingCart } from 'react-icons/md'
-
 import { ProductList } from './styles';
 
-function Home() {
-  return (
-    <ProductList>
-      <li>
-        <img src="https://static.netshoes.com.br/produtos/tenis-nike-sb-chron-solarsoft/26/HZM-5102-026/HZM-5102-026_detalhe1.jpg?ts=1622478944?ims=280x280" alt="Tênis" />
-        <strong>Tênis muito foda</strong>
-        <span>R$129,90</span>
-        <button type="button">
-          <div>
-            <MdAddShoppingCart size={16} color="#fff" /> 3
-          </div>
+class Home extends Component {
+  state = {
+    products: [],
+  }
 
-          <span>ADICIONAR AO CARRINHO</span>
-        </button>
-      </li>
+  async componentDidMount() {
+    const response = await api.get('/products');
 
-      <li>
-        <img src="https://static.netshoes.com.br/produtos/tenis-nike-sb-chron-solarsoft/26/HZM-5102-026/HZM-5102-026_detalhe1.jpg?ts=1622478944?ims=280x280" alt="Tênis" />
-        <strong>Tênis muito foda</strong>
-        <span>R$129,90</span>
-        <button type="button">
-          <div>
-            <MdAddShoppingCart size={16} color="#fff" /> 3
-          </div>
+    // Vamos formatar o preço uma única vez assim que o componente montar, pois caso inseríssemos a função diretamente no state, qualquer pequena alteração que o state sofresse iria rodar a função novamente e isso pode ficar ineficiente de acordo com a proporção que a aplicação for tomando
+    // Então, o que vamos fazer é percorrer o array retornado por response e inserir um novo atributo chamado priceformatted no objeto
+    const data = response.data.map(product => ({
+      ... product,
+      priceFormatted: formatPrice(product.price),
+    }));
 
-          <span>ADICIONAR AO CARRINHO</span>
-        </button>
-      </li>
+    this.setState({ products: data });
+  }
 
-      <li>
-        <img src="https://static.netshoes.com.br/produtos/tenis-nike-sb-chron-solarsoft/26/HZM-5102-026/HZM-5102-026_detalhe1.jpg?ts=1622478944?ims=280x280" alt="Tênis" />
-        <strong>Tênis muito foda</strong>
-        <span>R$129,90</span>
-        <button type="button">
-          <div>
-            <MdAddShoppingCart size={16} color="#fff" /> 3
-          </div>
+  handleAddProduct = (product) => {
+    // Dispatch serve para disparar uma action ao reducer
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'ADD_TO_CART',
+      product,
+    });
+  }
 
-          <span>ADICIONAR AO CARRINHO</span>
-        </button>
-      </li>
+  // Uma coisa que devemos tomar cuidado no React é trabalhar FUNÇÕES dentro do render, devemos ao máximo trabalhar para tratar as informações antes de chegar no render, essa parte de tratamento de valores, textos, etc...
+  render() {
+    const { products } = this.state;
 
-      <li>
-        <img src="https://static.netshoes.com.br/produtos/tenis-nike-sb-chron-solarsoft/26/HZM-5102-026/HZM-5102-026_detalhe1.jpg?ts=1622478944?ims=280x280" alt="Tênis" />
-        <strong>Tênis muito foda</strong>
-        <span>R$129,90</span>
-        <button type="button">
-          <div>
-            <MdAddShoppingCart size={16} color="#fff" /> 3
-          </div>
+    return (
+      <ProductList>
+        { products.map(product => (
+          <li key={product.id}>
+            <img src={product.image} alt={product.title} />
+            <strong>{product.title}</strong>
+            <span>{product.priceFormatted}</span>
+            <button type="button" onClick={() => {this.handleAddProduct(product)}}>
+              <div>
+                <MdAddShoppingCart size={16} color="#fff" /> 3
+              </div>
 
-          <span>ADICIONAR AO CARRINHO</span>
-        </button>
-      </li>
-
-      <li>
-        <img src="https://static.netshoes.com.br/produtos/tenis-nike-sb-chron-solarsoft/26/HZM-5102-026/HZM-5102-026_detalhe1.jpg?ts=1622478944?ims=280x280" alt="Tênis" />
-        <strong>Tênis muito foda</strong>
-        <span>R$129,90</span>
-        <button type="button">
-          <div>
-            <MdAddShoppingCart size={16} color="#fff" /> 3
-          </div>
-
-          <span>ADICIONAR AO CARRINHO</span>
-        </button>
-      </li>
-    </ProductList>
-  );
+              <span>ADICIONAR AO CARRINHO</span>
+            </button>
+          </li>
+        ))}
+      </ProductList>
+    );
+  }
 }
 
-export default Home;
+// São dois parênteses pois '.connect' retorna outra função, que é chamada passando o componente 'Home'. Isso faz a conexão do state com o reducer
+export default connect()(Home);
