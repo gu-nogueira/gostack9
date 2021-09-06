@@ -154,6 +154,172 @@ import './config/ReactotronConfig';
 - Pode ser acessado pela sua [documentação](https://immerjs.github.io/immer/)
 - Instalando `yarn add immer`
 
+## Refatorando actions
+- A modularização das actions se torna útil quando utilizamos uma mesma action em mais de um componente / rota
+- Primeiro, vamos criar um arquivo `action.js` na pasta do reducer das actions, neste caso, em `cart`
+- Nela vamos exportar todos os `dispatchs` relacionados a actions de `cart`:
+```js
+// Home
+export function addToCart(product) {
+  return {
+    type: 'ADD_TO_CART',
+    product,
+  };
+}
+// Cart
+export function removeFromCart(id) {
+  return {
+    type: 'REMOVE_FROM_CART',
+    id,
+  }
+}
+```
+- Feito isso, vamos importar este arquivo e as funções de onde removemos os `dispatchs`:
+```js
+import * as CartActions from '../../store/modules/cart/actions';
+...
+dispatch(CartActions.addToCart(product));
+```
+
+# Redux Saga
+
+## Middlewares com Redux Saga
+- Os middlewares servem para interceptar `actions` dos componentes para os `reducers`. São chamados de efeito colateral ou `side effect`
+- O `side effect` pode ser assíncrono, pode ser chamada a api, a banco de dados, async storage, etc...
+- Podemos instalá-lo com `yarn add redux-saga`
+- Iremos criar dentro de nosso `modules > cart` um arquivo `sagas.js`. Este que será responsável por manter todas as funções de middlewares da aplciação, ou `sagas`:
+```js
+import { call, put, all, takeLatest } from 'redux-saga/effects';
+import api from '../../../services/api';
+import { addToCartSuccess } from './actions';
+
+function* addToCart({ id }) {
+  const response = yield call(api.get, `/products/${id}`);
+  yield put(addToCartSuccess(response.data));
+}
+
+export default all([
+  takeLatest('@cart/ADD_REQUEST', addToCart),
+]);
+```
+- Depois, criaremos um arquivo em `modules` chamado `rootSaga.js`, que assim como o `rootReducer.js` agrupa os `reducers`, agrupará todas as `sagas` da aplciação:
+```js
+import { all } from 'redux-saga/effects';
+// All sagas
+import cart from './cart/sagas';
+
+export default function* rootSaga() {
+  return yield all([
+    cart
+  ]);
+}
+```
+- Para simular a necessidade de utilização de um middleware assíncrono na aplicação, vamos imaginar que houvesse a necessidade de uma solicitação a outra api pelo `redux-saga`, para completar os dados do estado global, como a marca do tênis ou peso para cálculo do frete, por exemplo. Esta que precisará ser feita de forma assíncrona.
+- Tendo em mente este cenário, vamos fazer algumas alterações no arquivo das actions de `modules > cart`, o `actions.js`. Teremos duas actions de `@cart/ADD` ao invés de apenas uma. A primeira para fazer a solicitação ao `redux-saga` e a segunda para o próprio `redux-saga` chamar assim que for resolvida a primeira action:
+```js
+export function addToCartRequest(id) {
+  return {
+    type: '@cart/ADD_REQUEST',
+    id,
+  };
+}
+export function addToCartSuccess(product) {
+  return {
+    type: '@cart/ADD_SUCCESS',
+    product,
+  };
+}
+```
+- Agora, no componente `Home`, precisaremos alterar a função da action para:
+```js
+dispatch(CartActions.addToCartRequest(id));
+```
+- Consequentemente, precisaremos alterar a action ouvida pelo `reducer.js` em `modules > cart` para:
+```js
+case '@cart/ADD_SUCCESS':
+  ...
+```
+Agora, para finalizar, faremos a configuração final no arquivo `index.js` de `store`:
+```js
+import { createStore, applyMiddleware, compose } from 'redux';
+import createSagaMiddleware from 'redux-saga';
+import rootReducer from './modules/rootReducer';
+import rootSaga from './modules/rootSaga';
+
+const sagaMiddleware = createSagaMiddleware();
+
+const enhancer = process.env.NODE_ENV === 'development' ? compose(
+    console.tron.createEnhancer(),
+    applyMiddleware(sagaMiddleware)
+  ) : applyMiddleware(sagaMiddleware);
+
+const store = createStore(rootReducer, enhancer);
+sagaMiddleware.run(rootSaga);
+
+export default store;
+```
+
+## Reactotron + Saga
+- Com ele conseguimos ver o fluxo inteiro do redux-saga
+- Instalamos com `yarn add reactotron-redux-saga`
+- Agora, vamos em `config > ReactotronConfig.js` e inserir as seguintes configurações:
+```js
+import reactotronSaga from 'reactotron-redux-saga';
+...
+// adicionar abaixo de .use(reactotronRedux())
+.use(reactotronSaga())
+```
+- E em `store > index.js`, acima de `enhancer`:
+```js
+const sagaMonitor = process.env.NODE_ENV === 'development' ? console.tron.createSagaMonitor() : null;
+const sagaMiddleware = createSagaMiddleware({
+  sagaMonitor,
+});
+```
+
+## Navegação dentro do Saga
+- Utilizamos a navegação dentro do saga ao invés do `react-router-dom` ou o `react-navigation`, quando disparamos alguma `action` assíncrona para o saga e precisamos aguardar a sua resposta antes de simplesmente executar algo como `this.props.history.push('/rota');`. Nesses casos, o `async / await` não funcionará para aguardar a execução do saga e portanto é necessário utilizar a navegação pelo próprio saga
+- Primeiro, vamos precisar instalar uma biblioteca responsável por controlar a `history API` do navegadr: `yarn add history`
+- Vamos criar em `services` o arquivo `history.js`:
+```js
+import { createBrowserHistory } from 'history';
+const history = createBrowserHistory();
+export default history;
+```
+- Agora precisamos importá-lo em `App.js`:
+```js
+import history from './services/history';
+...
+// Vamos alterar <BrowserRouter /> por apenas <Router />
+<Router history={history}>
+```
+- Feito isso, finalmente vamos em `sagas.js` de `cart`:
+```js
+
+```
+
+# React Toastify
+- Uma ótima biblioteca para mostrar mensagens de erro e de sucesso para o usuário final
+- Sua documentação pode ser acessada [aqui](https://fkhadra.github.io/react-toastify/introduction)
+- Vamos instalá-la com `yarn add react-toastify`
+- Em nosso componente principal `App.js`, vamos inserir:
+```js
+import { ToastContainer } from 'react-toastify';
+...
+// Abaixo de <GlobalStyle />
+<ToastContainer autoClose={3000} />
+```
+- E vamos importá-lo em `global.js`
+```js
+import 'react-toastify/dist/ReactToastify.css';
+```
+- Agora, para utilizá-lo, basta importá-lo no local desejado:
+```js
+import { toast } from 'react-toastify';
+...
+toast.error('Quantidade solicitada fora de estoque');
+```
+
 # React Hooks
 - Nova api do React a partir da versão 17
 - Diminui a verbosidade entre passagem de `props` e informações do `state` e `life cycle` entre os componentes

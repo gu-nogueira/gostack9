@@ -9,27 +9,32 @@ export default function cart(state = [], action) {
   // por padrão, o método 'dispatch' que dispara a action chama todos os reducers, então utilizamos o switch para identificar a qual reducer pertence a action disparada
   switch (action.type) {
     // Então, caso o type da action seja 'ADD_TO_CART', podemos modificar o estado da maneira que quisermos
-    case 'ADD_TO_CART':
+    case '@cart/ADD_SUCCESS':
       return produce(state, draft => {
         // Aqui podemos fazer as alterações normalmente, sem se preocupar com a imutabilidade do state, podendo usar o .push convencional do javascript
-        const productIndex = draft.findIndex(p => p.id == action.product.id);
-        if (productIndex >= 0) {
-          draft[productIndex].amount += 1;
-        } else {
-          draft.push({
-            ... action.product,
-            amount: 1,
-          })
-        }
+        const { product } = action;
+        draft.push(product)
       });
-    case 'REMOVE_FROM_CART':
+    case '@cart/REMOVE':
       return produce(state, draft => {
+        // Busca o produto da lista
         const productIndex = draft.findIndex(p => p.id == action.id); // O id vem direto da action
         if (productIndex >= 0) {
           draft.splice(productIndex, 1);
         }
 
       });
+
+    case '@cart/UPDATE_AMOUNT_SUCCESS': {
+      return produce(state, draft => {
+        const productIndex = draft.findIndex(p => p.id == action.id);
+        if (productIndex >= 0) {
+          draft[productIndex].amount = Number(action.amount);
+        }
+
+      });
+    }
+
 
     // Por padrão, default retornamos o próprio state sem alterá-lo
     default:

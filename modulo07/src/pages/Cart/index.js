@@ -1,10 +1,23 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { MdRemoveCircleOutline, MdAddCircleOutline, MdDelete } from 'react-icons/md';
 
+import * as CartActions from '../../store/modules/cart/actions';
+import { formatPrice } from '../../utils/format';
+
+import { MdRemoveCircleOutline, MdAddCircleOutline, MdDelete } from 'react-icons/md';
 import { Container, ProductTable, Total } from './styles';
 
-function Cart({ cart, dispatch }) {
+function Cart({ cart, total, dispatch }) {
+  // Posso criar function dentro de function sem problema nenhum
+  // As validações serão feitas sempre dentro do redux, o componente apenas dispara a ação
+  function increment(product) {
+    dispatch(CartActions.updateAmountRequest(product.id, product.amount + 1));
+  }
+
+  function decrement(product) {
+    dispatch(CartActions.updateAmountRequest(product.id, product.amount - 1));
+  }
+
   return (
     <Container>
       <ProductTable>
@@ -29,20 +42,20 @@ function Cart({ cart, dispatch }) {
               </td>
               <td>
                 <div>
-                  <button type="button">
+                  <button type="button" onClick={() => decrement(product)}>
                     <MdRemoveCircleOutline size={20} color="#7159c1" />
                   </button>
                   <input type="number" readOnly value={product.amount} />
-                  <button type="button">
+                  <button type="button" onClick={() => increment(product)}>
                     <MdAddCircleOutline size={20} color="#7159c1" />
                   </button>
                 </div>
               </td>
               <td>
-                <strong>R$259,80</strong>
+                <strong>{product.subtotal}</strong>
               </td>
               <td>
-                <button type="button" onClick={() => dispatch({ type: 'REMOVE_FROM_CART', id: product.id })}>
+                <button type="button" onClick={() => dispatch(CartActions.removeFromCart(product.id))}>
                   <MdDelete size={20} color="#7159c1" />
                 </button>
               </td>
@@ -55,7 +68,7 @@ function Cart({ cart, dispatch }) {
         <button type="button">Finalizar pedido</button>
         <Total>
           <span>TOTAL</span>
-          <strong>R$1920,49</strong>
+          <strong>{total}</strong>
         </Total>
       </footer>
     </Container>
@@ -65,7 +78,17 @@ function Cart({ cart, dispatch }) {
 // Esta função pega informações do estado e mapeia em formato de propriedades para o componente
 const mapStateToProps = (state) => ({
   // Por exemplo vamos criar uma propriedade cart, que irá pegar todas as informações do state.cart
-  cart: state.cart,
+  // Aqui realizamos um '.map()' para adicionar, calcular e mostrar o campo subtotal em product, podemos fazer isso no reducer também
+  // Feito aqui ele só irá atualizar se alguma informação no reducer for atualizada
+  cart: state.cart.map(product => ({
+    ...product,
+    subtotal: formatPrice(product.price * product.amount),
+  })),
+  // reduce utilizamos quando queremos reduzir um array a um único valor
+  total: formatPrice(state.cart.reduce((total, product) => {
+    return total + product.price * product.amount;
+    // Inicia com zero
+  }, 0)),
 });
 
 export default connect(mapStateToProps)(Cart);
