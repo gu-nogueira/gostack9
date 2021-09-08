@@ -279,7 +279,8 @@ const sagaMiddleware = createSagaMiddleware({
 
 ## Navegação dentro do Saga
 - Utilizamos a navegação dentro do saga ao invés do `react-router-dom` ou o `react-navigation`, quando disparamos alguma `action` assíncrona para o saga e precisamos aguardar a sua resposta antes de simplesmente executar algo como `this.props.history.push('/rota');`. Nesses casos, o `async / await` não funcionará para aguardar a execução do saga e portanto é necessário utilizar a navegação pelo próprio saga
-- Primeiro, vamos precisar instalar uma biblioteca responsável por controlar a `history API` do navegadr: `yarn add history`
+> Importante: o React Router v5 suporta history até a sua versão ^4.10.1, por algum motivo a partir da versão 5 parou de funcionar. A solução pode ser esclarecida [neste link](https://jasonwatmore.com/post/2020/10/22/react-router-v5-fix-for-redirects-not-rendering-when-using-custom-history)
+- Primeiro, vamos precisar instalar uma biblioteca responsável por controlar a `history API` do navegador: `yarn add history@^4.10.1`
 - Vamos criar em `services` o arquivo `history.js`:
 ```js
 import { createBrowserHistory } from 'history';

@@ -40,9 +40,8 @@ Montagem de aplicativo mobile consumindo a api desenvolvida em node.js
 - Podemos também instalar a cli globalmente na máquina por `yarn global add react-native-cli`
 - Depois, basta criar o projeto com `react-native init modulo06`
 - E depois rodá-lo, já com o emulador aberto: `react-native run-android`
-
-Feito isso, caso o metro bundler (terminal) não abra, podemos rodar `react-native start` ou `npx react-native start`
-Agora, temos a aplicação instalada no emulador, para rodá-lo novamente, basta iniciar o aplicativo com `react-native start` e abrí-lo manualmente no emulador
+- Feito isso, caso o metro bundler (terminal) não abra, podemos rodar `react-native start` ou `npx react-native start`
+- Agora, temos a aplicação instalada no emulador, para rodá-lo novamente, basta iniciar o aplicativo com `react-native start` e abrí-lo manualmente no emulador
 
 ### Habilitando o Live Reload
 - Com a aplicação rodando, basta apertar `ctrl + M`, ou chacoalhar o celular para abrir um menu e selecionar a opção `Enable Fast Refresh` caso não esteja habilitada
@@ -118,9 +117,11 @@ function Routes() {
 }
 export default Routes;
 ```
-- Seguir os passos da [documentação](https://reactnavigation.org/docs/getting-started/)
+- Os passos abaixo são conforme a [documentação do React Navigation](https://reactnavigation.org/docs/getting-started/). Atualizado em Setembro de 2021.
 - Vamos instalar a biblioteca `yarn add @react-navigation/native`
 - Vamos utilizar a navegação por stack, então `yarn add @react-navigation/native-stack`
+- Feito isso, são necessárias duas bibliotecas para fazermos as navegações de forma nativa: `yarn add react-native-screens react-native-safe-area-context`
+- Agora, será necessário alterar para o funcionamento no android um arquivo `MainActivity.java` *(seguir documentação)*
 - Para bibliotecas que solicitam mudanças nativas no código do projeto, devemos remontar a aplicação com `react-native run-android`
 
 ## Utilizando Styled Components
@@ -129,7 +130,7 @@ export default Routes;
 
 ## Biblioteca de ícones
 - Instalando `yarn add react-native-vector-icons`
-- Para o Android, vamos acessar `android > app > build.gradle` e antes de `apply.from...` no final do arquivo, vamos inserir as fontes que irão ser utilizadas de acordo com a [documentação para Android](https://github.com/oblador/react-native-vector-icons#android)
+- Para o Android, vamos acessar `android > app > build.gradle` e antes de `apply from...` no final do arquivo, vamos inserir as fontes que serão utilizadas de acordo com a [documentação para Android](https://github.com/oblador/react-native-vector-icons#android)
 - Feito isso, basta rodar `react-native run-android`
 - Para o IOS, é necessário alterar em `ios > nome_do_projeto > info.plist` antes de `</dict>` no final do arquivo e inserir as fontes de ícones que irão ser utilizadas de acordo com a [documentação para IOS](https://github.com/oblador/react-native-vector-icons#ios)
 - Feito isso, basta ir para a pasta `ios` e rodar `pod install` e `run-ios`
