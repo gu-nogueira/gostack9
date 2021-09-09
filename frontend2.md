@@ -66,7 +66,7 @@ export default combineReducers({
 });
 ```
 
-- Feito isso, podemos importar `rootReducer.js` em `modules > index.js`:
+- Feito isso, podemos importar `rootReducer.js` em `store > index.js`:
 ```js
 import rootReducer from './modules/rootReducer';
 

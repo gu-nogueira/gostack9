@@ -6,10 +6,19 @@ export const Container = styled.View`
   background: ${colors.dark};
 `;
 
+export const Loading = styled.ActivityIndicator.attrs({
+  color: colors.primary,
+  size: 60,
+})`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+`;
+
 export const ProductList = styled.FlatList.attrs({
   horizontal: true,
 })`
-
+  flex-grow: 0;
 `;
 
 export const Product = styled.View`
@@ -42,6 +51,7 @@ export const Button = styled.TouchableOpacity`
   flex-direction: row;
   align-items: center;
   border-radius: 4px;
+  margin-top: auto;
 `;
 
 export const AmountButton = styled.View`

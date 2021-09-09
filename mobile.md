@@ -124,6 +124,33 @@ export default Routes;
 - Agora, será necessário alterar para o funcionamento no android um arquivo `MainActivity.java` *(seguir documentação)*
 - Para bibliotecas que solicitam mudanças nativas no código do projeto, devemos remontar a aplicação com `react-native run-android`
 
+## Navigation fora do componente
+- Quando trabalhamos com middlewares do redux-saga por exemplo, há a necessidade de mudar de rota fora do componente, onde não temos acesso a prop `navigation`. Nesses casos, vamos criar em `services` um arquivo chamado `navigation.js`:
+```js
+import { createNavigationContainerRef } from '@react-navigation/native';
+
+export const navigationRef = createNavigationContainerRef()
+
+export function navigate(name, params) {
+  if (navigationRef.isReady()) {
+    navigationRef.navigate(name, params);
+  }
+}
+```
+- Depois, em `routes.js`, vamos incluí-lo da seguinte forma:
+```js
+import { navigationRef } from './services/navigation';
+...
+<NavigationContainer ref={navigationRef}>
+</NavigationContainer>
+```
+- Feito isso, podemos importar `navigation` em qualquer lugar e utilizá-lo:
+```js
+import * as Navigation from '../../../services/navigation';
+...
+Navigation.navigate('Rota');
+```
+
 ## Utilizando Styled Components
 - Não é necessário fazer nenhum link, apenas instalar `yarn add styled-components`
 > Snippet para criação de styled component `styled-rn`
@@ -149,6 +176,14 @@ export default Routes;
 ## Utilizando Webview no React Native
 - Consultar a [documentação](https://github.com/react-native-webview/react-native-webview/blob/master/docs/Getting-Started.md)
 - Instalar com `yarn add react-native-webview`
+
+## Intl Polyfill
+- Por algum motivo a variável global `Intl` não vem mais no `JavascriptCore` a partir da versão `0.60` do React Native. Portanto, devemos instalá-lo manualmente com `yarn add intl`
+- Depois, basta importá-la no código com:
+```js
+import 'intl';
+import 'intl/locale-data/jsonp/pt-BR'; // Ou qualquer locale que precisar
+```
 
 # Resolução de problemas
 - Grande parte dos problemas com React Native são resolvidos no terminal do Metro Bundler com `react-native start --reset-cache` ou no pior dos casos com `react-native run-android` ou `react-native run-ios`

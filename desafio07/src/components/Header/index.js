@@ -1,21 +1,27 @@
 import React from 'react';
 
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import { connect } from 'react-redux';
 
-import { Wrapper, Container, Logo, Cart, Counter } from './styles';
+import { Wrapper, Container, Logo, LogoImage, CartSection, Cart, Counter } from './styles';
 
-const Header = ({ props }) => {
+// props de function component vem no parâmetro da função
+function Header ({ navigation, cartSize }) {
   return (
     <Wrapper>
       <Container>
-        <Logo />
-        <Cart onPress={() => {navigation.navigate('Cart')}}>
-          <Icon name="shopping-cart" color="#FFF" size={24} />
-          <Counter>{0}</Counter>
-        </Cart>
+        <Logo onPress={() => {navigation.navigate('Home')}}>
+          <LogoImage  />
+        </Logo>
+        <CartSection>
+          <Cart onPress={() => {navigation.navigate('Cart')}} />
+          { cartSize > 0 ? <Counter>{cartSize}</Counter> : null }
+        </CartSection>
       </Container>
     </Wrapper>
   );
 }
 
-export default Header;
+export default connect((state) => ({
+  // Tamanho do reducer 'cart'
+  cartSize: state.cart.length
+}))(Header);

@@ -13,7 +13,7 @@ import { addToCartSuccess, updateAmountSuccess } from './actions';
 
 // Ela será como um passo a mais entre a action e o reducer que possuimos atualmente
 function* addToCart({ id }) {
-  // sempre que usarmos o effect do saga sempre precisamos do yield antes
+  // sempre que usarmos um effect do saga sempre precisamos do yield antes
   // para acessarmos informações do state, precisamos usar o 'select' do redux-saga
   const productExists = yield select(
     // aqui recebemos na função o state completo, neste state entramos no reducer de cart e daremos um '.find()' para encontrar o produto igual ao id recebido pela função 'addToCart'
@@ -75,7 +75,7 @@ function* updateAmount({ id, amount }) {
   yield put(updateAmountSuccess(id, amount));
 }
 
-// o método '.all()' do redux-saga para cadastrarmos vários 'listeners', para ficar ouvindo se uma action for disparada. Existem vários métodos do redux-saga para ouvir uma action como o 'takeEvery' ou o 'takeLatest' (isso não tem mais fim...)
+// usamos o método '.all()' do redux-saga para cadastrarmos vários 'listeners', para ficar ouvindo se uma action for disparada. Existem vários métodos do redux-saga para ouvir uma action como o 'takeEvery' ou o 'takeLatest' (isso não tem mais fim...)
 export default all([
   // Este método garante que se forem feitas várias requisições em um período de tempo, irá aguardar uma resposta da api para colocar a próxima em fila. até lá, as requisições que forem feitas serão descartadas.
   // um exemplo dessa funcionalidade são vários clicks no botão pelo usuário

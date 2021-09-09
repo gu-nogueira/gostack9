@@ -2,6 +2,7 @@ import styled from 'styled-components/native';
 import colors from '../../styles/colors';
 
 import logo from '../../assets/images/logo.png';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 export const Wrapper = styled.SafeAreaView`
 background: ${colors.dark};
@@ -15,7 +16,9 @@ justify-content: space-between;
 padding: 20px;
 `;
 
-export const Logo = styled.Image.attrs({
+export const Logo = styled.TouchableOpacity``;
+
+export const LogoImage = styled.Image.attrs({
   source: logo,
   resizeMode: 'cover',
 })`
@@ -23,13 +26,19 @@ export const Logo = styled.Image.attrs({
   height: 24px;
 `;
 
-export const Cart = styled.View`
+export const CartSection = styled.View`
   height: 24px;
   width: 24px;
   flex: 1;
   align-items: flex-end;
   justify-content: flex-end;
 `;
+
+export const Cart = styled(Icon).attrs({
+  name: 'shopping-cart',
+  color: '#fff',
+  size: 24,
+})``;
 
 export const Counter = styled.Text`
   position: absolute;
@@ -45,4 +54,5 @@ export const Counter = styled.Text`
   border-radius: 9px;
   overflow: hidden;
 `;
+
 

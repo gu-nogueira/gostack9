@@ -29,6 +29,6 @@ function Header({ cartSize }) {
 // O 'connect()' pode receber parâmetros, o primeiro parâmetro que ele pode receber é uma função, nesta função será recebido como argumento o estado, e nesse estado devemos passar os parâmetros que queremos importar
 // O que deve retornar é um objeto, por isso, passamos depois de '=>' parênteses seguidos de chaves, para retornar o objeto diretamente
 export default connect((state) => ({
-  // 'cartSize:' é o nome do reducer, podemos consultar seu nome no arquivo 'rootReducer.js'
+  // 'cartSize:' é o reducer de cart
   cartSize: state.cart.length,
 }))(Header);

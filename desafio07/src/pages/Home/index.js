@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 import api from '../../services/api';
 import { formatPrice } from '../../utils/format';
 
+import * as CartActions from '../../store/modules/cart/actions';
+
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { Container, ProductList, Product, ProductImage, ProductTitle, ProductPrice, Button, AmountButton, AmountText, TextButton } from './styles';
+import { Container, Loading, ProductList, Product, ProductImage, ProductTitle, ProductPrice, Button, AmountButton, AmountText, TextButton } from './styles';
 
 class Home extends Component {
   state = {
@@ -25,11 +28,19 @@ class Home extends Component {
     });
   }
 
+  handleAddProduct = (id) => {
+    const { dispatch } = this.props;
+    dispatch(CartActions.addToCartRequest(id));
+  }
+
   render() {
-    const { products } = this.state;
+    const { products, loading } = this.state;
+    const { amount } = this.props;
     return (
       <Container>
-        <ProductList
+        { loading ? (
+          <Loading />
+        ) : ( <ProductList
           data={products}
           keyExtractor={product => product.id}
           renderItem={({ item }) => (
@@ -37,20 +48,27 @@ class Home extends Component {
               <ProductImage source={{ uri: item.image }} />
               <ProductTitle>{item.title}</ProductTitle>
               <ProductPrice>{item.priceFormatted}</ProductPrice>
-              <Button>
+              <Button onPress={() => this.handleAddProduct(item.id)}>
                 <AmountButton>
                   <Icon name="add-shopping-cart" color="#fff" size={20} />
-                  <AmountText>{0}</AmountText>
+                  <AmountText>{amount[item.id] || 0}</AmountText>
                 </AmountButton>
                 <TextButton>Adicionar</TextButton>
               </Button>
             </Product>
           )}
-        />
-
+        /> )}
       </Container>
     );
   }
 }
 
-export default Home;
+const mapStateToProps = (state) => ({
+  // reduce array para único valor
+  amount: state.cart.reduce((amount, product) => {
+    amount[product.id] = product.amount;
+    return amount;
+  }, {})
+});
+
+export default connect(mapStateToProps)(Home);
