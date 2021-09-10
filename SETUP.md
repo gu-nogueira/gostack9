@@ -189,6 +189,58 @@ Meu setup de ambiente de desenvolvimento web
 - Ferramenta que padroniza o código de acordo com o padrão de alguma empresa;
 ...
 > Modulo 2, aula 6
+- Modelo para projeto ReactJS:
+- Dependências: 
+```
+yarn add babel-eslint -D eslint -D eslint-config-airbnb -D eslint-config-prettier -D eslint-plugin-import -D eslint-plugin-jsx-a11y -D eslint-plugin-prettier -D eslint-plugin-react -D
+yarn add eslint-plugin-react-hooks -D prettier -D
+```
+- Arquivo `.eslintrc.js`:
+```js
+module.exports = {
+  env: {
+    es6: true,
+    jest: true,
+    browser: true
+  },
+  extends: ["airbnb", "prettier", "prettier/react"],
+  globals: {
+    Atomics: "readonly",
+    SharedArrayBuffer: "readonly",
+    __DEV__: true
+  },
+  parserOptions: {
+    ecmaFeatures: {
+      jsx: true
+    },
+    ecmaVersion: 2018,
+    sourceType: "module"
+  },
+  plugins: ["react", "jsx-a11y", "import", "react-hooks", "prettier"],
+  rules: {
+    "prettier/prettier": "error",
+    "react/jsx-filename-extension": ["error", { extensions: [".js", ".jsx"] }],
+    "import/prefer-default-export": "off",
+    "no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
+    "react/jsx-one-expression-per-line": "off",
+    "global-require": "off",
+    "react-native/no-raw-text": "off",
+    "no-param-reassign": "off",
+    "no-underscore-dangle": "off",
+    camelcase: "off",
+    "no-console": ["error", { allow: ["tron"] }],
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn"
+  },
+  settings: {
+    "import/resolver": {
+      "babel-plugin-root-import": {
+        rootPathSuffix: "src"
+      },
+    },
+  },
+};
+```
 
 ### Prettier (integração com ESLint)
 - Deixa o código mais bonito. Separa linhas muito grandes;
