@@ -35,4 +35,7 @@
 
 ## Web frontend 2 [Arquitetura Flux e React Hooks]
 
-* [] Modulo 7;
+* [x] Modulo 7;
+* [x] Desafio 7;
+* [x] Modulo 8;
+* [ ] Desafio 8;

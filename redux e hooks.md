@@ -326,3 +326,91 @@ toast.error('Quantidade solicitada fora de estoque');
 - Diminui a verbosidade entre passagem de `props` e informações do `state` e `life cycle` entre os componentes
 - Utiliza `function components` somente
 - Interessante para se estudar, porém a grande maioria no mercado ainda deve utilizar `class components`
+- Até então, a úncia forma de termos o `state` e os métodos de `life cycle` no React era com `class components`
+
+## Hook useState
+- Permite a criação de estados na função no formato de `function component`. Pode ser importado dessa forma:
+```js
+import React, { useState } from 'react';
+```
+- Assim, podemos criá-lo da seguinte forma:
+```js
+const [techs, setTech] = useState([
+  'Valores',
+  'Iniciais',
+  'Do',
+  'State'
+]);
+```
+- `useState` retorna um `array` com 2 posições, na primeira `techs` é o próprio state, a segunda `setTech` é a função para atualizar esse state
+- Neste formato, temos vários states com as informações necessárias, não mais um state apenas desestruturado em um objeto
+
+## Hook useEffect
+- O `useEffect` é o hook que sobrepõe os métodos de `life cycle` que tínhamos anteriormente, como o `componentDidMount` por exemplo
+- Podemos importá-lo assim como o `useState`:
+```js
+import React, { useState, useEffect } from 'react';
+```
+- O `useEffect` pode ser chamado normalmente, seu primeiro parâmetro é a função a ser executada. Já o segundo parâmetro, é um `array listener`, que irá ouvir quaisquer alterações nas variáveis passadas neste array
+- Exemplo de `componentDidMount`:
+```js
+useEffect(() => {
+  const storageTechs = localStorage.getItem('techs');
+  if (storageTechs) {
+    setTech(JSON.parse(storageTechs));
+  }
+}, []);
+```
+- Exemplo de `componentDidUpdate`:
+```js
+useEffect(() => {
+  localStorage.setItem('techs', JSON.stringify(techs));
+  // Effect Listener
+}, [techs]);
+```
+
+## Hook useMemo
+- Seu uso é indicado para casos mais complexos de cálculos pesados que não podem ser executado em qualquer alteração na renderização
+- Os imports de `hooks` seguem no mesmo padrão:
+```js
+import React, { useState, useEffect, useMemo } from 'react';
+```
+- Exemplo de uso:
+```js
+const techSize = useMemo(() => techs.length, [techs]);
+```
+
+## Hook useCallback
+- O que acontece nos `function components`, é que quando temos outras funções que fazem comportamentos no componente, toda vez que o componente é renderizado o javascript rearmazena essas funções do zero. A função do `useCallback` é parecida com o `useMemo`: fazer com que essas funções sejam remontadas apenas se houverem alterações as variáveis passadas no `array listener`
+- Anteriormente a função era montada da seguinte forma:
+```js
+function handleAdd() {
+  setTech([...techs, newTech]);
+  setNewTech('');
+}
+```
+- Agora, inserindo `useCallback` ficará da seguinte forma:
+```js
+const handleAdd = useCallback(() => {
+  setTech([...techs, newTech]);
+  setNewTech('');
+}, [techs, newTech]);
+```
+
+# Redux + Hooks
+
+## Capturando reducer
+- Para pegarmos um state do Redux, ao invés de usarmos o `connect` na exportação do componente, podemos usar `useSelector`:
+```js
+import { useSelector } from 'react-redux';
+...
+const cartSize = useSelector(state => state.cart.length);
+```
+
+## Dispatch
+- O dispatch pode ser utilizado importando o `useDispatch`:
+```js
+import { useDispatch } from 'react-redux';
+...
+const dispatch = useDispatch();
+```
