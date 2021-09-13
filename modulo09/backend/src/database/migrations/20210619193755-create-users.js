@@ -2,9 +2,7 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    /**
-     * Aqui irão comandos de criação / alteração
-     */
+
     await queryInterface.createTable('users', {
       id: {
         type: Sequelize.INTEGER,
@@ -41,11 +39,7 @@ module.exports = {
     });
   },
 
-  // No método down não vamos utilizar o parâmetro sequelize
   down: async (queryInterface) => {
-     /**
-     * Aqui irão comandos de rollback
-     */
      await queryInterface.dropTable('users');
   }
 };

@@ -8,7 +8,6 @@ import 'express-async-errors';
 import routes from './routes';
 
 import Youch from 'youch';
-
 import * as Sentry from '@sentry/node';
 import sentryConfig from './config/sentry';
 
@@ -36,7 +35,7 @@ class App {
     }));
     this.server.use(Sentry.Handlers.tracingHandler());
     this.server.use(express.json());
-    this.server.use('/files', express.static(path.resolve(__dirname, '..', 'tmp', 'uploads')))
+    this.server.use('/files', express.static(path.resolve(__dirname, '..', 'tmp', 'uploads')));
   }
 
   routes() {

@@ -1,5 +1,5 @@
 console.time("Load time");
-console.log("Loading app...");;
+console.log("Loading app...");
 
 import app from './app';
 
