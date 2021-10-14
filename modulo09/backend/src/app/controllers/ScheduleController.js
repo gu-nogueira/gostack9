@@ -10,7 +10,6 @@ class ScheduleController {
       id: req.userId,
       provider: true,
     } });
-
     if (!checkUserProvider) {
       return res.status(401).json({ error: 'User is not a provider' });
     }
@@ -22,14 +21,14 @@ class ScheduleController {
       provider_id: req.userId,
       canceled_at: null,
       date: {
-        // Vamos fazer uma comparação between no postgresql, mas usando os operators do sequelize
-        // Para definir uma variável dentro de um objeto, sem setar exatamente como um nome dentro do objeto vamos usar '[]' para definir como uma chave do objeto
-        // O operador Op.between do sequelize retorna um array, entre x e y
-        // startOfDay e endOfDay são definidos já pelo date-fns
         [Op.between]: [startOfDay(parsedDate), endOfDay(parsedDate)],
       },
     },
-    // Vamos ordenar esses agendamentos por data
+    include: [{
+      model: Users,
+      as: 'user',
+      attributes: ['name'],
+    }],
     order: ['date'],
   });
 

@@ -764,3 +764,15 @@ src > config > sentry.js
 dsn: process.env.SENTRY_DSN,
 ```
 - Vamos deixar um arquivo na raiz `.env.example` para servir de exemplo para novas configurações. Com as variáveis mas com valores que são sensíveis vazios.
+
+# CORS (Cross-Origin Resource Sharing)
+
+- Esta biblioteca permite que outras aplicações acessem a API: `yarn add cors`
+- Ele pode ser adicionado na aplicação em `app.js` nos `middlewares()`:
+```js
+// Dev enviroment
+this.server.use(cors());
+
+// Production enviroment
+this.server.use(cors({ origin:  'https://localhost:5000' }));
+```

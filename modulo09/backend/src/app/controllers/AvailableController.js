@@ -45,16 +45,10 @@ class AvailableController {
 
       return {
         time,
-        // Vamos utilizar o format do date-fns para formatar a data no formato padrão como utilizamos até então e como salvamos no banco
         value: format(value, "yyyy-MM-dd'T'HH:mm:ssxxx"),
-        // Agora vamos fazer a verificação se o horário está ou não disponível
         available:
-          // Vamos checar com o método isAfter do date-fns se 'value', que é a nossa data, está depois (se ainda não passou) do 'new Date()', que é o agora
           isAfter(value, new Date()) &&
-          // Agora vamos checar se esses horários não estão reservados (se não há appointments para eles)
-          // Vamos utilizar o método '.find()' no array appointments, portanto se encontrar retornará false, pois há '!' (sinal de negação antes de appointments)
           !appointments.find(a =>
-            // Vamos utilizar o format novamente pois este é o formato dos horários que temos no parâmetro 'time' do nosso objeto de 'available'
           format(a.date, 'HH:mm') == time),
       };
 

@@ -22,7 +22,7 @@ class Users extends Model {
       }
     });
 
-    return this; // Não vejo a necessidade de usar isso, pois a classe retorna automaticamente o this caso não haja nenhum return
+    return this;
   };
 
   static associate(models) {

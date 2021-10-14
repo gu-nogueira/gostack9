@@ -17,7 +17,7 @@ module.exports = {
       email: {
         type: Sequelize.STRING,
         allowNull: false,
-        unique: true, // Não podemos ter emails repetidos
+        unique: true,
       },
       password_hash: {
         type: Sequelize.STRING,
