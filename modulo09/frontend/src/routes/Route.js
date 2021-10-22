@@ -6,16 +6,18 @@ import { Route, Redirect } from 'react-router-dom';
 import AuthLayout from '~/layouts/auth';
 import DefaultLayout from '../layouts/default';
 
+import { store } from '~/store';
+
 // Vamos pegar das props deste componente
 export default function RouteWrapper({
   // Colocamos com 'C' maiúsuclo para utilizar a sintaxe do jsx
   component: Component,
   // Esta prop será arbitrada para as rotas, padrão será false
-  isPrivate = false,
+  isPrivate,
   // Todo o restante das propriedades será armazenado na variável rest
-  ... rest
+  ...rest
 }) {
-  const signed = false;
+  const { signed } = store.getState().auth;
 
   if (!signed && isPrivate) {
     return <Redirect to="/" />;
@@ -34,7 +36,7 @@ export default function RouteWrapper({
 
   return (
     <Route
-      { ... rest }
+      { ...rest }
       render={props => (
         // Assim, configuramos um 'layout padrão' para as rotas, tanto para autenticada quanto não
         <Layout>

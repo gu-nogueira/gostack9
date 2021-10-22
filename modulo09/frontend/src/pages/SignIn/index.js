@@ -1,7 +1,10 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Form, Input } from '@rocketseat/unform';
 import * as Yup from 'yup';
+
+import { signInRequest } from '~/store/modules/auth/actions';
 
 import logo from '~/assets/logo.svg';
 
@@ -16,9 +19,14 @@ const schema = Yup.object().shape({
 });
 
 function SignIn() {
-  function handleSubmit(data) {
+  const dispatch = useDispatch();
+  const loading = useSelector(state => state.auth.loading);
 
+  // Vamos pasasar o parâmetro data desestruturado para melhor entendimento do código
+  function handleSubmit({ email, password }) {
+    dispatch(signInRequest(email, password));
   }
+
   return (
     <>
       <img src={logo} alt="Go Barber" />
@@ -28,7 +36,7 @@ function SignIn() {
         <Input name="email" type="email" placeholder="Seu e-mail" />
         <Input name="password" type="password" placeholder="Sua senha secreta" />
 
-        <button type="submit">Acessar</button>
+        <button type="submit">{ loading ? 'Carregando...' : 'Acessar' }</button>
         <Link to ="/register">Criar conta gratuita</Link>
       </Form>
     </>
