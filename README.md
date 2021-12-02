@@ -1,4 +1,4 @@
-# Repo de estudos
+# Repo de estudos para o Go Stack 9
 
 * [x] Curso Javascript;
   - Estudar prototypes nativos;
