@@ -516,3 +516,42 @@ export default function Repository({ match }) {
 - Criamos em `src > components` onde ficarão todos os componentes da nossa aplicação
 - Para cada componente, iremos criar uma pasta dentro de `components`, pois dessa forma, isolamos cada componente e podemos criar o seu `index.js`, se precisarmos estilizá-lo, criamos `styles.js` e mais algum arquivo de configuração caso necessário
 - No nosso exemplo, vamos criar `src > components > Container > index.js`
+
+# Root imports
+- Ótimo para não termos que ficar navegando entre muitas pastas no React. Para isso, vamos configurar alguns plugins customizados do Babel: `yarn add customize-cra react-app-rewired -D`
+
+E instalamos o plugin do Root import também: `yarn add babel-plugin-root-import`
+
+Depois, criamos na raiz do projeto um arquivo `config.overries.js`:
+```js
+const { addBabelPlugin, override } = require('customize-cra');
+module.exports = override(
+  addBabelPLugin([
+    'babel-plugin-root-import',
+    {
+      rootPathSuffix: 'src'
+    }
+  ])
+);
+```
+
+Com isso, podemos fazer os `imports` da nossa aplicação com `~`, dessa forma, o ponto de partida será `./src`:
+```js
+import Exemplo from '~/pages/Exemplo';
+```
+
+Depois, como estamos usando uma versão customizada do babel, precisamos ir em `package.json` e trocar os `scripts` de `react-scripts` para `react-app-rewired`, exceto o script de `eject`
+
+E por fim, para o intelisense funcionar corretamente no VSCode, precisasmos criar na raiz do projeto o arquivo `jsconfig.json`:
+```json
+{
+  "compilerOptions": {
+    "baseUrl": "src",
+    "paths": {
+      // Aqui é o caminho deste arquivo para a pasta "src" referenciada logo acima
+      "~/*": ["*"],
+    }
+  }
+}
+
+```
