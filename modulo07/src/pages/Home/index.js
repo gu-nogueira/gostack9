@@ -34,7 +34,7 @@ class Home extends Component {
     dispatch(CartActions.addToCartRequest(id));
   }
 
-  // Uma coisa que devemos tomar cuidado no React é trabalhar FUNÇÕES dentro do render, devemos ao máximo trabalhar para tratar as informações antes de chegar no render, essa parte de tratamento de valores, textos, etc...
+  // Uma coisa que devemos tomar cuidado no React é trabalhar FUNÇÕES dentro do render, devemos ao máximo tabalhar para tratar as informaçõres antes de chegar no render, essa parte de tratamento de valores, textos, etc...
   render() {
     const { products } = this.state;
     const { amount } = this.props;

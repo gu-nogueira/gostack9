@@ -400,7 +400,7 @@ const handleAdd = useCallback(() => {
 # Redux + Hooks
 
 ## Capturando reducer
-- Para pegarmos um state do Redux, ao invés de usarmos o `connect` na exportação do componente, podemos usar `useSelector`:
+- Para pegarmos um state do Redux, ao invés de usarmos o `connect` na exportação do componente, podemos usar `useSelector`. Isso dispensa o antigo uso da função `mapStateToProps()`:
 ```js
 import { useSelector } from 'react-redux';
 ...
