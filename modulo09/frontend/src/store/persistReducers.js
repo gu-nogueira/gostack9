@@ -1,3 +1,4 @@
+// storage utiliza o storage nativo do ambiente da aplicação
 import storage from 'redux-persist/lib/storage';
 import { persistReducer } from 'redux-persist';
 
