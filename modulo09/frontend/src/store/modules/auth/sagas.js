@@ -64,6 +64,10 @@ export function setToken({ payload }) {
   }
 }
 
+export function signOut() {
+  history.push('/');
+}
+
 export default all([
   // Take latest ouve a action e dispara a função
 
@@ -72,4 +76,6 @@ export default all([
   takeLatest('persist/REHYDRATE', setToken),
   takeLatest('@auth/SIGN_IN_REQUEST', signIn),
   takeLatest('@auth/SIGN_UP_REQUEST', signUp),
+  // Vamos ouvir o sign out também no saga de autenticação para mandar o usuário para a rota raiz '/'. (OBS: Não tem uma forma mais simples de fazer isso...?)
+  takeLatest('@auth/SIGN_OUT', signOut),
 ]);

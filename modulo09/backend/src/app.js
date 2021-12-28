@@ -20,13 +20,13 @@ class App {
 
     Sentry.init(sentryConfig);
 
-    console.timeLog("Load time");
+    console.timeLog('Load time');
     console.log('Loading routes...');
 
     this.middlewares();
     this.routes();
     this.exceptionHandler();
-    console.timeEnd("Load time");
+    console.timeEnd('Load time');
     console.log('Complete!');
   }
 
@@ -35,7 +35,10 @@ class App {
     this.server.use(cors());
     this.server.use(Sentry.Handlers.tracingHandler());
     this.server.use(express.json());
-    this.server.use('/files', express.static(path.resolve(__dirname, '..', 'tmp', 'uploads')));
+    this.server.use(
+      '/files',
+      express.static(path.resolve(__dirname, '..', 'tmp', 'uploads'))
+    );
   }
 
   routes() {
