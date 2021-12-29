@@ -67,24 +67,28 @@ function Notifications() {
 
       <NotificationList visible={visible}>
         <Scroll>
-          {notifications.map((notification) => (
-            // O id no mongodb possui '_' antes
-            <Notification key={notification._id} unread={!notification.read}>
-              <p>{notification.content}</p>
-              <time>{notification.timeDistance}</time>
-              {/* Verifica se notification.read é false com '!'. Usa-se o '&&' para condições ternárias sem o 'else', ou ':' */}
-              {!notification.read && (
-                <button
-                  type="button"
-                  onClick={() => {
-                    handleMarkAsRead(notification._id);
-                  }}
-                >
-                  Marcar como lida
-                </button>
-              )}
-            </Notification>
-          ))}
+          {notifications.length > 0 ? (
+            notifications.map((notification) => (
+              // O id no mongodb possui '_' antes
+              <Notification key={notification._id} unread={!notification.read}>
+                <p>{notification.content}</p>
+                <time>{notification.timeDistance}</time>
+                {/* Verifica se notification.read é false com '!'. Usa-se o '&&' para condições ternárias sem o 'else', ou ':' */}
+                {!notification.read && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      handleMarkAsRead(notification._id);
+                    }}
+                  >
+                    Marcar como lida
+                  </button>
+                )}
+              </Notification>
+            ))
+          ) : (
+            <span>Não há nenhuma notificação!</span>
+          )}
         </Scroll>
       </NotificationList>
     </Container>
