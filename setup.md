@@ -279,3 +279,13 @@ insert_final_newline = true
 - Trabalho: `cd C:/Android/Sdk/emulator && ./emulator -avd Pixel_5_API_29_2`
 - Casa: `cd C:/Android/Sdk/emulator && ./emulator -avd Pixel_4_API_29`
 - Caso rodando em arquitetura x86, mudar o `C:/Android/Sdk/emulator` por `C:/Android/Sdk/tools` 
+
+## Utilitários
+
+### Omni (descontinuado)
+
+> Este pacote monta projetos com dependencias desatualizadas
+- Pacote da rocketseat para instalar a estrutura que utilizo: `yarn global add @rocketseat/omni`
+- Agora, basta rodar omni init `nova_pasta_do_projeto`
+- Parâmetros:
+  * --only=server (monta somente o projeto node)
