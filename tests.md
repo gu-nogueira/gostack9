@@ -72,3 +72,34 @@ Testes automatizados são usados para manter todas as funcionalidades da aplica�
 
   - Vamos criar um arquivo `example.test.js`, e podemos rodar já `yarn test` para vermos
   - Por padrão não há syntax highlighting (intellisense) nos arquivos de testes. Por isso, uma boa prática (mesmo que não estejamos utilizando `typescript` em nossa aplicação é adicionarmos a definição de tipos para o `jest`): `yarn add -D @types/jest`
+
+  ## Rodando scripts no package.json
+
+  - Setando variáveis ambientes nos comandos de `scripts`. Por exemplo:
+
+  ```json
+  {
+  // Linux | Mac
+    "test": "NODE_ENV=test jest",
+  // Windows
+    "test": "set NODE_ENV=test&& jest"
+  }
+  ```
+
+  - Configurando comandos antes e depois de algum script. Exemplo para rodar um comandos antes e depois de `yarn test`:
+  ```json
+  {
+    "pretest": "set NODE_ENV=test&& sequelize db:migrate",
+    "test": "set NODE_ENV=test&& jest",
+    "posttest": "set NODE_ENV=test&& sequelize db:migrate:undo:all"
+  }
+  ```
+
+  ## Testes de integração
+
+  - Testes que lidão com efeitos colaterais como conexões com banco de dados, requisições a APIs na aplicação e não com funções puras, são chamados de **testes de integração**. Portanto, vamos criar dentro de `__tests__` uma nova pasta `integration`, onde ficarão os testes de integração
+  - Iremos desenvolver testes antes mesmo de desenvolver `Controllers` e `routes`, neste exemplo testaremos uma inserção na tabela de usuários.
+
+  ### Supertest (HTTP requester para testes)
+
+  - Diferente do `axios` ou `fetch`, o `supertest` possui algumas funcionalidades específicas para teste, vamos instalá-lo como: `yarn add supertest -D`

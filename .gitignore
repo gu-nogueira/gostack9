@@ -5,6 +5,5 @@ node_modules
 .vscode
 .env
 
-dbs/*
-tests/
-backups/
+# Tests
+coverage
