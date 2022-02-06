@@ -9,6 +9,8 @@ module.exports = {
   database: process.env.DB_NAME,
   // Passamos ./ para pegar a raiz do projeto
   storage: './__tests__/database.sqlite',
+  // logging exibe ou não as queries no console, por padrão vem 'true'
+  logging: false,
   define: {
     timestamps: true,
     underscored: true,

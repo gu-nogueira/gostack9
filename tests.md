@@ -103,3 +103,40 @@ Testes automatizados são usados para manter todas as funcionalidades da aplica�
   ### Supertest (HTTP requester para testes)
 
   - Diferente do `axios` ou `fetch`, o `supertest` possui algumas funcionalidades específicas para teste, vamos instalá-lo como: `yarn add supertest -D`
+
+  ## Utilitários
+
+  - Criamos uma pasta `utils` dentro de `__tests__` para lidar com alguns comportamentos dentro dos testes
+  
+  ### Truncate
+
+  - O `truncate.js` é responsável por limpar todos os dados do banco de testes para não conflitar entre testes. Ex: Testes de e-mails duplicados
+
+  ```js
+  import database from '../../src/database';
+
+  export default function truncate() {
+    return Promise.all(
+      Object.keys(database.connection.models).map(key => {
+        return database.connection.models[key].destroy({
+          truncate: true,
+          force: true,
+        });
+      })
+    );
+  }
+  ```
+
+  - Chamando a função `truncate` dentro de qualquer arquivo de testes, basta passarmos o `await` antes da função para executar de forma assíncrona 
+  - Vamos utilizar o método auxiliar `beforeEach()` do `Jest` para rodarmos esse `util` antes de cada teste deste arquivo
+
+  ```js
+  beforeEach(async () => {
+    await truncate();
+  });
+  ```
+
+  ### FactoryGirl + Faker
+
+  - Para manter a fidelidade dos testes, o ideal é utilizar dados randômicos em sua execução.
+  - Pára isso vamos utilizar `factory-girl` e `faker`. **OBS:** para o faker utilizar o `@faker-js/faker`, já que a lib original foi corrompido pelo mantenedor
