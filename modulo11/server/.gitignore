@@ -5,6 +5,7 @@ tmp/*
 !tmp/.gitkeep
 
 __tests__/coverage
+database.sqlite
 
 dist
 
