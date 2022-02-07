@@ -7,7 +7,7 @@
   - Estudar ES6;
   - Estudar expressão regular*;
 
-## Backend [Node]
+## Backend [Node.js]
 
 * [x] Modulo 1;
 * [x] Modulo 2;
@@ -21,7 +21,7 @@
   - Repositório no GitHub [OK];
   - Documentação [OK];
 
-## Web frontend [React]
+## Web frontend [ReactJS]
 
 * [x] Modulo 4;
 * [x] Modulo 5;
@@ -33,9 +33,23 @@
 * [x] Modulo 6;
 * [x] Desafio 6;
 
-## Web frontend 2 [Arquitetura Flux e React Hooks]
+## Web frontend 2 [Arquitetura Flux & React Hooks]
 
 * [x] Modulo 7;
 * [x] Desafio 7;
 * [x] Modulo 8;
-* [ ] Desafio 8;
+* [x] Desafio 8;
+
+## Aplicação Web [Go Barber & Fast Feet Web]
+
+* [x] Modulo 9;
+* [ ] Desafio 9;
+
+## Aplicação Mobile [Go Barber & Fast Feet Web]
+
+* [ ] Modulo 10;
+* [ ] Desafio 10;
+
+## Testes TDD [Node.js]
+
+* [x] Modulo 11;
