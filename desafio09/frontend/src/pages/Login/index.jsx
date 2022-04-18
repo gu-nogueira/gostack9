@@ -6,10 +6,10 @@ import * as Yup from 'yup';
 
 import { signInRequest } from '../../store/modules/auth/actions';
 
-import CustomInput from '../../components/CustomInput';
+import IconInput from '../../components/IconInput';
 
 import { Column } from './styles';
-import Logo from '../../assets/svgs/logo-gradient.svg';
+import Logo from '../../assets/svgs/logo-white.svg';
 import { ReactComponent as Loader } from '../../assets/svgs/loader.svg';
 import { MdEmail, MdLock } from 'react-icons/md';
 
@@ -34,20 +34,17 @@ function Login() {
     <>
       <Column>
         <img src={Logo} alt="Ebovinos" />
-        <h1>
-          Faça seu login <br />
-          na plataforma
-        </h1>
       </Column>
       <Column>
         <Form schema={schema} onSubmit={handleSubmit}>
-          <CustomInput
+          <h2>Faça seu login</h2>
+          <IconInput
             icon={MdEmail}
             name="email"
             type="email"
             placeholder="E-mail"
           />
-          <CustomInput
+          <IconInput
             icon={MdLock}
             name="password"
             type="password"

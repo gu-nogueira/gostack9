@@ -172,7 +172,6 @@ export const Content = styled.div`
     color: #fff;
   }
 
-  /* Create the checkmark/indicator (hidden when not checked) */
   input[type='radio']:after {
     content: '';
     position: absolute;

@@ -4,7 +4,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import colors from './colors';
 
 export default createGlobalStyle`
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap');
 
   * {
     margin: 0;
@@ -21,7 +21,7 @@ export default createGlobalStyle`
     height: 100%;
     scroll-behavior: smooth;
     background-color: ${colors.background};
-    --toastify-font-family: 'Inter', sans-serif;
+    --toastify-font-family: 'Roboto', sans-serif;
   }
 
   body {
@@ -29,7 +29,7 @@ export default createGlobalStyle`
   }
 
   body, input, select, button {
-    font: 16px 'Inter', sans-serif;
+    font: 16px 'Roboto', sans-serif;
     color: ${colors.grey1};
   }
 
@@ -46,38 +46,38 @@ export default createGlobalStyle`
    */
 
   h1 {
-    font-size: 42px;
+    font-size: 36px;
     font-weight: 800;
-    color: ${colors.green4};
+    color: #FFF;
   }
 
   h2 {
-    font-size: 32px;
+    font-size: 28px;
     font-weight: 700;
-    color: ${colors.green4};
+    color: ${colors.purpleShadow};
   }
 
   h3 {
-    font-size: 22px;
+    font-size: 18px;
     font-weight: 600;
-    color: ${colors.green4};
+    color: ${colors.purpleShadow};
   }
 
   h4 {
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 600;
-    color: ${colors.green3};
+    color: ${colors.purple};
   }
 
   a {
     font-size: 14px;
     text-decoration: none;
-    color: ${colors.green3};
+    color: ${colors.purple};
     font-weight: 500;
   }
 
   a:active {
-    color: ${colors.green2};
+    color: ${colors.purpleLight};
   }
 
   small {
@@ -103,13 +103,13 @@ export default createGlobalStyle`
      */
 
     h1 {
-      font-size: 36px;
-      line-height: 36px;
+      font-size: 34px;
+      line-height: 34px;
     }
 
     h2 {
-      font-size: 26px;
-      line-height: 26px;
+      font-size: 24px;
+      line-height: 24px;
     }
   }
 `;

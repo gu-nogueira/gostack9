@@ -19,15 +19,15 @@ export const Wrapper = styled.div`
 export const Content = styled.div`
   display: flex;
   width: 100%;
-  max-width: 740px;
+  height: 450px;
+  max-width: 800px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
 
   form {
-    max-width: 380px;
-    background: #fff;
-    padding: 60px 30px;
-    border: 1px solid ${colors.border};
-    border-radius: 5px;
     display: flex;
+    width: 100%;
     flex-direction: column;
 
     a {
@@ -44,14 +44,14 @@ export const Content = styled.div`
       align-items: center;
       margin: 15px 0 0;
       height: 38px;
-      background: ${colors.orange1};
+      background: ${colors.purple};
       color: #fff;
       border: none;
       border-radius: 5px;
       transition: background 0.2s;
 
       &:hover {
-        background: ${colors.orange2};
+        background: ${colors.purpleShadow};
       }
 
       svg {

@@ -1,4 +1,5 @@
 import styled, { keyframes } from 'styled-components';
+import colors from '../../styles/colors';
 
 const fadeIn = keyframes`
   from {
@@ -9,24 +10,30 @@ const fadeIn = keyframes`
   }
 `;
 
+
+
 export const Column = styled.div`
   width: 100%;
-  align-self: center;
+  height: 100%;
+  padding: 30px;
   animation: ${fadeIn} 0.5s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  &:nth-child(1) {
+    background: ${colors.purple};
+    border-radius: 10px 0 0 10px;
+  }
 
   img {
-    width: 180px;
-    height: 50px;
+    width: 240px;
+    height: 40px;
   }
 
-  & + div {
-    margin-left: 15px;
-    padding-left: 15px;
-  }
-
-  h1 {
-    margin-top: 40px;
-    line-height: 42px;
+  h2 {
+    margin-bottom: 30px;
   }
 
   small {
