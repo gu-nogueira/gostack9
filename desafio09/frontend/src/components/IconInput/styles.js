@@ -10,11 +10,10 @@ export const Container = styled.div`
   border: 1px solid ${colors.grey2};
   border-radius: 5px;
   height: 38px;
-  padding: 0 2px;
   color: ${colors.grey2};
   svg {
     min-width: 16px;
-    margin-left: 12px;
+    margin-left: 10px;
   }
   input {
     border: none;
@@ -49,8 +48,15 @@ export const Container = styled.div`
     border-radius: 3px;
     margin-right: 2px;
     background: none;
+    height: 26px;
+    width: 26px;
+
     &:active {
       background: ${colors.background};
+    }
+
+    svg {
+      margin-left: 0;
     }
   }
   /*

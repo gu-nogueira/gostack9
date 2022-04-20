@@ -23,7 +23,7 @@ export const Content = styled.div`
   max-width: 800px;
   background: #fff;
   border-radius: 10px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 0 20px rgba(125, 64, 231, 0.1);
 
   form {
     display: flex;

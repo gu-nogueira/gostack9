@@ -10,8 +10,6 @@ const fadeIn = keyframes`
   }
 `;
 
-
-
 export const Column = styled.div`
   width: 100%;
   height: 100%;
@@ -28,8 +26,8 @@ export const Column = styled.div`
   }
 
   img {
-    width: 240px;
-    height: 40px;
+    width: 200px;
+    height: 32px;
   }
 
   h2 {
