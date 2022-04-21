@@ -7,7 +7,10 @@ import ScrollToTop from './ScrollToTop';
 import Login from '../pages/Login';
 import Register from '../pages/Register';
 
-import Dashboard from '../pages/Dashboard';
+import Deliveries from '../pages/Deliveries';
+import Deliverymen from '../pages/Deliverymen';
+import Recipients from '../pages/Recipients';
+import Problems from '../pages/Problems';
 
 function Routes() {
   return (
@@ -17,7 +20,10 @@ function Routes() {
         <Route path="/" exact component={Login} />
         <Route path="/register" component={Register} />
 
-        <Route path="/dashboard" component={Dashboard} isPrivate />
+        <Route path="/deliveries" component={Deliveries} isPrivate />
+        <Route path="/deliverymen" component={Deliverymen} isPrivate />
+        <Route path="/recipients" component={Recipients} isPrivate />
+        <Route path="/problems" component={Problems} isPrivate />
 
         {/* 404 Page */}
 

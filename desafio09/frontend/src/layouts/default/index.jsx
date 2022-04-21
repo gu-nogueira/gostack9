@@ -9,10 +9,7 @@ import Header from '../../components/Header';
 function DefaultLayout({ children }) {
   return (
     <Wrapper>
-      <Header
-        signed={children.props.signed}
-        location={children.props.location}
-      />
+      <Header location={children.props.location} />
       <Content>{children}</Content>
       {/* <Footer signed={children.props.signed} /> */}
     </Wrapper>

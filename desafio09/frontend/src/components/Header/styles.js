@@ -1,4 +1,6 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+
+import { Link } from 'react-router-dom';
 
 import colors from '../../styles/colors';
 
@@ -18,34 +20,41 @@ export const Container = styled.div`
 
     img {
       width: 130px;
-      height: 22px;
+      height: 20px;
     }
   }
 `;
 
-export const Menu = styled.ul`
+export const Menu = styled.div`
   border-left: 1px solid ${colors.grey2};
   margin-left: 25px;
   padding-left: 25px;
   height: 100%;
   display: flex;
   align-items: center;
+`;
 
-  li {
-    font-size: 14px;
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    cursor: pointer;
-    transition: all 0.3s;
+export const Item = styled(Link).attrs(({ route }) => ({ to: route || '/' }))`
+  color: #333;
+  font-size: 14px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.3s;
 
-    &:hover {
+  ${(props) =>
+    props.selected &&
+    css`
       color: ${colors.purple};
       letter-spacing: 2px;
-    }
+    `}
+
+  &:hover {
+    opacity: 0.8;
   }
 
-  li + li {
+  & + a {
     margin-left: 7%;
   }
 `;
