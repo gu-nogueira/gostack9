@@ -10,9 +10,14 @@ import Logo from '../../assets/svgs/logo.svg';
 function Header() {
   const menu = ['Encomendas', 'Entregadores', 'Destinatários', 'Problemas'];
   const routes = ['deliveries', 'deliverymen', 'recipients', 'problems'];
-  const [selected, setSelected] = useState();
+  const [selected, setSelected] = useState('Encomendas');
 
   const profile = useSelector((state) => state.user.profile);
+  const dispatch = useDispatch();
+
+  function handleLogout() {
+    dispatch(signOut());
+  }
 
   return (
     <Container>
@@ -33,7 +38,7 @@ function Header() {
       </nav>
       <Profile>
         <span>{profile.name}</span>
-        <button>
+        <button onClick={handleLogout}>
           Fazer Logout <MdOutlineLogout />
         </button>
       </Profile>
