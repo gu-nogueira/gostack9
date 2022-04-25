@@ -1,3 +1,8 @@
 import styled from 'styled-components';
 
-export const Container = styled.div``;
+export const Row = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
+`;

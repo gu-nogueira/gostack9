@@ -2,28 +2,17 @@ import styled from 'styled-components';
 import colors from '../../styles/colors';
 
 export const Wrapper = styled.div`
+  width: 100%;
+  min-height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  min-height: 100%;
+  align-items: center;
+  /* justify-content: space-between; */
 `;
 
 export const Content = styled.div`
-  padding-top: 64px;
-
-  section {
-    & + section {
-      margin-top: 50px;
-    }
-  }
-
-  @media only screen and (max-width: 1049px) {
-    section {
-      & + section {
-        margin-top: 30px;
-      }
-    }
-  }
+  width: 1200px;
+  padding-top: 50px;
 
   /*
    *  Cards
@@ -40,18 +29,6 @@ export const Content = styled.div`
     }
   }
 
-  .sub-card {
-    background: #fff;
-    padding: 20px;
-    border-radius: 5px;
-    border: 1px solid ${colors.border};
-    overflow: hidden;
-
-    @media only screen and (max-width: 1049px) {
-      padding: 15px;
-    }
-  }
-
   /*
    *  Tags
    */
@@ -62,11 +39,6 @@ export const Content = styled.div`
     font-weight: 500;
     padding: 4px 8px;
     border-radius: 5px;
-  }
-
-  .type {
-    margin: 0;
-    font-weight: 700;
   }
 
   /*
@@ -94,21 +66,6 @@ export const Content = styled.div`
   }
 
   /*
-   *  Sliders
-   */
-
-  .splide__pagination__page {
-    background: ${colors.background};
-    opacity: 0.8;
-    transition: all 0.2s;
-  }
-
-  .splide__pagination__page.is-active {
-    background: ${colors.green3};
-    opacity: 1;
-  }
-
-  /*
    *  Inputs
    */
 
@@ -124,19 +81,17 @@ export const Content = styled.div`
   }
 
   input[type='checkbox']:checked {
-    background: ${colors.green3};
-    border: 2px solid ${colors.green3};
+    background: ${colors.purpleShadow};
+    border: 2px solid ${colors.purpleShadow};
     color: #fff;
   }
 
-  /* Create the checkmark/indicator (hidden when not checked) */
   input[type='checkbox']:after {
     content: '';
     position: absolute;
     display: none;
   }
 
-  /* Show the checkmark when checked */
   input[type='checkbox']:checked:after {
     display: block;
     left: 4px;
@@ -167,8 +122,8 @@ export const Content = styled.div`
   }
 
   input[type='radio']:checked {
-    background: ${colors.green3};
-    border: 2px solid ${colors.green3};
+    background: ${colors.purpleShadow};
+    border: 2px solid ${colors.purpleShadow};
     color: #fff;
   }
 
@@ -178,7 +133,6 @@ export const Content = styled.div`
     display: none;
   }
 
-  /* Show the checkmark when checked */
   input[type='radio']:checked:after {
     display: block;
     left: 3px;
@@ -203,6 +157,8 @@ export const Content = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+    text-transform: uppercase;
+    letter-spacing: 1px;
     height: 38px;
     padding: 10px 16px;
     border: none;
@@ -210,6 +166,15 @@ export const Content = styled.div`
     color: #fff;
     white-space: nowrap;
     transition: background 0.2s;
+    background: ${colors.purple};
+
+    svg {
+      margin-right: 5px;
+    }
+
+    &:hover {
+      background: ${colors.purpleShadow};
+    }
 
     &:disabled {
       background: ${colors.grey2} !important;
@@ -226,166 +191,6 @@ export const Content = styled.div`
     font-size: 14px;
   }
 
-  .button.orange {
-    background: ${colors.orange1};
-
-    &:hover {
-      background: ${colors.orange2};
-    }
-  }
-
-  .button.green {
-    background: ${colors.green4};
-
-    &:hover {
-      background: ${colors.green3};
-    }
-  }
-
-  .button.red {
-    color: ${colors.warning1};
-    background: ${colors.warning1 + '33'};
-
-    &:hover {
-      color: #fff;
-      background: ${colors.warning1};
-    }
-  }
-
-  .button.blue {
-    color: #fff;
-    background: ${colors.blue1};
-
-    &:hover {
-      background: ${colors.blue2};
-    }
-  }
-
-  .button.actions {
-    width: 30px;
-    height: 30px;
-    padding: 6px;
-
-    svg {
-      width: 18px;
-      height: 18px;
-      min-width: 18px;
-      min-height: 18px;
-    }
-  }
-
-  .button.actions.view {
-    background: ${colors.blue1 + '33'};
-    color: ${colors.blue1};
-  }
-
-  .button.actions.view:hover {
-    background: ${colors.blue1 + '66'};
-  }
-
-  .button.actions.edit {
-    background: ${colors.green2 + '33'};
-    color: ${colors.green2};
-  }
-
-  .button.actions.edit:hover {
-    background: ${colors.green2 + '66'};
-  }
-
-  .button.actions.delete {
-    background: ${colors.warning1 + '33'};
-    color: ${colors.warning1};
-  }
-
-  .button.actions.delete:hover {
-    background: ${colors.warning1 + '66'};
-  }
-
-  .big-button {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    height: 80px;
-    padding: 10px 10px 10px 20px;
-    border: none;
-    border-radius: 5px;
-    color: #fff;
-    transition: all 0.2s ease;
-    border-left: 14px solid rgba(255, 255, 255, 0.25);
-
-    p {
-      display: flex;
-      align-items: center;
-      font-size: 18px;
-      text-align: left;
-      margin-right: 10px;
-
-      svg {
-        margin-right: 10px;
-        min-width: 18px;
-        min-height: 18px;
-        width: 18px;
-        height: 18px;
-        fill: #fff;
-      }
-    }
-
-    @media only screen and (max-width: 1049px) {
-      width: 100%;
-    }
-  }
-
-  .big-button:hover {
-    border-left: 20px solid rgba(255, 255, 255, 0.25);
-    padding: 10px 10px 10px 20px;
-
-    @media only screen and (max-width: 1049px) {
-      width: 100%;
-    }
-  }
-
-  .big-button > svg {
-    margin: 0 0 auto auto;
-    min-width: 16px;
-    min-height: 16px;
-    opacity: 0.7;
-  }
-
-  .big-button.orange {
-    background: ${colors.orange1};
-
-    &:hover {
-      background: ${colors.orange2};
-    }
-  }
-
-  .big-button.green {
-    background: ${colors.green2};
-
-    &:hover {
-      background: ${colors.green1};
-    }
-  }
-
-  .big-button.red {
-    color: ${colors.warning1};
-    background: ${colors.warning1 + '40'};
-
-    &:hover {
-      color: #fff;
-      background: ${colors.warning1};
-    }
-  }
-
-  .big-button.blue {
-    color: #fff;
-    background: ${colors.blue1};
-
-    &:hover {
-      background: ${colors.blue2};
-    }
-  }
-
   /*
    *  Selects
    */
@@ -397,107 +202,6 @@ export const Content = styled.div`
     align-items: center;
     border: 1px solid ${colors.grey2};
     border-radius: 5px;
-  }
-
-  /*
-   *  Responsive table
-   */
-
-  table {
-    border-collapse: collapse;
-    border-top: 1px solid ${colors.border};
-    border-bottom: 1px solid ${colors.border};
-    margin: 20px 0 0 0;
-    width: 100%;
-    table-layout: fixed;
-  }
-
-  table tbody tr:nth-child(odd) {
-    background: ${colors.grey2 + '33'};
-    /* border-top: 1px solid #ddd;
-    border-bottom: 1px solid #ddd; */
-  }
-
-  table tbody tr:hover {
-    box-shadow: inset 0 0 0 2px ${colors.green3 + '40'};
-  }
-
-  table tr {
-    border-radius: 5px;
-  }
-
-  table th,
-  table td {
-    padding: 10px;
-    font-size: 14px;
-    text-align: left;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: pre;
-
-    img {
-      display: block;
-      margin: 0 auto;
-      object-fit: cover;
-      width: 70px;
-      height: 40px;
-      border-radius: 5px;
-    }
-  }
-
-  table th {
-    font-size: 0.85em;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    padding: 20px 10px;
-  }
-
-  /*
-   *  Mobile adjustment
-   */
-
-  @media screen and (max-width: 1049px) {
-    table {
-      border: 0;
-    }
-
-    table caption {
-      font-size: 1.3em;
-    }
-
-    table thead {
-      border: none;
-      height: 1px;
-      overflow: hidden;
-      padding: 0;
-      position: absolute;
-      width: 1px;
-    }
-
-    table tr {
-      padding: 0 10px;
-      display: block;
-      margin-bottom: 0.625em;
-    }
-
-    table td {
-      padding: 10px 0;
-      border-bottom: 1px solid #ddd;
-      display: block;
-      font-size: 0.8em;
-      text-align: right;
-    }
-
-    table td::before {
-      content: attr(data-label);
-      float: left;
-      font-weight: bold;
-      text-transform: uppercase;
-    }
-
-    table td:last-child {
-      border-bottom: 0;
-    }
   }
 
   /*
@@ -514,7 +218,7 @@ export const Content = styled.div`
       display: flex;
       align-self: center;
       width: 60px;
-      fill: ${colors.green4};
+      fill: ${colors.purple};
       margin-bottom: 20px;
     }
   }

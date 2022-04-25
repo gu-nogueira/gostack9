@@ -4,14 +4,12 @@ import PropTypes from 'prop-types';
 import { Wrapper, Content } from './styles';
 
 import Header from '../../components/Header';
-// import Footer from '../../components/Footer';
 
 function DefaultLayout({ children }) {
   return (
     <Wrapper>
-      <Header location={children.props.location} />
+      <Header />
       <Content>{children}</Content>
-      {/* <Footer signed={children.props.signed} /> */}
     </Wrapper>
   );
 }

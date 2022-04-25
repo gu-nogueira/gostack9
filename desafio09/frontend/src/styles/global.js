@@ -48,19 +48,19 @@ export default createGlobalStyle`
   h1 {
     font-size: 36px;
     font-weight: 800;
-    color: #FFF;
+    color: ${colors.purple};
   }
 
   h2 {
     font-size: 28px;
     font-weight: 700;
-    color: ${colors.purpleShadow};
+    color: ${colors.purple};
   }
 
   h3 {
     font-size: 18px;
     font-weight: 600;
-    color: ${colors.purpleShadow};
+    color: ${colors.purple};
   }
 
   h4 {
