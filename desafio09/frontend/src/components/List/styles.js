@@ -170,30 +170,46 @@ export const DropBox = styled.ul`
       height: auto;
     `}
   li {
+    svg.view {
+      fill: ${colors.purpleLight};
+    }
+
+    svg.edit {
+      fill: ${colors.blue1};
+    }
+
+    svg.delete {
+      fill: ${colors.warning1};
+    }
+
+    button,
     a,
     a:active {
+      display: flex;
+      align-items: center;
       font-size: 16px;
       font-weight: normal;
       color: ${colors.grey1};
       padding: 0;
-      transition: color 0.2s;
+      transition: all 0.2s;
+
+      svg {
+        width: 16px;
+      }
     }
+
+    button:hover,
     a:hover {
       color: ${colors.purple};
+
+      svg {
+        fill: ${colors.purple};
+      }
     }
     & + li {
       margin-top: 12px;
       border-top: 1px solid ${colors.grey2};
       padding-top: 12px;
-    }
-  }
-  button.logout {
-    color: ${colors.warning1};
-    font-size: 16px;
-    padding: 0;
-    svg {
-      color: ${colors.warning1};
-      margin-left: 5px;
     }
   }
 `;

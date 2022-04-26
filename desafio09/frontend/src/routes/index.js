@@ -20,7 +20,7 @@ function Routes() {
         <Route path="/" exact component={Login} />
         <Route path="/register" component={Register} />
 
-        <Route path="/deliveries" component={Deliveries} isPrivate />
+        <Route path="/deliveries" exact component={Deliveries} isPrivate />
         <Route path="/deliverymen" component={Deliverymen} isPrivate />
         <Route path="/recipients" component={Recipients} isPrivate />
         <Route path="/problems" component={Problems} isPrivate />

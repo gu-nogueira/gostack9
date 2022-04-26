@@ -1,10 +1,13 @@
 import React, { useRef, useState, useCallback, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-import { MdMoreHoriz } from 'react-icons/md';
+import Modal from '../Modal';
+
+import { MdMoreHoriz, MdEdit, MdDelete } from 'react-icons/md';
+import { AiFillEye } from 'react-icons/ai';
 import { Container, DropBox } from './styles';
 
-function List({ category, headers, data }) {
+function List({ category, headers, data, options }) {
   const [active, setActive] = useState();
   const dropDownRef = useRef(new Array(data.length));
 
@@ -75,12 +78,54 @@ function List({ category, headers, data }) {
                     ref={(el) => (dropDownRef.current[index] = el)}
                     active={active === index ? true : false}
                   >
-                    <li>
-                      <Link to={`/${category}/${registry.id}`}>Editar</Link>
-                    </li>
-                    <li>
-                      <Link to={`/${category}/${registry.id}`}>Excluir</Link>
-                    </li>
+                    {options.map((option, index) => {
+                      switch (option) {
+                        case 'view':
+                          return (
+                            <li key={index}>
+                              <button
+                                onClick={async () =>
+                                  Modal.show({
+                                    title: `Excluir ${registry.name}`,
+                                    content: (
+                                      <>
+                                        <p>
+                                          <strong>Atenção:</strong> esta ação é
+                                          irreversível. Deseja continuar?
+                                        </p>
+                                      </>
+                                    ),
+                                    cta: 'Confirmar',
+                                    resolver: () => 0,
+                                    // handleDelete(registry.id, registry.name),
+                                  })
+                                }
+                              >
+                                <AiFillEye className={option} /> Visualizar
+                              </button>
+                            </li>
+                          );
+
+                        case 'delete': {
+                          return (
+                            <li key={index}>
+                              <button onClick={() => 0}>
+                                <MdDelete className={option} /> Deletar
+                              </button>
+                            </li>
+                          );
+                        }
+
+                        default:
+                          return (
+                            <li key={index}>
+                              <Link to={`/${category}/${registry.id}`}>
+                                <MdEdit className={option} /> Editar
+                              </Link>
+                            </li>
+                          );
+                      }
+                    })}
                   </DropBox>
                 </td>
               </tr>

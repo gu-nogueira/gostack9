@@ -9,7 +9,7 @@ import './config/ReactotronConfig';
 import history from './services/history';
 import Routes from './routes';
 
-// import Modal from './components/Modal';
+import Modal from './components/Modal';
 
 // Redux store always cames after ReactotronConfig
 import { store, persistor } from './store';
@@ -23,7 +23,7 @@ function App() {
         <Router history={history}>
           <Routes />
           <GlobalStyle />
-          {/* <Modal /> */}
+          <Modal />
           <ToastContainer
             position="top-center"
             autoClose={3000}

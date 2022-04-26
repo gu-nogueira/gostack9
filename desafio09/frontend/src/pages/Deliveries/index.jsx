@@ -22,6 +22,8 @@ function Deliveries() {
     { id: 5, name: 'Gustavo Nogueira', address: 'Rua do seu Zé' },
   ];
 
+  const options = ['view', 'edit', 'delete'];
+
   return (
     <>
       <h2>Gerenciando encomendas</h2>
@@ -32,7 +34,12 @@ function Deliveries() {
           Cadastrar
         </Link>
       </Row>
-      <List category="deliveries" headers={headers} data={data} />
+      <List
+        category="deliveries"
+        headers={headers}
+        data={data}
+        options={options}
+      />
     </>
   );
 }
