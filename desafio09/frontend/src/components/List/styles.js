@@ -151,9 +151,7 @@ export const Container = styled.div`
 export const DropBox = styled.ul`
   display: none;
   position: absolute;
-  min-width: 115px;
   white-space: pre;
-  overflow: hidden;
   background: #fff;
   border: 1px solid ${colors.border};
   border-radius: 5px;
@@ -169,6 +167,7 @@ export const DropBox = styled.ul`
       margin-bottom: 6px;
       height: auto;
     `}
+
   li {
     svg.view {
       fill: ${colors.purpleLight};

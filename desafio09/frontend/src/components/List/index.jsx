@@ -86,11 +86,11 @@ function List({ category, headers, data, options }) {
                               <button
                                 onClick={async () =>
                                   Modal.show({
-                                    title: `Excluir ${registry.name}`,
+                                    title: `${registry.name}`,
                                     content: (
                                       <>
                                         <p>
-                                          <strong>Atenção:</strong> esta ação é
+                                          <strong>Nome:</strong> esta ação é
                                           irreversível. Deseja continuar?
                                         </p>
                                       </>

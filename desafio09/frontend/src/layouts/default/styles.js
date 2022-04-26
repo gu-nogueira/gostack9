@@ -159,6 +159,7 @@ export const Content = styled.div`
     align-items: center;
     text-transform: uppercase;
     letter-spacing: 1px;
+    font-weight: 600;
     height: 38px;
     padding: 10px 16px;
     border: none;
