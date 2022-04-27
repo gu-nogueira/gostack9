@@ -53,7 +53,7 @@ export const ModalContainer = styled.div`
     h3 {
       width: 100%;
       text-align: center;
-      margin: 0 -25px 20px 0;
+      margin: 0 0 20px 0;
 
       /* Mobile adjustment */
 
@@ -63,9 +63,9 @@ export const ModalContainer = styled.div`
     }
 
     svg {
-      width: 25px;
-      height: 25px;
-      padding: 3px;
+      width: 20px;
+      height: 20px;
+      margin-left: 10px;
       transition: background 0.2s;
       cursor: pointer;
     }

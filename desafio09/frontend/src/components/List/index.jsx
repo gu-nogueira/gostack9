@@ -5,9 +5,9 @@ import Modal from '../Modal';
 
 import { MdMoreHoriz, MdEdit, MdDelete } from 'react-icons/md';
 import { AiFillEye } from 'react-icons/ai';
-import { Container, DropBox } from './styles';
+import { Container, DropBox, DeleteWarning } from './styles';
 
-function List({ category, headers, data, options }) {
+function List({ category, headers, data, options, viewContent: ViewContent }) {
   const [active, setActive] = useState();
   const dropDownRef = useRef(new Array(data.length));
 
@@ -86,17 +86,11 @@ function List({ category, headers, data, options }) {
                               <button
                                 onClick={async () =>
                                   Modal.show({
-                                    title: `${registry.name}`,
+                                    title: `Informações da encomenda #${registry.id}`,
                                     content: (
-                                      <>
-                                        <p>
-                                          <strong>Nome:</strong> esta ação é
-                                          irreversível. Deseja continuar?
-                                        </p>
-                                      </>
+                                      <ViewContent delivery={registry} />
                                     ),
-                                    cta: 'Confirmar',
-                                    resolver: () => 0,
+                                    // resolver: () => 0,
                                     // handleDelete(registry.id, registry.name),
                                   })
                                 }
@@ -109,7 +103,25 @@ function List({ category, headers, data, options }) {
                         case 'delete': {
                           return (
                             <li key={index}>
-                              <button onClick={() => 0}>
+                              <button
+                                onClick={async () =>
+                                  Modal.show({
+                                    title: `Excluir a encomenda #${registry.id}`,
+                                    content: (
+                                      <>
+                                        <DeleteWarning />
+                                        <span>
+                                          <b>Atenção:</b> esta ação é
+                                          irreverrsível!
+                                        </span>
+                                      </>
+                                    ),
+                                    cta: 'Excluir',
+                                    resolver: () => 0,
+                                    // handleDelete(registry.id, registry.name),
+                                  })
+                                }
+                              >
                                 <MdDelete className={option} /> Deletar
                               </button>
                             </li>

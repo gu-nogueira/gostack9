@@ -1,6 +1,8 @@
 import styled, { keyframes, css } from 'styled-components';
 import colors from '../../styles/colors';
 
+import { AiFillWarning } from 'react-icons/ai';
+
 /*
  *  Animations
  */
@@ -211,4 +213,14 @@ export const DropBox = styled.ul`
       padding-top: 12px;
     }
   }
+`;
+
+export const DeleteWarning = styled(AiFillWarning).attrs({
+  size: 50,
+})`
+  width: 50px;
+  height: 50px;
+  display: flex;
+  margin: 0 auto 20px auto;
+  color: ${colors.warning1};
 `;

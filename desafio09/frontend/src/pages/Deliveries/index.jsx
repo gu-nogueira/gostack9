@@ -7,6 +7,27 @@ import List from '../../components/List';
 import { MdOutlineAdd } from 'react-icons/md';
 import { Row } from './styles';
 
+function ViewContent({ delivery }) {
+  return (
+    <>
+      <strong>Informações da encomenda</strong>
+      <p>Rua Beethoven, 1729</p>
+      <p>Diadema - SP</p>
+      <p>09960-580</p>
+      <hr />
+      <strong>Datas</strong>
+      <p>
+        <b>Retirada:</b> 25/01/2022
+      </p>
+      <p>
+        <b>Entrega:</b> 25/01/2022
+      </p>
+      <hr />
+      <img src="" alt="" />
+    </>
+  );
+}
+
 function Deliveries() {
   const headers = {
     id: 'ID',
@@ -39,6 +60,7 @@ function Deliveries() {
         headers={headers}
         data={data}
         options={options}
+        viewContent={ViewContent}
       />
     </>
   );
