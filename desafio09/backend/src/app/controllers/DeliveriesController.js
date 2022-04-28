@@ -52,6 +52,27 @@ class DeliveriesController {
           attributes: ['name', 'path', 'url'],
         },
       ],
+    }).then(function (deliveries) {
+      deliveries.forEach((delivery, index, arr) => {
+        /*
+         *  Delivery status
+         */
+
+        let status = '';
+
+        if (delivery.dataValues.canceled_at) {
+          status = 'cancelado';
+        } else if (delivery.dataValues.end_date) {
+          status = 'entregue';
+        } else if (delivery.dataValues.start_date) {
+          status = 'retirado';
+        } else {
+          status = 'pendente';
+        }
+
+        arr[index].dataValues = { ...delivery.dataValues, status };
+      });
+      return deliveries;
     });
 
     return res.json(deliveries);

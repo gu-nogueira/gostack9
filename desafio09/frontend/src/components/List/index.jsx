@@ -11,6 +11,29 @@ function List({ category, headers, data, options, viewContent: ViewContent }) {
   const [active, setActive] = useState();
   const dropDownRef = useRef(new Array(data.length));
 
+  const Registry = useCallback(
+    ({ column, index, registry }) => {
+      switch (column) {
+        case 'status':
+          return (
+            <td data-label={headers[column]}>
+              <span className={`status ${registry[column]}`}>
+                {registry[column]}
+              </span>
+            </td>
+          );
+
+        default:
+          return (
+            <td key={column + index} data-label={headers[column]}>
+              {column === 'id' ? `#${registry[column]}` : registry[column]}
+            </td>
+          );
+      }
+    },
+    [headers]
+  );
+
   const handleClickOutside = useCallback(
     (e) => {
       if (
@@ -25,7 +48,6 @@ function List({ category, headers, data, options, viewContent: ViewContent }) {
 
   useEffect(() => {
     document.addEventListener('mousedown', handleClickOutside);
-
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
@@ -48,23 +70,14 @@ function List({ category, headers, data, options, viewContent: ViewContent }) {
           <tbody>
             {data.map((registry, index) => (
               <tr key={registry + index}>
-                {Object.keys(headers).map((column, index) => {
-                  switch (column) {
-                    case 'teste':
-                      return (
-                        <td key={column + index} data-label={headers[column]}>
-                          <span className="teste">{registry[column]}</span>
-                        </td>
-                      );
-
-                    default:
-                      return (
-                        <td key={column + index} data-label={headers[column]}>
-                          {registry[column]}
-                        </td>
-                      );
-                  }
-                })}
+                {Object.keys(headers).map((column, index) => (
+                  <Registry
+                    key={column + index}
+                    column={column}
+                    index={index}
+                    registry={registry}
+                  />
+                ))}
                 <td data-label="Ações">
                   <button
                     title="Ações"
@@ -112,7 +125,7 @@ function List({ category, headers, data, options, viewContent: ViewContent }) {
                                         <DeleteWarning />
                                         <span>
                                           <b>Atenção:</b> esta ação é
-                                          irreverrsível!
+                                          irreverrsível! Deseja continuar?
                                         </span>
                                       </>
                                     ),

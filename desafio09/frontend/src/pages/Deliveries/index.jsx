@@ -1,8 +1,13 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
+
+import api from '../../services/api';
 
 import Search from '../../components/Search';
 import List from '../../components/List';
+
+import { ReactComponent as Loader } from '../../assets/svgs/loader.svg';
 
 import { MdOutlineAdd } from 'react-icons/md';
 import { Row } from './styles';
@@ -29,21 +34,52 @@ function ViewContent({ delivery }) {
 }
 
 function Deliveries() {
+  const [loading, setLoading] = useState(false);
+  const [deliveries, setDeliveries] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+
   const headers = {
     id: 'ID',
-    name: 'Nome',
-    address: 'Endereço',
+    recipient: 'Destinatário',
+    deliveryman: 'Entregador',
+    city: 'Cidade',
+    state: 'Estado',
+    status: 'Status',
   };
 
-  const data = [
-    { id: 1, name: 'Gustavo Nogueira', address: 'Rua do seu Zé' },
-    { id: 2, name: 'Gustavo Nogueira', address: 'Rua do seu Zé' },
-    { id: 3, name: 'Gustavo Nogueira', address: 'Rua do seu Zé' },
-    { id: 4, name: 'Gustavo Nogueira', address: 'Rua do seu Zé' },
-    { id: 5, name: 'Gustavo Nogueira', address: 'Rua do seu Zé' },
-  ];
-
   const options = ['view', 'edit', 'delete'];
+
+  async function getDataFromAPI() {
+    setLoading(true);
+    try {
+      const response = await api.get('/deliveries', {
+        params: { page: currentPage },
+      });
+      const rows = response.data;
+      setDeliveries(
+        rows.map((delivery) => {
+          delivery.city = delivery.recipient.city;
+          delivery.state = delivery.recipient.state;
+          delivery.recipient = delivery.recipient.destiny_name;
+          delivery.deliveryman = delivery.deliveryman.name; //provisório
+
+          return delivery;
+        })
+      );
+    } catch (err) {
+      toast.error('Não foi possível carregar as encomendas');
+    }
+    setLoading(false);
+  }
+
+  function handlePagination(page) {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setCurrentPage(page);
+  }
+
+  useEffect(() => {
+    getDataFromAPI();
+  }, [currentPage]);
 
   return (
     <>
@@ -55,13 +91,20 @@ function Deliveries() {
           Cadastrar
         </Link>
       </Row>
-      <List
-        category="deliveries"
-        headers={headers}
-        data={data}
-        options={options}
-        viewContent={ViewContent}
-      />
+      {loading ? (
+        <div>
+          <Loader />
+          <h3>Carregando</h3>
+        </div>
+      ) : (
+        <List
+          category="deliveries"
+          headers={headers}
+          data={deliveries}
+          options={options}
+          viewContent={ViewContent}
+        />
+      )}
     </>
   );
 }

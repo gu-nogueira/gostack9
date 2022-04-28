@@ -1,7 +1,7 @@
 import styled, { keyframes, css } from 'styled-components';
 import colors from '../../styles/colors';
 
-import { AiFillWarning } from 'react-icons/ai';
+import { IoIosWarning } from 'react-icons/io';
 
 /*
  *  Animations
@@ -146,8 +146,64 @@ export const Container = styled.div`
   }
 
   /*
-   *  Actions box
+   *  Status tags
    */
+
+  .status {
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    width: fit-content;
+
+    &::before {
+      content: '';
+      display: block;
+      width: 8px;
+      height: 8px;
+      border-radius: 4px;
+      margin-right: 5px;
+    }
+  }
+
+  .cancelado {
+    background: ${colors.warning1 + '40'};
+    color: ${colors.warning1};
+
+    &::before {
+      background: ${colors.warning1};
+    }
+  }
+
+  .entregue {
+    background: ${colors.green1 + '40'};
+    color: ${colors.green1};
+
+    &::before {
+      background: ${colors.green1};
+    }
+  }
+
+  .retirado {
+    background: ${colors.blue1 + '40'};
+    color: ${colors.blue1};
+
+    &::before {
+      background: ${colors.blue1};
+    }
+  }
+
+  .pendente {
+    background: ${colors.yellow1 + '40'};
+    color: ${colors.yellow1};
+
+    &::before {
+      background: ${colors.yellow1};
+    }
+  }
 `;
 
 export const DropBox = styled.ul`
@@ -215,11 +271,11 @@ export const DropBox = styled.ul`
   }
 `;
 
-export const DeleteWarning = styled(AiFillWarning).attrs({
+export const DeleteWarning = styled(IoIosWarning).attrs({
   size: 50,
 })`
-  width: 50px;
-  height: 50px;
+  width: 60px;
+  height: 60px;
   display: flex;
   margin: 0 auto 20px auto;
   color: ${colors.warning1};

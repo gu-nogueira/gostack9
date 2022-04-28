@@ -53,7 +53,7 @@ export const ModalContainer = styled.div`
     h3 {
       width: 100%;
       text-align: center;
-      margin: 0 0 20px 0;
+      margin: 0 -20px 20px 0;
 
       /* Mobile adjustment */
 
