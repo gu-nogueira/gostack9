@@ -4,10 +4,9 @@ import { toast } from 'react-toastify';
 
 import api from '../../services/api';
 
+import Loader from '../../components/Loader';
 import Search from '../../components/Search';
 import List from '../../components/List';
-
-import { ReactComponent as Loader } from '../../assets/svgs/loader.svg';
 
 import { MdOutlineAdd } from 'react-icons/md';
 import { Row } from './styles';
@@ -92,10 +91,7 @@ function Deliveries() {
         </Link>
       </Row>
       {loading ? (
-        <div>
-          <Loader />
-          <h3>Carregando</h3>
-        </div>
+        <Loader />
       ) : (
         <List
           category="deliveries"
