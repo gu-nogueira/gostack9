@@ -48,15 +48,18 @@ function Deliveries() {
 
   const options = ['view', 'edit', 'delete'];
 
+  const apiRoute = '/deliveries';
+
   async function getDataFromAPI() {
     setLoading(true);
     try {
-      const response = await api.get('/deliveries', {
+      const response = await api.get(apiRoute, {
         params: { page: currentPage },
       });
       const rows = response.data;
       setDeliveries(
         rows.map((delivery) => {
+          delivery.name = `encomenda #${delivery.id}`;
           delivery.city = delivery.recipient.city;
           delivery.state = delivery.recipient.state;
           delivery.recipient = delivery.recipient.destiny_name;
@@ -98,6 +101,8 @@ function Deliveries() {
           headers={headers}
           data={deliveries}
           options={options}
+          apiRoute={apiRoute}
+          requestData={getDataFromAPI}
           viewContent={ViewContent}
         />
       )}

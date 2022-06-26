@@ -1,13 +1,24 @@
 import React, { useRef, useState, useCallback, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 import Modal from '../Modal';
+
+import api from '../../services/api';
 
 import { MdMoreHoriz, MdEdit, MdDelete } from 'react-icons/md';
 import { AiFillEye } from 'react-icons/ai';
 import { Container, DropBox, DeleteWarning } from './styles';
 
-function List({ category, headers, data, options, viewContent: ViewContent }) {
+function List({
+  category,
+  headers,
+  data,
+  options,
+  apiRoute,
+  requestData,
+  viewContent: ViewContent,
+}) {
   const [active, setActive] = useState();
   const dropDownRef = useRef(new Array(data.length));
 
@@ -33,6 +44,23 @@ function List({ category, headers, data, options, viewContent: ViewContent }) {
     },
     [headers]
   );
+
+  /*
+   *  Options behavior
+   */
+
+  async function handleDelete(id, name) {
+    try {
+      await api.delete(`${apiRoute}/${id}`);
+      toast.success(`${name} excluído com sucesso`);
+      requestData();
+    } catch (err) {
+      console.error(err);
+      toast.error(
+        `Não foi possível excluir ${name}, tente novamente mais tarde`
+      );
+    }
+  }
 
   const handleClickOutside = useCallback(
     (e) => {
@@ -99,12 +127,11 @@ function List({ category, headers, data, options, viewContent: ViewContent }) {
                               <button
                                 onClick={async () =>
                                   Modal.show({
-                                    title: `Informações da encomenda #${registry.id}`,
+                                    title: `Informações sobre ${registry.name}`,
                                     content: (
                                       <ViewContent delivery={registry} />
                                     ),
-                                    // resolver: () => 0,
-                                    // handleDelete(registry.id, registry.name),
+                                    resolver: () => 0,
                                   })
                                 }
                               >
@@ -119,7 +146,7 @@ function List({ category, headers, data, options, viewContent: ViewContent }) {
                               <button
                                 onClick={async () =>
                                   Modal.show({
-                                    title: `Excluir a encomenda #${registry.id}`,
+                                    title: `Excluir ${registry.name}`,
                                     content: (
                                       <>
                                         <DeleteWarning />
@@ -130,8 +157,8 @@ function List({ category, headers, data, options, viewContent: ViewContent }) {
                                       </>
                                     ),
                                     cta: 'Excluir',
-                                    resolver: () => 0,
-                                    // handleDelete(registry.id, registry.name),
+                                    resolver: () =>
+                                      handleDelete(registry.id, registry.name),
                                   })
                                 }
                               >
