@@ -236,7 +236,7 @@ class DeliveriesController {
     }
 
     /*
-     *  SQL Transaction for deleting delivery problems before delivery
+     *  Transaction for deleting delivery problems before delivery
      */
 
     await Transaction.process(async (transaction) => {

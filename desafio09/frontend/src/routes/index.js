@@ -27,7 +27,7 @@ function Routes() {
 
         {/* 404 Page */}
 
-        <Route path="*" component={() => <Redirect to="/" />}></Route>
+        <Route path="*" component={() => <Redirect to="/" />} />
       </Switch>
     </>
   );

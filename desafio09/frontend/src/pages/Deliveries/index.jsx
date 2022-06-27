@@ -7,9 +7,10 @@ import api from '../../services/api';
 import Loader from '../../components/Loader';
 import Search from '../../components/Search';
 import List from '../../components/List';
+import AvatarThumb from '../../components/AvatarThumb';
 
 import { MdOutlineAdd } from 'react-icons/md';
-import { Row } from './styles';
+import { Row, Wrapper } from './styles';
 
 function ViewContent({ delivery }) {
   return (
@@ -63,7 +64,13 @@ function Deliveries() {
           delivery.city = delivery.recipient.city;
           delivery.state = delivery.recipient.state;
           delivery.recipient = delivery.recipient.destiny_name;
-          delivery.deliveryman = delivery.deliveryman.name; //provisório
+
+          delivery.deliveryman = (
+            <Wrapper>
+              <AvatarThumb name={delivery.deliveryman.name} />
+              {delivery.deliveryman.name}
+            </Wrapper>
+          );
 
           return delivery;
         })

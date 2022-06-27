@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 
-import { Input } from '@rocketseat/unform';
+import { Input as UnformInput } from '@rocketseat/unform';
 
 import { Container } from './styles';
 import { HiEye, HiEyeOff } from 'react-icons/hi';
 
-function IconInput({
+function Input({
   icon: Icon,
   name,
   type,
@@ -27,7 +27,7 @@ function IconInput({
   return (
     <Container focused={focused}>
       {Icon && <Icon size={18} />}
-      <Input
+      <UnformInput
         name={name}
         type={type === 'password' ? (visible ? 'text' : 'password') : type}
         defaultValue={defaultValue}
@@ -45,4 +45,4 @@ function IconInput({
   );
 }
 
-export default IconInput;
+export default Input;

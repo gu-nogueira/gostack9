@@ -6,3 +6,8 @@ export const Row = styled.div`
   justify-content: space-between;
   margin-top: 30px;
 `;
+
+export const Wrapper = styled.div`
+  display: flex;
+  align-items: center;
+`;

@@ -6,7 +6,7 @@ import * as Yup from 'yup';
 
 import { signUpRequest } from '../../store/modules/auth/actions';
 
-import IconInput from '../../components/IconInput';
+import Input from '../../components/Input';
 
 import { Column } from './styles';
 import Logo from '../../assets/svgs/logo-white.svg';
@@ -51,25 +51,25 @@ function Register() {
       <Column>
         <Form schema={schema} onSubmit={handleSubmit}>
           <h2>Crie sua conta</h2>
-          <IconInput
+          <Input
             icon={MdPerson}
             name="name"
             type="text"
             placeholder="Seu nome"
           />
-          <IconInput
+          <Input
             icon={MdEmail}
             name="email"
             type="email"
             placeholder="Seu e-mail"
           />
-          <IconInput
+          <Input
             icon={MdLock}
             name="password"
             type="password"
             placeholder="Sua senha"
           />
-          <IconInput
+          <Input
             icon={MdLock}
             name="confirmPassword"
             type="password"
