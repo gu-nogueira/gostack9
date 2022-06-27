@@ -216,7 +216,7 @@ export const DropBox = styled.ul`
   padding: 15px;
   box-shadow: 0 0 10px rgba(125, 64, 231, 0.1);
   text-align: left;
-  right: 17.5%;
+  /* right: 17.5%; */
   ${(props) =>
     props.active &&
     css`

@@ -5,7 +5,10 @@ import { parseISO, isBefore, getHours } from 'date-fns';
 import Deliveries from '../models/Deliveries';
 import Recipients from '../models/Recipients';
 import Deliverymen from '../models/Deliverymen';
+import DeliveryProblems from '../models/DeliveryProblems';
 import Files from '../models/Files';
+
+import Transaction from '../../database/transaction';
 
 import Queue from '../../lib/Queue';
 import OrderMail from '../jobs/OrderMail';
@@ -224,14 +227,30 @@ class DeliveriesController {
   async delete(req, res) {
     const delivery = await Deliveries.findByPk(req.params.id);
 
+    const deliveryProblems = await DeliveryProblems.findAll({
+      where: { delivery_id: delivery.id },
+    });
+
     if (!delivery) {
       return res.status(400).json({ error: 'Delivery not found' });
     }
 
-    await delivery.destroy();
+    /*
+     *  SQL Transaction for deleting delivery problems before delivery
+     */
+
+    await Transaction.process(async (transaction) => {
+      if (deliveryProblems) {
+        await DeliveryProblems.destroy({
+          where: { delivery_id: delivery.id },
+        });
+      }
+      await delivery.destroy({}, { transaction });
+    });
+
     return res
       .status(200)
-      .json({ message: ` Delivery nº:${delivery.id} has been deleted` });
+      .json({ message: `Delivery nº:${delivery.id} has been deleted` });
   }
 }
 
