@@ -7,7 +7,7 @@ import api from '../../services/api';
 import Loader from '../../components/Loader';
 import Search from '../../components/Search';
 import List from '../../components/List';
-import AvatarThumb from '../../components/AvatarThumb';
+import Avatar from '../../components/Avatar';
 
 import { MdOutlineAdd } from 'react-icons/md';
 import { Row, Wrapper } from './styles';
@@ -64,12 +64,16 @@ function Deliveries() {
           delivery.city = delivery.recipient.city;
           delivery.state = delivery.recipient.state;
           delivery.recipient = delivery.recipient.destiny_name;
-
           delivery.deliveryman = (
             <Wrapper>
-              <AvatarThumb name={delivery.deliveryman.name} />
+              <Avatar name={delivery.deliveryman.name} />
               {delivery.deliveryman.name}
             </Wrapper>
+          );
+          delivery.status = (
+            <span className={`status ${delivery.status}`}>
+              {delivery.status}
+            </span>
           );
 
           return delivery;
@@ -82,7 +86,6 @@ function Deliveries() {
   }
 
   function handlePagination(page) {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
     setCurrentPage(page);
   }
 
@@ -93,7 +96,7 @@ function Deliveries() {
   return (
     <>
       <h2>Gerenciando encomendas</h2>
-      <Row>
+      <Row mt={30}>
         <Search placeholder="Buscar por destinatários" />
         <Link className="button" to="/deliveries/new">
           <MdOutlineAdd size={20} />

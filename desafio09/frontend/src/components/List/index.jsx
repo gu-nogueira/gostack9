@@ -22,29 +22,6 @@ function List({
   const [active, setActive] = useState();
   const dropDownRef = useRef(new Array(data.length));
 
-  const Registry = useCallback(
-    ({ column, index, registry }) => {
-      switch (column) {
-        case 'status':
-          return (
-            <td data-label={headers[column]}>
-              <span className={`status ${registry[column]}`}>
-                {registry[column]}
-              </span>
-            </td>
-          );
-
-        default:
-          return (
-            <td key={column + index} data-label={headers[column]}>
-              {column === 'id' ? `#${registry[column]}` : registry[column]}
-            </td>
-          );
-      }
-    },
-    [headers]
-  );
-
   /*
    *  Options behavior
    */
@@ -99,12 +76,11 @@ function List({
             {data.map((registry, index) => (
               <tr key={registry + index}>
                 {Object.keys(headers).map((column, index) => (
-                  <Registry
-                    key={column + index}
-                    column={column}
-                    index={index}
-                    registry={registry}
-                  />
+                  <td key={column + index} data-label={headers[column]}>
+                    {column === 'id'
+                      ? `#${registry[column]}`
+                      : registry[column]}
+                  </td>
                 ))}
                 <td data-label="Ações">
                   <button

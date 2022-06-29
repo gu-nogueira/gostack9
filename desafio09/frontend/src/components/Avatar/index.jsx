@@ -1,15 +1,24 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import Avatar from 'react-avatar';
 import PropTypes from 'prop-types';
 
-import { Container } from './styles';
+import { avatarColors, Container, AvatarInitials } from './styles';
 
-function AvatarThumb({ imageUrl, name, color, size }) {
+function Avatar({ imageUrl, name, size }) {
   const [initials, setInitials] = useState();
+  const [color, setColor] = useState('#FFF');
+
+  function getRandomColor(value) {
+    const secondDigit = value.toString()[1];
+    const colorIndex = Math.floor(
+      Math.random() * value <= 10 ? value : secondDigit
+    );
+    setColor(avatarColors[colorIndex]);
+  }
 
   useMemo(() => {
     const [firstName, lastName] = name.toUpperCase().split(' ');
     setInitials(firstName.charAt(0) + lastName.charAt(0));
+    getRandomColor(firstName.length);
   }, [name]);
 
   return (
@@ -17,10 +26,7 @@ function AvatarThumb({ imageUrl, name, color, size }) {
       {imageUrl ? (
         <img src={imageUrl} alt={name} />
       ) : (
-        <div>
-          <Avatar name={name} />
-          {initials}
-        </div>
+        <AvatarInitials color={color}>{initials}</AvatarInitials>
       )}
     </Container>
   );
@@ -30,7 +36,7 @@ function AvatarThumb({ imageUrl, name, color, size }) {
  *  propTypes definition
  */
 
-AvatarThumb.propTypes = {
+Avatar.propTypes = {
   imageUrl: PropTypes.string,
   name: PropTypes.string,
   color: PropTypes.string,
@@ -41,8 +47,8 @@ AvatarThumb.propTypes = {
  *  defaultProps definition
  */
 
-AvatarThumb.defaultProps = {
+Avatar.defaultProps = {
   size: 'default',
 };
 
-export default AvatarThumb;
+export default Avatar;

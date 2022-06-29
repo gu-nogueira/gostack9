@@ -20,9 +20,9 @@ export const Content = styled.div`
 
   .card {
     background: #fff;
-    padding: 30px;
     border-radius: 5px;
-    border: 1px solid ${colors.border};
+    box-shadow: 0 0 20px rgba(125, 64, 231, 0.05);
+    padding: 30px;
 
     @media only screen and (max-width: 1049px) {
       padding: 15px;
@@ -164,6 +164,8 @@ export const Content = styled.div`
     padding: 10px 16px;
     border: none;
     border-radius: 5px;
+    font-size: 14px;
+    font-weight: 500;
     color: #fff;
     white-space: nowrap;
     transition: background 0.2s;
@@ -185,6 +187,10 @@ export const Content = styled.div`
         background: ${colors.grey1} !important;
       }
     }
+  }
+
+  .button.grey {
+    background: ${colors.grey2};
   }
 
   .button.small {

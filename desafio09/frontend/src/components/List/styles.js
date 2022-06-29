@@ -82,7 +82,7 @@ export const Container = styled.div`
   }
 
   /*
-   *  Mobile adjustment
+   *  Mobile adjustment (TO DO)
    */
 
   @media screen and (max-width: 1049px) {
