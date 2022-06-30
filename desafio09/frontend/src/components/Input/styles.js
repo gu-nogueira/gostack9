@@ -11,10 +11,12 @@ export const Container = styled.div`
   border-radius: 5px;
   height: 38px;
   color: ${colors.grey2};
+
   svg {
     min-width: 16px;
     margin-left: 10px;
   }
+
   input {
     border: none;
     margin-left: 5px;
@@ -26,9 +28,11 @@ export const Container = styled.div`
       color: ${colors.grey2};
     }
   }
-  & + div {
+
+  & + .input {
     margin-top: 15px;
   }
+
   ${(props) =>
     props.focused &&
     css`

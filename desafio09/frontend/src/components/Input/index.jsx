@@ -25,7 +25,7 @@ function Input({
   }
 
   return (
-    <Container focused={focused}>
+    <Container focused={focused} className="input">
       {Icon && <Icon size={18} />}
       <UnformInput
         name={name}
