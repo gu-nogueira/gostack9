@@ -37,9 +37,19 @@ export const Container = styled.div`
     props.focused &&
     css`
       transition: all 0.2s;
-      border: 1px solid ${colors.purple} !important;
+      border: 1px solid ${colors.purple};
       svg {
         color: ${colors.purple};
+      }
+    `}
+
+  ${(props) =>
+    props.hasError &&
+    css`
+      transition: all 0.2s;
+      border: 1px solid ${colors.warning1} !important;
+      svg {
+        color: ${colors.warning1} !important;
       }
     `}
   /*
@@ -62,17 +72,5 @@ export const Container = styled.div`
     svg {
       margin-left: 0;
     }
-  }
-  /*
-   *  Yup schema warn
-   */
-  span {
-    min-width: 68px;
-    color: ${colors.warning1};
-    text-align: justify;
-    font-size: 12px;
-    line-height: 14px;
-    font-weight: 600;
-    padding: 0 3px;
   }
 `;

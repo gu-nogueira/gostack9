@@ -1,47 +1,69 @@
-import React, { useState } from 'react';
-
-import { Input as UnformInput } from '@rocketseat/unform';
+import React, { useRef, useState, useEffect } from 'react';
+import { useField } from '@unform/core';
 
 import { Container } from './styles';
 import { HiEye, HiEyeOff } from 'react-icons/hi';
 
-function Input({
-  icon: Icon,
-  name,
-  type,
-  placeholder,
-  defaultValue,
-  onChange,
-}) {
+function Input({ icon: Icon, name, type, ...rest }) {
   const [focused, setFocused] = useState();
   const [visible, setVisible] = useState(false);
 
-  function handleFocus(i) {
+  const inputRef = useRef();
+  const { fieldName, defaultValue, registerField, error } = useField(name);
+
+  /*
+   *  Unform registerField
+   */
+
+  useEffect(() => {
+    registerField({
+      name: fieldName,
+      ref: inputRef,
+      getValue: (ref) => {
+        return ref.current.value;
+      },
+      setValue: (ref, value) => {
+        ref.current.value = value;
+      },
+      clearValue: (ref) => {
+        ref.current.value = '';
+      },
+    });
+  }, [fieldName, registerField]);
+
+  function handleFocus() {
     setFocused(!focused);
   }
 
-  function handleBlur(i) {
+  function handleBlur() {
     setFocused(false);
   }
 
   return (
-    <Container focused={focused} className="input">
-      {Icon && <Icon size={18} />}
-      <UnformInput
-        name={name}
-        type={type === 'password' ? (visible ? 'text' : 'password') : type}
-        defaultValue={defaultValue}
-        placeholder={placeholder}
-        onChange={onChange}
-        onFocus={handleFocus}
-        onBlur={handleBlur}
-      />
-      {type === 'password' && (
-        <button type="button" onClick={() => setVisible(!visible)}>
-          {visible ? <HiEyeOff size={18} /> : <HiEye size={18} />}
-        </button>
-      )}
-    </Container>
+    <>
+      <Container
+        focused={focused}
+        hasError={error ? true : false}
+        className="input"
+      >
+        {Icon && <Icon size={18} />}
+        <input
+          name={name}
+          ref={inputRef}
+          defaultValue={defaultValue}
+          type={type === 'password' ? (visible ? 'text' : 'password') : type}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+          {...rest}
+        />
+        {type === 'password' && (
+          <button type="button" onClick={() => setVisible(!visible)}>
+            {visible ? <HiEyeOff size={18} /> : <HiEye size={18} />}
+          </button>
+        )}
+      </Container>
+      {error && <span className="error">{error}</span>}
+    </>
   );
 }
 

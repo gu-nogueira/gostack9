@@ -1,17 +1,38 @@
-import React, { useState } from 'react';
+import React, { useRef, useEffect } from 'react';
 import ReactSelect from 'react-select';
+import { useField } from '@unform/core';
 
 import colors from '../../styles/colors';
 
 // import { Container } from './styles';
 
-function Select({ placeholder, defaultValue, ...props }) {
-  const [selected, setSelected] = useState();
-  const options = [
-    { value: 'chocolate', label: 'Chocolate' },
-    { value: 'strawberry', label: 'Strawberry' },
-    { value: 'vanilla', label: 'Vanilla' },
-  ];
+function Select({ name, ...rest }) {
+  const selectRef = useRef(null);
+  const { fieldName, defaultValue, registerField, error } = useField(name);
+
+  /*
+   *  Unform registerField
+   */
+
+  useEffect(() => {
+    registerField({
+      name: fieldName,
+      ref: selectRef.current,
+      getValue: (ref) => {
+        console.log(ref);
+        if (rest.isMulti) {
+          if (!ref.state.value) {
+            return [];
+          }
+          return ref.state.value.map((option) => option.value);
+        }
+        if (!ref.state.value) {
+          return '';
+        }
+        return ref.state.value.value;
+      },
+    });
+  }, [fieldName, registerField, rest.isMulti]);
 
   const customStyles = {
     control: () => ({
@@ -35,12 +56,12 @@ function Select({ placeholder, defaultValue, ...props }) {
   };
 
   return (
+    // <Container>
     <ReactSelect
-      onChange={setSelected}
-      options={options}
-      isSearchable
+      name={name}
+      ref={selectRef}
       defaultValue={defaultValue}
-      placeholder={placeholder}
+      classNamePrefix="react-select"
       styles={customStyles}
       theme={(theme) => ({
         ...theme,
@@ -50,8 +71,9 @@ function Select({ placeholder, defaultValue, ...props }) {
           primary25: colors.purpleLight + '33',
         },
       })}
-      {...props}
+      {...rest}
     />
+    // </Container>
   );
 }
 

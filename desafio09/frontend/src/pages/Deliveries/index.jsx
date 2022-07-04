@@ -51,7 +51,7 @@ function Deliveries() {
 
   const apiRoute = '/deliveries';
 
-  async function getDataFromAPI() {
+  async function fetchDeliveries() {
     setLoading(true);
     try {
       const response = await api.get(apiRoute, {
@@ -65,7 +65,7 @@ function Deliveries() {
           delivery.state = delivery.recipient.state;
           delivery.recipient = delivery.recipient.destiny_name;
           delivery.deliveryman = (
-            <Wrapper>
+            <Wrapper flex>
               <Avatar name={delivery.deliveryman.name} />
               {delivery.deliveryman.name}
             </Wrapper>
@@ -90,7 +90,7 @@ function Deliveries() {
   }
 
   useEffect(() => {
-    getDataFromAPI();
+    fetchDeliveries();
   }, [currentPage]);
 
   return (
@@ -112,7 +112,7 @@ function Deliveries() {
           data={deliveries}
           options={options}
           apiRoute={apiRoute}
-          requestData={getDataFromAPI}
+          requestData={fetchDeliveries}
           viewContent={ViewContent}
         />
       )}

@@ -16,7 +16,7 @@ function List({
   data,
   options,
   apiRoute,
-  requestData,
+  fetchData,
   viewContent: ViewContent,
 }) {
   const [active, setActive] = useState();
@@ -30,7 +30,7 @@ function List({
     try {
       await api.delete(`${apiRoute}/${id}`);
       toast.success(`${name} excluído com sucesso`);
-      requestData();
+      fetchData();
     } catch (err) {
       console.error(err);
       toast.error(

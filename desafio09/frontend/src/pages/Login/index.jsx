@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Form } from '@rocketseat/unform';
+import { Form } from '@unform/web';
 import * as Yup from 'yup';
 
 import { signInRequest } from '../../store/modules/auth/actions';
@@ -14,7 +14,7 @@ import { ReactComponent as Loader } from '../../assets/svgs/loader.svg';
 import { MdEmail, MdLock } from 'react-icons/md';
 
 /*
- *  Yup schema validation
+ *  Yup schema structure
  */
 
 const schema = Yup.object().shape({
@@ -23,20 +23,45 @@ const schema = Yup.object().shape({
 });
 
 function Login() {
+  const formRef = useRef();
   const dispatch = useDispatch();
+
   const loading = useSelector((state) => state.auth.loading);
 
-  function handleSubmit({ email, password }) {
-    dispatch(signInRequest(email, password));
+  async function handleSubmit({ email, password }) {
+    try {
+      /*
+       *  Remove all previous errors
+       */
+      formRef.current.setErrors({});
+
+      /*
+       *  Yup validation
+       */
+
+      await schema.validate({ email, password }, { abortEarly: false });
+
+      dispatch(signInRequest(email, password));
+    } catch (err) {
+      if (err instanceof Yup.ValidationError) {
+        const validationErrors = {};
+
+        err.inner.forEach((error) => {
+          validationErrors[error.path] = error.message;
+        });
+
+        formRef.current.setErrors(validationErrors);
+      }
+    }
   }
 
   return (
     <>
       <Column>
-        <img src={Logo} alt="Ebovinos" />
+        <img src={Logo} alt="Efast" />
       </Column>
       <Column>
-        <Form schema={schema} onSubmit={handleSubmit}>
+        <Form ref={formRef} onSubmit={handleSubmit}>
           <h2>Faça seu login</h2>
           <Input
             icon={MdEmail}

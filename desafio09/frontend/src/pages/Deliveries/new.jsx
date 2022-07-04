@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useRef } from 'react';
 
-import { Form } from '@rocketseat/unform';
 import { Link } from 'react-router-dom';
+import { Form } from '@unform/web';
 
 import history from '../../services/history';
 import DeliveriesForms from './forms';
@@ -10,12 +10,14 @@ import { MdArrowBack, MdOutlineDone } from 'react-icons/md';
 import { Row, Wrapper } from './styles';
 
 function DeliveriesNew() {
+  const formRef = useRef();
+
   function handleSubmit(data) {
     console.log(data);
   }
 
   return (
-    <Form onSubmit={handleSubmit}>
+    <Form ref={formRef} onSubmit={handleSubmit}>
       <Row mb={30}>
         <h2>Cadastro de encomendas</h2>
         <Wrapper flex>

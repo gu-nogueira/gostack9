@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Form } from '@rocketseat/unform';
+import { Form } from '@unform/web';
 import * as Yup from 'yup';
 
 import { signUpRequest } from '../../store/modules/auth/actions';
@@ -19,7 +19,7 @@ import {
 } from 'react-icons/md';
 
 /*
- *  Yup schema validation
+ *  Yup schema structure
  */
 
 const schema = Yup.object().shape({
@@ -38,18 +38,47 @@ const schema = Yup.object().shape({
 });
 
 function Register() {
+  const formRef = useRef();
   const dispatch = useDispatch();
+
   const loading = useSelector((state) => state.auth.loading);
   const profile = useSelector((state) => state.user.profile);
 
-  async function handleSubmit({ name, email, password }) {
-    dispatch(signUpRequest(name, email, password));
+  async function handleSubmit({ name, email, confirmPassword, password }) {
+    try {
+      /*
+       *  Remove all previous errors
+       */
+
+      formRef.current.setErrors({});
+
+      /*
+       *  Yup validation
+       */
+
+      await schema.validate(
+        { name, email, password, confirmPassword },
+        { abortEarly: false }
+      );
+
+      dispatch(signUpRequest(name, email, password));
+    } catch (err) {
+      if (err instanceof Yup.ValidationError) {
+        const validationErrors = {};
+
+        err.inner.forEach((error) => {
+          validationErrors[error.path] = error.message;
+        });
+
+        formRef.current.setErrors(validationErrors);
+      }
+    }
   }
 
   return (
     <>
       <Column>
-        <Form schema={schema} onSubmit={handleSubmit}>
+        <Form ref={formRef} onSubmit={handleSubmit}>
           <h2>Crie sua conta</h2>
           <Input
             icon={MdPerson}
@@ -94,7 +123,7 @@ function Register() {
         </Form>
       </Column>
       <Column>
-        <img src={Logo} alt="Ebovinos" />
+        <img src={Logo} alt="Efast" />
       </Column>
     </>
   );

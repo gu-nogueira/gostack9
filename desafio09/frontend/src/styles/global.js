@@ -85,6 +85,19 @@ export default createGlobalStyle`
   }
 
   /*
+   *  Yup schema error
+   */
+
+  span.error {
+    color: ${colors.warning1};
+    text-align: justify;
+    font-size: 12px;
+    line-height: 14px;
+    font-weight: 600;
+    margin: 5px 0;
+  }
+
+  /*
    *  Mobile assets
    */
 

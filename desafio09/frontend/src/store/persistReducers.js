@@ -4,7 +4,7 @@ import { persistReducer } from 'redux-persist';
 const persist = (reducers) => {
   const persistedReducer = persistReducer(
     {
-      key: 'ebovinos',
+      key: 'efast',
       storage,
       // Persisted data
       whitelist: ['auth', 'user'],
