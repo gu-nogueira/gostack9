@@ -67,7 +67,7 @@ function Deliveries() {
           delivery.deliveryman = (
             <Wrapper flex>
               <Avatar name={delivery.deliveryman.name} />
-              {delivery.deliveryman.name}
+              <span>{delivery.deliveryman.name}</span>
             </Wrapper>
           );
           delivery.status = (

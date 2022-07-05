@@ -17,7 +17,7 @@ function Avatar({ imageUrl, name, size }) {
 
   useMemo(() => {
     const [firstName, lastName] = name.toUpperCase().split(' ');
-    setInitials(firstName.charAt(0) + lastName.charAt(0));
+    setInitials(firstName?.charAt(0) + lastName?.charAt(0));
     getRandomColor(firstName.length);
   }, [name]);
 

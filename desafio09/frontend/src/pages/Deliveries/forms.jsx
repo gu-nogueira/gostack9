@@ -11,25 +11,38 @@ import { Row, Wrapper } from './styles';
 function DeliveriesForms() {
   const [recipients, setRecipients] = useState([]);
   const [deliverymen, setDeliverymen] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  async function fetchRecipients() {
+  async function fetchFormData() {
     try {
-      const response = await api.get('/recipients');
-      const rows = response.data;
+      setLoading(true);
+      const searches = [api.get('/recipients'), api.get('/deliverymen')];
+      const [recipientsResponse, deliverymenResponse] = await Promise.all(
+        searches
+      );
       setRecipients(
-        rows.map(({ id, destiny_name, ...rest }) => ({
-          value: id,
-          label: destiny_name,
-          rest,
+        recipientsResponse.data.map((recipient) => ({
+          value: recipient.id,
+          label: recipient.destiny_name,
+          ...recipient,
+        }))
+      );
+      setDeliverymen(
+        deliverymenResponse.data.map((deliverymen) => ({
+          value: deliverymen.id,
+          label: deliverymen.name,
+          ...deliverymen,
         }))
       );
     } catch (err) {
       // Improve this error handling
-      toast.error('Não foi possível carregar os destinatários');
+      toast.error('Não foi possível carregar os dados');
     }
+    setLoading(false);
   }
+
   useEffect(() => {
-    fetchRecipients();
+    fetchFormData();
   }, []);
 
   return (
@@ -41,15 +54,17 @@ function DeliveriesForms() {
             name="recipient"
             options={recipients}
             placeholder={
-              recipients.length > 0
-                ? 'Selecione um destinatário'
-                : 'Carregando...'
+              !loading ? 'Selecione um destinatário' : 'Carregando...'
             }
           />
         </Wrapper>
         <Wrapper stretch>
           <label htmlFor="deliveryman">Entregador</label>
-          <Select name="deliveryman" />
+          <Select
+            name="deliveryman"
+            options={deliverymen}
+            placeholder={!loading ? 'Selecione um entregador' : 'Carregando...'}
+          />
         </Wrapper>
       </Row>
       <Row>

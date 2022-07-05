@@ -32,8 +32,12 @@ export const Wrapper = styled.div`
     font-weight: 500;
   }
 
-  div {
-    margin-right: 5px;
+  div + span {
+    margin-left: 10px;
+  }
+
+  span.error {
+    margin-left: 0;
   }
 
   button + button {

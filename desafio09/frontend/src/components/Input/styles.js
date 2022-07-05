@@ -38,6 +38,7 @@ export const Container = styled.div`
     css`
       transition: all 0.2s;
       border: 1px solid ${colors.purple};
+      box-shadow: 0 0 0 1px ${colors.purple};
       svg {
         color: ${colors.purple};
       }
@@ -48,6 +49,7 @@ export const Container = styled.div`
     css`
       transition: all 0.2s;
       border: 1px solid ${colors.warning1} !important;
+      box-shadow: 0 0 0 1px ${colors.warning1} !important;
       svg {
         color: ${colors.warning1} !important;
       }
