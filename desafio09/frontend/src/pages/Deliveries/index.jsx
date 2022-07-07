@@ -112,7 +112,7 @@ function Deliveries() {
           data={deliveries}
           options={options}
           apiRoute={apiRoute}
-          requestData={fetchDeliveries}
+          fetchData={fetchDeliveries}
           viewContent={ViewContent}
         />
       )}

@@ -40,7 +40,7 @@ export const Wrapper = styled.div`
     margin-left: 0;
   }
 
-  button + button {
+  a + button {
     margin-left: 20px;
   }
 

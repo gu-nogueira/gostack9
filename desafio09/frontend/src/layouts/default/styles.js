@@ -172,7 +172,9 @@ export const Content = styled.div`
     background: ${colors.purple};
 
     svg {
-      margin-right: 5px;
+      margin-right: 10px;
+      width: 20px;
+      fill: white;
     }
 
     &:hover {

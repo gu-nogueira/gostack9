@@ -22,7 +22,7 @@ const schema = Yup.object().shape({
   deliveryman: Yup.string().required('Selecione um entregador'),
 });
 
-function DeliveriesNew() {
+function DeliveriesEdit() {
   const [loading, setLoading] = useState(false);
 
   const formRef = useRef();
@@ -103,4 +103,4 @@ function DeliveriesNew() {
   );
 }
 
-export default DeliveriesNew;
+export default DeliveriesEdit;
