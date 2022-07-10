@@ -28,6 +28,7 @@ class DeliveriesController {
           model: Recipients,
           as: 'recipient',
           attributes: [
+            'id',
             'destiny_name',
             'address',
             'number',
@@ -40,7 +41,7 @@ class DeliveriesController {
         {
           model: Deliverymen,
           as: 'deliveryman',
-          attributes: ['name', 'email'],
+          attributes: ['id', 'name', 'email'],
           include: [
             {
               model: Files,

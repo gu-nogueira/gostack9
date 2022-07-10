@@ -9,6 +9,7 @@ import Register from '../pages/Register';
 
 import Deliveries from '../pages/Deliveries';
 import DeliveriesNew from '../pages/Deliveries/new';
+import DeliveriesEdit from '../pages/Deliveries/edit';
 import Deliverymen from '../pages/Deliverymen';
 import Recipients from '../pages/Recipients';
 import Problems from '../pages/Problems';
@@ -23,6 +24,11 @@ function Routes() {
 
         <Route path="/deliveries" exact component={Deliveries} isPrivate />
         <Route path="/deliveries/new" component={DeliveriesNew} isPrivate />
+        <Route
+          path="/deliveries/:deliveryId"
+          component={DeliveriesEdit}
+          isPrivate
+        />
         <Route path="/deliverymen" component={Deliverymen} isPrivate />
         <Route path="/recipients" component={Recipients} isPrivate />
         <Route path="/problems" component={Problems} isPrivate />

@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Form } from '@unform/web';
 import { toast } from 'react-toastify';
 import * as Yup from 'yup';
@@ -22,10 +22,20 @@ const schema = Yup.object().shape({
   deliveryman: Yup.string().required('Selecione um entregador'),
 });
 
-function DeliveriesEdit() {
+function DeliveriesEdit({ location }) {
+  const [delivery, setDelivery] = useState(location?.state);
   const [loading, setLoading] = useState(false);
 
   const formRef = useRef();
+
+  function handleSetInitialData() {
+    const initialData = {
+      product: delivery.product,
+      recipient: delivery.recipient.id,
+      deliveryman: delivery.deliveryman.id,
+    };
+    formRef.current.setData(initialData);
+  }
 
   async function handleSubmit({ product, recipient, deliveryman }) {
     try {
@@ -75,7 +85,7 @@ function DeliveriesEdit() {
   return (
     <Form ref={formRef} onSubmit={handleSubmit}>
       <Row mb={30}>
-        <h2>Cadastro de encomendas</h2>
+        <h2>Encomenda Nº #aaaa</h2>
         <Wrapper flex>
           <Link to="/deliveries" className="button grey">
             <MdArrowBack size={20} />
@@ -97,7 +107,7 @@ function DeliveriesEdit() {
         </Wrapper>
       </Row>
       <div className="card">
-        <DeliveriesForms />
+        <DeliveriesForms setInitialData={handleSetInitialData} />
       </div>
     </Form>
   );

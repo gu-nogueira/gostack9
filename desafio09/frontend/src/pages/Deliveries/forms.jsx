@@ -8,7 +8,7 @@ import Select from '../../components/Select';
 
 import { Row, Wrapper } from './styles';
 
-function DeliveriesForms() {
+function DeliveriesForms({ setInitialData }) {
   const [recipients, setRecipients] = useState([]);
   const [deliverymen, setDeliverymen] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -38,11 +38,16 @@ function DeliveriesForms() {
       // Improve this error handling
       toast.error('Não foi possível carregar os dados');
     }
+
     setLoading(false);
   }
 
   useEffect(() => {
-    fetchFormData();
+    fetchFormData().then(() => {
+      if (setInitialData && typeof setInitialData === 'function') {
+        setInitialData();
+      }
+    });
   }, []);
 
   return (

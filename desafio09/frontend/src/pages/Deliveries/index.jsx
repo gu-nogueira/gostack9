@@ -60,6 +60,8 @@ function Deliveries() {
       const rows = response.data;
       setDeliveries(
         rows.map((delivery) => {
+          delivery.raw = { ...delivery };
+          delivery.id = `#${delivery.id}`;
           delivery.name = `encomenda #${delivery.id}`;
           delivery.city = delivery.recipient.city;
           delivery.state = delivery.recipient.state;

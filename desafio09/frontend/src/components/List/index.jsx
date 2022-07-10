@@ -77,9 +77,7 @@ function List({
               <tr key={registry + index}>
                 {Object.keys(headers).map((column, index) => (
                   <td key={column + index} data-label={headers[column]}>
-                    {column === 'id'
-                      ? `#${registry[column]}`
-                      : registry[column]}
+                    {registry[column]}
                   </td>
                 ))}
                 <td data-label="Ações">
@@ -147,7 +145,12 @@ function List({
                         default:
                           return (
                             <li key={index}>
-                              <Link to={`/${category}/${registry.id}`}>
+                              <Link
+                                to={{
+                                  pathname: `/${category}/${registry.id}`,
+                                  state: registry.raw,
+                                }}
+                              >
                                 <MdEdit className={option} /> Editar
                               </Link>
                             </li>
