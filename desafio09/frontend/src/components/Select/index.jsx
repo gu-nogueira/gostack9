@@ -30,6 +30,12 @@ function Select({ name, ...rest }) {
         }
         return selectedOption.value;
       },
+      setValue: (ref, value) => {
+        ref.setValue(value || null);
+      },
+      clearValue: (ref) => {
+        ref.clearValue();
+      },
     });
   }, [fieldName, registerField, rest.isMulti]);
 

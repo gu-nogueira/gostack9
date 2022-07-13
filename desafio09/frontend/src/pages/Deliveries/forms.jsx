@@ -28,10 +28,10 @@ function DeliveriesForms({ setInitialData }) {
         }))
       );
       setDeliverymen(
-        deliverymenResponse.data.map((deliverymen) => ({
-          value: deliverymen.id,
-          label: deliverymen.name,
-          ...deliverymen,
+        deliverymenResponse.data.map((deliveryman) => ({
+          value: deliveryman.id,
+          label: deliveryman.name,
+          ...deliveryman,
         }))
       );
     } catch (err) {
@@ -43,12 +43,13 @@ function DeliveriesForms({ setInitialData }) {
   }
 
   useEffect(() => {
-    fetchFormData().then(() => {
+    (async () => {
+      await fetchFormData();
       if (setInitialData && typeof setInitialData === 'function') {
         setInitialData();
       }
-    });
-  }, []);
+    })();
+  }, [setInitialData]);
 
   return (
     <>

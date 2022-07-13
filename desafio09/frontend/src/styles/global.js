@@ -4,7 +4,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import colors from './colors';
 
 export default createGlobalStyle`
-  @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap');
+  /* @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700;900&display=swap'); */
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap');
 
   * {
     margin: 0;
@@ -21,7 +22,7 @@ export default createGlobalStyle`
     height: 100%;
     scroll-behavior: smooth;
     background-color: ${colors.background};
-    --toastify-font-family: 'Roboto', sans-serif;
+    --toastify-font-family: 'Inter', sans-serif;
   }
 
   body {
@@ -29,7 +30,7 @@ export default createGlobalStyle`
   }
 
   body, input, select, button {
-    font: 16px 'Roboto', sans-serif;
+    font: 16px 'Inter', sans-serif;
     color: ${colors.grey1};
   }
 

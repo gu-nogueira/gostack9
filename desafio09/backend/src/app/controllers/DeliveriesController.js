@@ -142,8 +142,7 @@ class DeliveriesController {
         .json({ error: 'Validation fails, verify request body' });
     }
 
-    const { recipient_id, deliveryman_id, signature_id, start_date, end_date } =
-      req.body;
+    const { recipient_id, deliveryman_id, start_date, end_date } = req.body;
     const delivery = await Deliveries.findByPk(req.params.id);
 
     if (!delivery) {
@@ -164,12 +163,12 @@ class DeliveriesController {
       }
     }
 
-    if (signature_id) {
-      const signatureExists = await Files.findByPk(signature_id);
-      if (!signatureExists) {
-        return res.status(400).json({ error: 'Signature does not exists' });
-      }
-    }
+    // if (signature_id) {
+    //   const signatureExists = await Files.findByPk(signature_id);
+    //   if (!signatureExists) {
+    //     return res.status(400).json({ error: 'Signasignature_idture does not exists' });
+    //   }
+    // }
 
     if (start_date && start_date != delivery.start_date) {
       if (parseISO(start_date) < 8 || parseISO(start_date) >= 18) {
@@ -219,7 +218,7 @@ class DeliveriesController {
       product,
       recipient_id,
       deliveryman_id,
-      signature_id,
+      // signature_id,
       start_date,
       end_date,
     });

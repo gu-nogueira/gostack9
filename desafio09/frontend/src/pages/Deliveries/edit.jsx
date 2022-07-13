@@ -31,8 +31,14 @@ function DeliveriesEdit({ location }) {
   function handleSetInitialData() {
     const initialData = {
       product: delivery.product,
-      recipient: delivery.recipient.id,
-      deliveryman: delivery.deliveryman.id,
+      recipient: {
+        value: delivery.recipient.id,
+        label: delivery.recipient.destiny_name,
+      },
+      deliveryman: {
+        value: delivery.deliveryman.id,
+        label: delivery.deliveryman.name,
+      },
     };
     formRef.current.setData(initialData);
   }
@@ -55,7 +61,7 @@ function DeliveriesEdit({ location }) {
 
       setLoading(true);
 
-      await api.post('/deliveries', {
+      await api.put(`/deliveries/${delivery.id}`, {
         product,
         recipient_id: recipient,
         deliveryman_id: deliveryman,
@@ -85,7 +91,7 @@ function DeliveriesEdit({ location }) {
   return (
     <Form ref={formRef} onSubmit={handleSubmit}>
       <Row mb={30}>
-        <h2>Encomenda Nº #aaaa</h2>
+        <h2>Encomenda #{delivery.id}</h2>
         <Wrapper flex>
           <Link to="/deliveries" className="button grey">
             <MdArrowBack size={20} />
