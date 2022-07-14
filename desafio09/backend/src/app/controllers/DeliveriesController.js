@@ -113,7 +113,10 @@ class DeliveriesController {
       deliveryman_id,
     });
 
-    // E-mail queue
+    /*
+     *  E-mail queue schedule
+     */
+
     await Queue.add(OrderMail.key, {
       product,
       recipient,
@@ -129,6 +132,10 @@ class DeliveriesController {
   }
 
   async update(req, res) {
+    /*
+     *  Schema Validation
+     */
+
     const schema = Yup.object().shape({
       product: Yup.string(),
       recipient_id: Yup.number(),
@@ -142,12 +149,21 @@ class DeliveriesController {
         .json({ error: 'Validation fails, verify request body' });
     }
 
-    const { recipient_id, deliveryman_id, start_date, end_date } = req.body;
+    const { recipient_id, deliveryman_id, signature_id, start_date, end_date } =
+      req.body;
     const delivery = await Deliveries.findByPk(req.params.id);
+
+    /*
+     *  Check if delivery exists
+     */
 
     if (!delivery) {
       return res.status(400).json({ error: 'Delivery not found' });
     }
+
+    /*
+     *  Check if has new recipient and if it exists
+     */
 
     if (recipient_id && recipient_id != delivery.recipient_id) {
       const recipientExists = await Recipients.findByPk(recipient_id);
@@ -156,6 +172,10 @@ class DeliveriesController {
       }
     }
 
+    /*
+     *  Check if has new deliveryman and if it exists
+     */
+
     if (deliveryman_id && deliveryman_id != delivery.deliveryman_id) {
       const deliverymanExists = await Deliverymen.findByPk(deliveryman_id);
       if (!deliverymanExists) {
@@ -163,12 +183,20 @@ class DeliveriesController {
       }
     }
 
-    // if (signature_id) {
-    //   const signatureExists = await Files.findByPk(signature_id);
-    //   if (!signatureExists) {
-    //     return res.status(400).json({ error: 'Signasignature_idture does not exists' });
-    //   }
-    // }
+    /*
+     *  Check if has new signature and if it exists
+     */
+
+    if (signature_id) {
+      const signatureExists = await Files.findByPk(signature_id);
+      if (!signatureExists) {
+        return res.status(400).json({ error: 'Signature does not exists' });
+      }
+    }
+
+    /*
+     *  Check if has new start_date and it's conditions
+     */
 
     if (start_date && start_date != delivery.start_date) {
       if (parseISO(start_date) < 8 || parseISO(start_date) >= 18) {
@@ -183,13 +211,19 @@ class DeliveriesController {
       }
     }
 
-    if (end_date && !start_date) {
-      if (!delivery.start_date) {
-        return res
-          .status(400)
-          .json({ error: 'The delivery has not been picked yet' });
-      }
+    /*
+     *  If has end_date, check if delivery has been picked
+     */
+
+    if (end_date && !delivery.start_date) {
+      return res
+        .status(400)
+        .json({ error: 'The delivery has not been picked yet' });
     }
+
+    /*
+     *  Check start_date and end_date conditions
+     */
 
     if (start_date && end_date) {
       if (isBefore(parseISO(end_date), parseISO(start_date))) {
@@ -198,6 +232,10 @@ class DeliveriesController {
           .json({ error: 'The end date cannot be before start date' });
       }
     }
+
+    /*
+     *  IF has end_date, chehck if is after start_date
+     */
 
     if (end_date) {
       if (isBefore(parseISO(end_date), delivery.start_date)) {
@@ -212,15 +250,15 @@ class DeliveriesController {
       }
     }
 
-    const { product } = await delivery.update(req.body);
+    const updatedDelivery = await delivery.update(req.body);
 
     return res.json({
-      product,
-      recipient_id,
-      deliveryman_id,
-      // signature_id,
-      start_date,
-      end_date,
+      product: updatedDelivery.product,
+      recipient_id: updatedDelivery.recipient_id,
+      deliveryman_id: updatedDelivery.deliveryman_id,
+      signature_id: updatedDelivery.signature_id,
+      start_date: updatedDelivery.start_date,
+      end_date: updatedDelivery.end_date,
     });
   }
 

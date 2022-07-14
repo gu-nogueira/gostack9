@@ -262,6 +262,34 @@ __metadata:
   languageName: node
   linkType: hard
 
+"backend@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "backend@workspace:."
+  dependencies:
+    bcryptjs: ^2.4.3
+    bee-queue: ^1.4.0
+    cors: ^2.8.5
+    date-fns: ^2.0.0-beta.5
+    dotenv: ^10.0.0
+    express: ^4.17.1
+    express-async-errors: ^3.1.1
+    express-handlebars: ^5.3.2
+    jsonwebtoken: ^8.5.1
+    multer: ^1.4.2
+    nodemailer: ^6.6.3
+    nodemailer-express-handlebars: ^4.0.0
+    nodemon: ^2.0.14
+    pg: ^8.6.0
+    pg-hstore: ^2.3.4
+    prettier: ^2.4.1
+    sequelize: ^6.6.4
+    sequelize-cli: ^6.2.0
+    sucrase: ^3.19.0
+    youch: ^2.2.2
+    yup: ^0.32.9
+  languageName: unknown
+  linkType: soft
+
 "balanced-match@npm:^1.0.0":
   version: 1.0.2
   resolution: "balanced-match@npm:1.0.2"
@@ -834,34 +862,6 @@ __metadata:
   checksum: 6b406620d269619852885ce15965272b829df6f409724415e0002c8632ab6a8c0a08ec1f0bd2add05dc7bd7507606f7e2cc034fa24224ab829580040b835ecd9
   languageName: node
   linkType: hard
-
-"desafio09_backend@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "desafio09_backend@workspace:."
-  dependencies:
-    bcryptjs: ^2.4.3
-    bee-queue: ^1.4.0
-    cors: ^2.8.5
-    date-fns: ^2.0.0-beta.5
-    dotenv: ^10.0.0
-    express: ^4.17.1
-    express-async-errors: ^3.1.1
-    express-handlebars: ^5.3.2
-    jsonwebtoken: ^8.5.1
-    multer: ^1.4.2
-    nodemailer: ^6.6.3
-    nodemailer-express-handlebars: ^4.0.0
-    nodemon: ^2.0.14
-    pg: ^8.6.0
-    pg-hstore: ^2.3.4
-    prettier: ^2.4.1
-    sequelize: ^6.6.4
-    sequelize-cli: ^6.2.0
-    sucrase: ^3.19.0
-    youch: ^2.2.2
-    yup: ^0.32.9
-  languageName: unknown
-  linkType: soft
 
 "destroy@npm:~1.0.4":
   version: 1.0.4
