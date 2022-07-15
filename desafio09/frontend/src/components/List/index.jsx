@@ -51,6 +51,10 @@ function List({
     [active]
   );
 
+  /*
+   *  useEffect listener for dropDown
+   */
+
   useEffect(() => {
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
@@ -132,7 +136,10 @@ function List({
                                     ),
                                     cta: 'Excluir',
                                     resolver: () =>
-                                      handleDelete(registry.id, registry.name),
+                                      handleDelete(
+                                        registry.raw.id,
+                                        registry.name
+                                      ),
                                   })
                                 }
                               >

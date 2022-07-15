@@ -1,18 +1,25 @@
 import Files from '../models/Files';
 
 class FilesController {
-
   async store(req, res) {
+    const { file } = req;
 
-    // Gerados por multerConfig
-    const { originalname: name, filename: path } = req.file;
+    if (!file) {
+      return res.status(400).json({ error: 'File is required' });
+    }
 
-    const file = await Files.create({
+    /*
+     *  'originalName' & 'fileName' are handled by multerConfig
+     */
+
+    const { originalname: name, filename: path } = file;
+
+    const fileRegister = await Files.create({
       name,
       path,
-    })
-    return res.json(file);
+    });
+    return res.json(fileRegister);
   }
 }
 
-export default new FilesController ();
+export default new FilesController();

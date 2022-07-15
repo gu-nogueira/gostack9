@@ -9,16 +9,14 @@ function Avatar({ imageUrl, name, size }) {
 
   function getRandomColor(value) {
     const secondDigit = value.toString()[1];
-    const colorIndex = Math.floor(
-      Math.random() * value <= 10 ? value : secondDigit
-    );
+    const colorIndex = value <= 10 ? value : secondDigit;
     setColor(avatarColors[colorIndex]);
   }
 
   useMemo(() => {
     const [firstName, lastName] = name.toUpperCase().split(' ');
     setInitials(firstName?.charAt(0) + lastName?.charAt(0));
-    getRandomColor(firstName.length);
+    getRandomColor(firstName.length + lastName.length);
   }, [name]);
 
   return (

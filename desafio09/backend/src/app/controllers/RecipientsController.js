@@ -31,9 +31,14 @@ class RecipientsController {
   }
 
   async store(req, res) {
+    /*
+     *  Schema validation
+     */
+
     const schema = Yup.object().shape({
       destiny_name: Yup.string().required(),
       address: Yup.string().required(),
+      // TO DO: Mudar para string
       number: Yup.number().required(),
       complement: Yup.string(),
       state: Yup.string().required().uppercase().min(2).max(2),
@@ -70,9 +75,14 @@ class RecipientsController {
   }
 
   async update(req, res) {
+    /*
+     *  Schema validation
+     */
+
     const schema = Yup.object().shape({
       destiny_name: Yup.string(),
       address: Yup.string(),
+      // TO DO: Mudar para string
       number: Yup.number(),
       complement: Yup.string(),
       state: Yup.string().uppercase().min(2).max(2),
@@ -115,7 +125,13 @@ class RecipientsController {
   }
 
   async delete(req, res) {
-    const recipient = await Recipients.findByPk(req.params.id);
+    const { id } = req.params;
+
+    if (!id) {
+      return res.status(400).json({ error: 'Missing recipient id' });
+    }
+
+    const recipient = await Recipients.findByPk(id);
 
     if (!recipient) {
       return res.status(400).json({ error: 'Recipient not found' });

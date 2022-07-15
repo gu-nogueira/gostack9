@@ -51,6 +51,10 @@ class DeliverymenController {
   }
 
   async store(req, res) {
+    /*
+     *  Schema validation
+     */
+
     const schema = Yup.object().shape({
       name: Yup.string().required(),
       email: Yup.string().email().required(),
@@ -62,28 +66,36 @@ class DeliverymenController {
         .json({ error: 'Validation fails, verify request body' });
     }
 
+    const { email, avatar_id } = req.body;
+
     const deliverymanExists = await Deliverymen.findOne({
-      where: { email: req.body.email },
+      where: { email },
     });
     if (deliverymanExists) {
-      return res.status(400).json({ error: 'Deliveryman not found' });
+      return res.status(400).json({ error: 'Deliveryman already exists' });
     }
 
-    const checkFileExists = await Files.findByPk(req.body.avatar_id);
-    if (!checkFileExists) {
-      return res.status(400).json({ error: 'File not found' });
+    if (avatar_id) {
+      const checkFileExists = await Files.findByPk(avatar_id);
+      if (!checkFileExists) {
+        return res.status(400).json({ error: 'File not found' });
+      }
     }
 
-    const { name, email, avatar_id } = await Deliverymen.create(req.body);
+    const { name, avatar_id: avatarId } = await Deliverymen.create(req.body);
 
     return res.json({
       name,
       email,
-      avatar_id,
+      avatar_id: avatarId,
     });
   }
 
   async update(req, res) {
+    /*
+     *  Schema validation
+     */
+
     const schema = Yup.object().shape({
       name: Yup.string(),
       email: Yup.string().email(),
@@ -95,14 +107,21 @@ class DeliverymenController {
         .json({ error: 'Validation fails, verify request body' });
     }
 
-    const { email, avatar_id } = req.body;
-    const deliveryman = await Deliverymen.findByPk(req.params.id);
+    const { id } = req.params;
+    if (!id) {
+      return res.status(400).json({ error: 'Missing deliveryman id' });
+    }
 
+    const deliveryman = await Deliverymen.findByPk(id);
     if (!deliveryman) {
       return res.status(400).json({ error: 'Deliveryman not found' });
     }
 
-    // Checa se o e-mail foi alterado
+    /*
+     *  Check if email has been updated
+     */
+
+    const { email, avatar_id } = req.body;
     if (email && email !== deliveryman.email) {
       const deliverymanExists = await Deliverymen.findOne({
         where: { email: req.body.email },
@@ -112,7 +131,10 @@ class DeliverymenController {
       }
     }
 
-    // Checa se há avatar
+    /*
+     *  Check if has avatar_id
+     */
+
     if (avatar_id && avatar_id != deliveryman.avatar_id) {
       const checkFileExists = await Files.findByPk(req.body.avatar_id);
       if (!checkFileExists) {
@@ -121,7 +143,6 @@ class DeliverymenController {
     }
 
     const { name } = await deliveryman.update(req.body);
-
     return res.json({
       name,
       email,
@@ -130,7 +151,12 @@ class DeliverymenController {
   }
 
   async delete(req, res) {
-    const deliveryman = await Deliverymen.findByPk(req.params.id, {
+    const { id } = req.params;
+    if (!id) {
+      return res.status(400).json({ error: 'Missing deliveryman id' });
+    }
+
+    const deliveryman = await Deliverymen.findByPk(id, {
       include: [
         {
           model: Files,
@@ -139,15 +165,13 @@ class DeliverymenController {
         },
       ],
     });
-
     if (!deliveryman) {
       return res.status(400).json({ error: 'Deliveryman not found' });
     }
 
     deliveryman.destroy();
-
     return res
-      .status(204)
+      .status(200)
       .json({ message: `${deliveryman.name} has been deleted` });
   }
 }

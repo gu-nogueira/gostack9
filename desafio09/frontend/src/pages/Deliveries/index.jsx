@@ -62,16 +62,21 @@ function Deliveries() {
         rows.map((delivery) => {
           delivery.raw = { ...delivery };
           delivery.id = `#${delivery.id}`;
-          delivery.name = `encomenda #${delivery.id}`;
+          delivery.name = `encomenda ${delivery.id}`;
           delivery.city = delivery.recipient.city;
           delivery.state = delivery.recipient.state;
           delivery.recipient = delivery.recipient.destiny_name;
-          delivery.deliveryman = (
-            <Wrapper flex>
-              <Avatar name={delivery.deliveryman.name} />
-              <span>{delivery.deliveryman.name}</span>
-            </Wrapper>
-          );
+          if (delivery.deliveryman) {
+            delivery.deliveryman = (
+              <Wrapper flex>
+                <Avatar
+                  name={delivery.deliveryman.name}
+                  imageUrl={delivery.deliveryman.avatar?.url}
+                />
+                <span>{delivery.deliveryman.name}</span>
+              </Wrapper>
+            );
+          }
           delivery.status = (
             <span className={`status ${delivery.status}`}>
               {delivery.status}
@@ -82,6 +87,7 @@ function Deliveries() {
         })
       );
     } catch (err) {
+      console.error(err);
       toast.error('Não foi possível carregar as encomendas');
     }
     setLoading(false);
@@ -93,6 +99,7 @@ function Deliveries() {
 
   useEffect(() => {
     fetchDeliveries();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPage]);
 
   return (

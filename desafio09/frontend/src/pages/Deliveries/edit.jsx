@@ -35,7 +35,7 @@ function DeliveriesEdit({ location }) {
         value: delivery.recipient.id,
         label: delivery.recipient.destiny_name,
       },
-      deliveryman: {
+      deliveryman: delivery.deliveryman && {
         value: delivery.deliveryman.id,
         label: delivery.deliveryman.name,
       },

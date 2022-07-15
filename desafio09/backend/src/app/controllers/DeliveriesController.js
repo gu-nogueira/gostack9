@@ -263,15 +263,28 @@ class DeliveriesController {
   }
 
   async delete(req, res) {
-    const delivery = await Deliveries.findByPk(req.params.id);
+    const { id } = req.params;
+
+    /*
+     *  Check if has delivery id
+     */
+
+    if (!id) {
+      return res.status(400).json({ error: 'Missing delivery id' });
+    }
+
+    /*
+     *  Check if delivery exists
+     */
+
+    const delivery = await Deliveries.findByPk(id);
+    if (!delivery) {
+      return res.status(404).json({ error: 'Delivery not found' });
+    }
 
     const deliveryProblems = await DeliveryProblems.findAll({
       where: { delivery_id: delivery.id },
     });
-
-    if (!delivery) {
-      return res.status(400).json({ error: 'Delivery not found' });
-    }
 
     /*
      *  Transaction for deleting delivery problems before delivery
