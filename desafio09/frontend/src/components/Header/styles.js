@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import colors from '../../styles/colors';
 
-export const Container = styled.div`
+export const Container = styled.header`
   width: 100%;
   height: 64px;
   background: #fff;
@@ -19,7 +19,7 @@ export const Container = styled.div`
     align-items: center;
 
     img {
-      width: 130px;
+      width: auto;
       height: 20px;
     }
   }

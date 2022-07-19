@@ -8,6 +8,7 @@ import Loader from '../../components/Loader';
 import Search from '../../components/Search';
 import List from '../../components/List';
 import Avatar from '../../components/Avatar';
+import Pagination from '../../components/Pagination';
 
 import { MdOutlineAdd } from 'react-icons/md';
 import { Row, Wrapper } from './styles';
@@ -32,6 +33,14 @@ function ViewContent({ delivery }) {
     </>
   );
 }
+
+const pages = {
+  amount: 12,
+  current: 3,
+  previous: true,
+  next: true,
+  last: 3,
+};
 
 function Deliveries() {
   const [loading, setLoading] = useState(false);
@@ -115,15 +124,18 @@ function Deliveries() {
       {loading ? (
         <Loader />
       ) : (
-        <List
-          category="deliveries"
-          headers={headers}
-          data={deliveries}
-          options={options}
-          apiRoute={apiRoute}
-          fetchData={fetchDeliveries}
-          viewContent={ViewContent}
-        />
+        <>
+          <List
+            category="deliveries"
+            headers={headers}
+            data={deliveries}
+            options={options}
+            apiRoute={apiRoute}
+            fetchData={fetchDeliveries}
+            viewContent={ViewContent}
+          />
+          <Pagination pages={pages} />
+        </>
       )}
     </>
   );

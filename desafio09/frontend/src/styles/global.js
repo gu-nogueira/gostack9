@@ -1,4 +1,4 @@
-import { createGlobalStyle } from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
 
 import 'react-toastify/dist/ReactToastify.css';
 import colors from './colors';
@@ -21,7 +21,6 @@ export default createGlobalStyle`
   html, body, #root {
     height: 100%;
     scroll-behavior: smooth;
-    background-color: ${colors.background};
     --toastify-font-family: 'Inter', sans-serif;
   }
 
@@ -125,5 +124,27 @@ export default createGlobalStyle`
       font-size: 24px;
       line-height: 24px;
     }
+  }
+`;
+
+export const Container = styled.div`
+  height: 100%;
+
+  & > section {
+    display: flex;
+    justify-content: center;
+  }
+`;
+
+export const Content = styled.div`
+  display: flex;
+
+  @media only screen and (min-width: 1050px) {
+    max-width: 1280px;
+  }
+
+  @media only screen and (max-width: 1049px) {
+    max-width: 100%;
+    padding: 0 15px;
   }
 `;

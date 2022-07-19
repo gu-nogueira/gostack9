@@ -2,12 +2,13 @@ import styled from 'styled-components';
 import colors from '../../styles/colors';
 
 export const Wrapper = styled.div`
+  background-color: ${colors.background};
   width: 100%;
   min-height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* justify-content: space-between; */
+  justify-content: space-between;
 `;
 
 export const Content = styled.div`
@@ -172,9 +173,12 @@ export const Content = styled.div`
     background: ${colors.purple};
 
     svg {
-      margin-right: 10px;
       width: 20px;
       fill: white;
+    }
+
+    svg + span {
+      margin-right: 10px;
     }
 
     &:hover {

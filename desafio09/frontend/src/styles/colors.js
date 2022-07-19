@@ -1,7 +1,7 @@
 const colors = {
   background: '#7D40E705',
   warning1: '#fb6f91',
-  border: '#d6eae3',
+  border: '#e4daf5',
   purpleLight: '#9c6eed',
   purple: '#7D40E7',
   purpleShadow: '#5431BD',
