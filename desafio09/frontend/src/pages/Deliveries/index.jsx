@@ -34,14 +34,6 @@ function ViewContent({ delivery }) {
   );
 }
 
-const pages = {
-  amount: 12,
-  current: 3,
-  previous: true,
-  next: true,
-  last: 3,
-};
-
 function Deliveries() {
   const [loading, setLoading] = useState(false);
   const [deliveries, setDeliveries] = useState([]);
@@ -55,9 +47,7 @@ function Deliveries() {
     state: 'Estado',
     status: 'Status',
   };
-
   const options = ['view', 'edit', 'delete'];
-
   const apiRoute = '/deliveries';
 
   async function fetchDeliveries() {
@@ -102,10 +92,6 @@ function Deliveries() {
     setLoading(false);
   }
 
-  function handlePagination(page) {
-    setCurrentPage(page);
-  }
-
   useEffect(() => {
     fetchDeliveries();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -134,7 +120,12 @@ function Deliveries() {
             fetchData={fetchDeliveries}
             viewContent={ViewContent}
           />
-          <Pagination pages={pages} />
+          <Pagination
+            currentPage={currentPage}
+            totalCount={48}
+            perPage={20}
+            onPageChange={(page) => setCurrentPage(page)}
+          />
         </>
       )}
     </>

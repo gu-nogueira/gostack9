@@ -5,6 +5,7 @@ import colors from '../../styles/colors';
 export const Container = styled.footer`
   width: 100%;
   height: 32px;
+  padding: 0 10px;
   background: linear-gradient(
     -90deg,
     ${colors.purpleShadow},
@@ -12,7 +13,7 @@ export const Container = styled.footer`
   );
   box-shadow: 0 0 20px rgba(125, 64, 231, 0.08);
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
 
   img {
@@ -28,11 +29,5 @@ export const Container = styled.footer`
   a {
     color: #fff;
     font-weight: 600;
-  }
-
-  img + small {
-    margin-left: 15px;
-    border-left: 1px solid #fff;
-    padding-left: 15px;
   }
 `;

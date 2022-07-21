@@ -13,6 +13,7 @@ const colors = {
   yellow2: '#c78b00',
   grey1: '#6d6d6d',
   grey2: '#d8d8d8',
+  grey3: '#f0f0f0',
   black1: '#2b2b2b',
 };
 

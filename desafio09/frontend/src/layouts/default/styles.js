@@ -12,8 +12,10 @@ export const Wrapper = styled.div`
 `;
 
 export const Content = styled.div`
+  position: relative;
+  flex: 1;
   width: 1200px;
-  padding-top: 50px;
+  margin: 50px 0;
 
   /*
    *  Cards
@@ -201,7 +203,7 @@ export const Content = styled.div`
 
   .button.small {
     height: 32px;
-    font-size: 14px;
+    font-size: 12px;
   }
 
   /*
