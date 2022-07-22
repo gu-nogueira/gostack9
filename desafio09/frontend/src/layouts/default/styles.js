@@ -180,7 +180,7 @@ export const Content = styled.div`
     }
 
     svg + span {
-      margin-right: 10px;
+      margin-left: 5px;
     }
 
     &:hover {
@@ -236,5 +236,35 @@ export const Content = styled.div`
       fill: ${colors.purple};
       margin-bottom: 20px;
     }
+  }
+
+  /*
+   *  Badges
+   */
+
+  .badge {
+    font-size: 14px;
+    font-weight: 500;
+    padding: 4px 8px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    svg {
+      margin-left: 5px;
+    }
+  }
+
+  .badge.purple {
+    color: ${colors.purple};
+    background: ${colors.border};
+    box-shadow: 0 0 20px rgba(125, 64, 231, 0.05);
+  }
+
+  .badge.grey {
+    color: ${colors.grey1};
+    background: ${colors.grey2};
+    box-shadow: 0 0 20px rgba(125, 64, 231, 0.05);
   }
 `;

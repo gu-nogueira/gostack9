@@ -280,3 +280,11 @@ export const DeleteWarning = styled(IoIosWarning).attrs({
   margin: 0 auto 20px auto;
   color: ${colors.warning1};
 `;
+
+export const Content = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 30px;
+`;

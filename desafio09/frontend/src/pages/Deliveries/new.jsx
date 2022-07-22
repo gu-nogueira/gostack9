@@ -79,18 +79,18 @@ function DeliveriesNew() {
         <Wrapper flex>
           <Link to="/deliveries" className="button grey">
             <MdArrowBack size={20} />
-            Voltar
+            <span>Voltar</span>
           </Link>
           <button type="submit" className="button">
             {loading ? (
               <>
                 <Loader />
-                Carregando
+                <span>Carregando</span>
               </>
             ) : (
               <>
                 <MdOutlineDone size={20} />
-                Salvar
+                <span>Salvar</span>
               </>
             )}
           </button>

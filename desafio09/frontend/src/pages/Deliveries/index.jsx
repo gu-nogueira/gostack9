@@ -117,7 +117,7 @@ function Deliveries() {
         </Wrapper>
         <Link className="button" to="/deliveries/new">
           <MdOutlineAdd size={20} />
-          Cadastrar
+          <span>Cadastrar</span>
         </Link>
       </Row>
       {loading ? (

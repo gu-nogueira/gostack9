@@ -8,7 +8,8 @@ import api from '../../services/api';
 
 import { MdMoreHoriz, MdEdit, MdDelete } from 'react-icons/md';
 import { AiFillEye } from 'react-icons/ai';
-import { Container, DropBox, DeleteWarning } from './styles';
+import { HiEmojiSad } from 'react-icons/hi';
+import { Container, DropBox, DeleteWarning, Content } from './styles';
 
 function List({
   category,
@@ -171,7 +172,11 @@ function List({
           </tbody>
         </table>
       ) : (
-        <span>Nenhum resultado encontrado :(</span>
+        <Content>
+          <span className="badge purple">
+            Nenhum resultado encontrado <HiEmojiSad size={16} />
+          </span>
+        </Content>
       )}
     </Container>
   );
