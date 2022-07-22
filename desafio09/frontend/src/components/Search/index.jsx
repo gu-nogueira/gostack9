@@ -1,56 +1,61 @@
-import React, { useState } from 'react';
-import Select from 'react-select';
+import React, { useRef, useState, useEffect } from 'react';
 
-import colors from '../../styles/colors';
+import { Container } from './styles';
+import { MdSearch, MdClose } from 'react-icons/md';
 
-// import { Container } from './styles';
+function Search({ name, value, onSearch, ...rest }) {
+  const [focused, setFocused] = useState();
+  const [search, setSearch] = useState('');
 
-function Search({ placeholder, defaultValue }) {
-  const [selected, setSelected] = useState();
-  const options = [
-    { value: 'chocolate', label: 'Chocolate' },
-    { value: 'strawberry', label: 'Strawberry' },
-    { value: 'vanilla', label: 'Vanilla' },
-  ];
+  const searchRef = useRef();
 
-  const customStyles = {
-    control: () => ({
-      display: 'flex',
-      border: `1px solid ${colors.grey2}`,
-      borderRadius: 5,
-      height: 38,
-      width: '100%',
-      padding: '0 7px',
-      color: '#999',
-    }),
-    option: (provided, state) => ({
-      ...provided,
-      color: state.isSelected ? '#fff' : '#999',
-    }),
-    singleValue: (provided) => {
-      const color = '#999';
+  function handleFocus() {
+    setFocused(!focused);
+  }
 
-      return { ...provided, color };
-    },
-  };
+  function handleBlur() {
+    setFocused(false);
+  }
+
+  function handleChange(e) {
+    setSearch(e.target.value);
+  }
+
+  function handleClear() {
+    setSearch('');
+    searchRef.current.focus();
+  }
+
+  useEffect(() => {
+    const delayDebounceSearch = setTimeout(() => {
+      onSearch(search);
+    }, 500);
+
+    return () => clearTimeout(delayDebounceSearch);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [search]);
 
   return (
-    <Select
-      onChange={setSelected}
-      options={options}
-      isSearchable
-      defaultValue={defaultValue}
-      placeholder={placeholder}
-      styles={customStyles}
-      theme={(theme) => ({
-        ...theme,
-        colors: {
-          ...theme.colors,
-          primary: colors.purple,
-          primary25: colors.purpleLight + '33',
-        },
-      })}
-    />
+    <>
+      <Container focused={focused}>
+        <MdSearch size={20} />
+        <input
+          name={name}
+          ref={searchRef}
+          type="text"
+          value={search}
+          onChange={handleChange}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+          {...rest}
+        />
+        {search && (
+          <button type="button" onClick={handleClear}>
+            <MdClose size={18} />
+          </button>
+        )}
+      </Container>
+    </>
   );
 }
 

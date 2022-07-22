@@ -52,17 +52,19 @@ export const PageItem = styled.li`
     cursor: default;
   }
 
-  &:hover {
-    background: ${colors.border};
-    color: ${colors.purple};
-    font-weight: bold;
-    cursor: pointer;
-  }
-
   ${(props) =>
-    props.selected &&
-    css`
-      background-color: ${colors.purple};
-      color: #fff;
-    `}
+    props.selected
+      ? css`
+          background: ${colors.purpleLight};
+          color: #fff;
+          font-weight: bold;
+        `
+      : css`
+          &:hover {
+            background: ${colors.border};
+            color: ${colors.purple};
+            font-weight: bold;
+            cursor: pointer;
+          }
+        `}
 `;

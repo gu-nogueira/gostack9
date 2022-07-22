@@ -26,14 +26,16 @@ export const Wrapper = styled.div`
       width: stretch;
     `}
 
+  ${(props) =>
+    props.gap &&
+    css`
+      gap: ${(props) => props.gap + 'px'};
+    `}
+
   label {
     display: block;
     margin-bottom: 10px;
     font-weight: 500;
-  }
-
-  div + span {
-    margin-left: 10px;
   }
 
   span.error {
@@ -48,5 +50,3 @@ export const Wrapper = styled.div`
     margin-left: 30px;
   }
 `;
-
-export const FormsWrapper = styled.div``;

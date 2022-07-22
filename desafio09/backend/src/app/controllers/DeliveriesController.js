@@ -10,19 +10,20 @@ import Files from '../models/Files';
 
 import Transaction from '../../database/transaction';
 
+import Cache from '../../lib/Cache';
 import Queue from '../../lib/Queue';
 import OrderMail from '../jobs/OrderMail';
 
 class DeliveriesController {
   async index(req, res) {
-    const { page = 1, q: search } = req.query;
+    const { page = 1, perPage = 20, q: search } = req.query;
 
     const deliveries = await Deliveries.findAll({
       order: [['id', 'DESC']],
       attributes: ['id', 'product', 'canceled_at', 'start_date', 'end_date'],
       where: search ? { product: { [Op.iLike]: `%${search}%` } } : undefined,
-      limit: 20,
-      offset: (page - 1) * 20,
+      limit: perPage,
+      offset: (page - 1) * perPage,
       include: [
         {
           model: Recipients,
@@ -56,30 +57,46 @@ class DeliveriesController {
           attributes: ['name', 'path', 'url'],
         },
       ],
-    }).then(function (deliveries) {
-      deliveries.forEach((delivery, index, arr) => {
-        /*
-         *  Delivery status
-         */
-
-        let status = '';
-
-        if (delivery.dataValues.canceled_at) {
-          status = 'cancelado';
-        } else if (delivery.dataValues.end_date) {
-          status = 'entregue';
-        } else if (delivery.dataValues.start_date) {
-          status = 'retirado';
-        } else {
-          status = 'pendente';
-        }
-
-        arr[index].dataValues = { ...delivery.dataValues, status };
-      });
-      return deliveries;
     });
 
-    return res.json(deliveries);
+    deliveries.forEach((delivery, index, arr) => {
+      /*
+       *  Delivery status
+       */
+
+      let status = '';
+
+      if (delivery.dataValues.canceled_at) {
+        status = 'cancelado';
+      } else if (delivery.dataValues.end_date) {
+        status = 'entregue';
+      } else if (delivery.dataValues.start_date) {
+        status = 'retirado';
+      } else {
+        status = 'pendente';
+      }
+
+      arr[index].dataValues.status = status;
+    });
+
+    /*
+     *  Manages cached deliveries count
+     */
+
+    let deliveriesTotal = 0;
+
+    const cachedCount = await Cache.get('deliveries_count');
+    if (cachedCount) {
+      deliveriesTotal = cachedCount;
+    } else {
+      const deliveriesCount = await Deliveries.count({
+        where: search ? { product: { [Op.iLike]: `%${search}%` } } : undefined,
+      });
+      await Cache.set('deliveries_count', deliveriesCount);
+      deliveriesTotal = deliveriesCount;
+    }
+
+    return res.json({ rows: deliveries, total: deliveriesTotal });
   }
 
   async store(req, res) {
@@ -112,6 +129,12 @@ class DeliveriesController {
       recipient_id,
       deliveryman_id,
     });
+
+    /*
+     *  Invalidate cached deliveries count
+     */
+
+    await Cache.invalidate('deliveries_count');
 
     /*
      *  E-mail queue schedule
@@ -234,7 +257,7 @@ class DeliveriesController {
     }
 
     /*
-     *  IF has end_date, chehck if is after start_date
+     *  If has end_date, chehck if is after start_date
      */
 
     if (end_date) {
@@ -298,6 +321,12 @@ class DeliveriesController {
       }
       await delivery.destroy({}, { transaction });
     });
+
+    /*
+     *  Invalidate cached deliveries count
+     */
+
+    await Cache.invalidate('deliveries_count');
 
     return res
       .status(200)

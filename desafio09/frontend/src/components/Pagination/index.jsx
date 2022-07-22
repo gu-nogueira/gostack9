@@ -47,15 +47,20 @@ function Pagination({
         <MdNavigateBefore size={18} />
       </button>
       <PageList>
-        {paginationRange.map((pageNumber) => {
+        {paginationRange.map((pageNumber, index) => {
           // If the pageItem is a DOT, render the DOTS unicode character
           if (pageNumber === DOTS) {
-            return <PageItem className="dots">&#8230;</PageItem>;
+            return (
+              <PageItem key={index} className="dots">
+                &#8230;
+              </PageItem>
+            );
           }
 
           // Render our Page Pills
           return (
             <PageItem
+              key={index}
               selected={pageNumber === currentPage}
               onClick={() => onPageChange(pageNumber)}
             >

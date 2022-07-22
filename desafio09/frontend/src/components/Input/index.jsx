@@ -39,6 +39,11 @@ function Input({ icon: Icon, name, type, ...rest }) {
     setFocused(false);
   }
 
+  function handleVisible() {
+    setVisible(!visible);
+    inputRef.current.focus();
+  }
+
   return (
     <>
       <Container
@@ -57,7 +62,7 @@ function Input({ icon: Icon, name, type, ...rest }) {
           {...rest}
         />
         {type === 'password' && (
-          <button type="button" onClick={() => setVisible(!visible)}>
+          <button type="button" onClick={handleVisible}>
             {visible ? <HiEyeOff size={18} /> : <HiEye size={18} />}
           </button>
         )}

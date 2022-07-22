@@ -42,6 +42,10 @@ function DeliveriesForms({ setInitialData }) {
     setLoading(false);
   }
 
+  /*
+   * Fills with initial data if it's an edit
+   */
+
   useEffect(() => {
     (async () => {
       await fetchFormData();

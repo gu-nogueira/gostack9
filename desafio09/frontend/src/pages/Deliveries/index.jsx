@@ -37,6 +37,8 @@ function ViewContent({ delivery }) {
 function Deliveries() {
   const [loading, setLoading] = useState(false);
   const [deliveries, setDeliveries] = useState([]);
+  const [deliveriesTotal, setDeliveriesTotal] = useState(0);
+  const [search, setSearch] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
 
   const headers = {
@@ -49,14 +51,18 @@ function Deliveries() {
   };
   const options = ['view', 'edit', 'delete'];
   const apiRoute = '/deliveries';
+  const params = {
+    page: currentPage,
+    perPage: 20,
+    q: search,
+  };
 
   async function fetchDeliveries() {
     setLoading(true);
     try {
-      const response = await api.get(apiRoute, {
-        params: { page: currentPage },
-      });
-      const rows = response.data;
+      console.log('Request');
+      const response = await api.get(apiRoute, { params });
+      const { rows, total } = response.data;
       setDeliveries(
         rows.map((delivery) => {
           delivery.raw = { ...delivery };
@@ -67,7 +73,7 @@ function Deliveries() {
           delivery.recipient = delivery.recipient.destiny_name;
           if (delivery.deliveryman) {
             delivery.deliveryman = (
-              <Wrapper flex>
+              <Wrapper flex gap={10}>
                 <Avatar
                   name={delivery.deliveryman.name}
                   imageUrl={delivery.deliveryman.avatar?.url}
@@ -85,6 +91,7 @@ function Deliveries() {
           return delivery;
         })
       );
+      setDeliveriesTotal(total);
     } catch (err) {
       console.error(err);
       toast.error('Não foi possível carregar as encomendas');
@@ -95,13 +102,19 @@ function Deliveries() {
   useEffect(() => {
     fetchDeliveries();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPage]);
+  }, [currentPage, search]);
 
   return (
     <>
       <h2>Gerenciando encomendas</h2>
       <Row mt={30}>
-        <Search placeholder="Buscar por destinatários" />
+        <Wrapper flex gap={15}>
+          <Search
+            placeholder="Buscar por encomendas"
+            onSearch={(value) => setSearch(value)}
+          />
+          <h4>{deliveriesTotal} registros encontrados</h4>
+        </Wrapper>
         <Link className="button" to="/deliveries/new">
           <MdOutlineAdd size={20} />
           Cadastrar
@@ -122,8 +135,8 @@ function Deliveries() {
           />
           <Pagination
             currentPage={currentPage}
-            totalCount={48}
-            perPage={20}
+            totalCount={deliveriesTotal}
+            perPage={params.perPage}
             onPageChange={(page) => setCurrentPage(page)}
           />
         </>

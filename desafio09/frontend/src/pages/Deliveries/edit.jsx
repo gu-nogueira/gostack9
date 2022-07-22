@@ -83,7 +83,6 @@ function DeliveriesEdit({ location }) {
       }
 
       setLoading(false);
-
       toast.error('Não foi possível cadastrar a encomenda');
     }
   }
