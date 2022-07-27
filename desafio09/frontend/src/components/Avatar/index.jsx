@@ -9,7 +9,7 @@ function Avatar({ imageUrl, name, size }) {
 
   function getRandomColor(value) {
     const secondDigit = value.toString()[1];
-    const colorIndex = value <= 10 ? value : secondDigit;
+    const colorIndex = (value < 10 ? value : secondDigit) - 1;
     setColor(avatarColors[colorIndex]);
   }
 

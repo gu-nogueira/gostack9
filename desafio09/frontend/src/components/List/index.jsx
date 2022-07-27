@@ -108,7 +108,7 @@ function List({
                                   Modal.show({
                                     title: `Informações sobre ${registry.name}`,
                                     content: (
-                                      <ViewContent delivery={registry} />
+                                      <ViewContent delivery={registry.raw} />
                                     ),
                                     resolver: () => 0,
                                   })

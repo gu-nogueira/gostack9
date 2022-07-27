@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { parseISO } from 'date-fns';
 import { toast } from 'react-toastify';
 
 import api from '../../services/api';
@@ -11,27 +12,50 @@ import Avatar from '../../components/Avatar';
 import Pagination from '../../components/Pagination';
 
 import { MdOutlineAdd } from 'react-icons/md';
-import { Row, Wrapper } from './styles';
+import { Row, Wrapper, Content } from './styles';
+import SignatureExample from '../../assets/images/signaature-example.png';
 
 function ViewContent({ delivery }) {
-  return (
-    <>
-      <strong>Informações da encomenda</strong>
-      <p>Rua Beethoven, 1729</p>
-      <p>Diadema - SP</p>
-      <p>09960-580</p>
-      <hr />
-      <strong>Datas</strong>
-      <p>
-        <b>Retirada:</b> 25/01/2022
-      </p>
-      <p>
-        <b>Entrega:</b> 25/01/2022
-      </p>
-      <hr />
-      <img src="" alt="" />
-    </>
-  );
+  function formatCep(cep) {
+    return (Number(cep) / 1000).toString().replace('.', '-');
+  }
+
+  function formatDate(date) {
+    if (!date) {
+      return <span className="pending">Pendente</span>;
+    }
+    const isoDate = parseISO(date);
+    return isoDate.toLocaleDateString('pt-BR');
+  }
+
+  console.log(delivery);
+  if (delivery)
+    return (
+      <Content>
+        <strong>Informações da encomenda</strong>
+        <p>
+          {delivery.recipient.address}, {delivery.recipient.number}
+        </p>
+        <p>
+          {delivery.recipient.city} - {delivery.recipient.state}
+        </p>
+        <p>{formatCep(delivery.recipient.cep)}</p>
+        <hr />
+        <strong>Datas</strong>
+        <p>
+          <b>Retirada:</b> {formatDate(delivery.start_date)}
+        </p>
+        <p>
+          <b>Entrega:</b> {formatDate(delivery.end_date)}
+        </p>
+        <hr />
+        <strong>Assinatura do destinatário</strong>
+        <img
+          src={delivery.signature || SignatureExample}
+          alt="Assinatura do destinatário"
+        />
+      </Content>
+    );
 }
 
 function Deliveries() {
@@ -60,7 +84,6 @@ function Deliveries() {
   async function fetchDeliveries() {
     setLoading(true);
     try {
-      console.log('Request');
       const response = await api.get(apiRoute, { params });
       const { rows, total } = response.data;
       setDeliveries(

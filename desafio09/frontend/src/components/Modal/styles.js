@@ -44,16 +44,16 @@ export const ModalContainer = styled.div`
   padding: 20px;
   margin: 0 15px;
   border-radius: 10px;
-  text-align: center;
   z-index: 999;
 
   header {
     display: flex;
+    align-items: flex-start;
+    margin-bottom: 15px;
 
     h3 {
       width: 100%;
-      text-align: center;
-      margin: 0 -20px 20px 0;
+      text-align: left;
 
       /* Mobile adjustment */
 
@@ -64,14 +64,17 @@ export const ModalContainer = styled.div`
 
     svg {
       width: 20px;
-      height: 20px;
+      height: 18px;
       margin-left: 10px;
+      margin-right: -5px;
       transition: background 0.2s;
       cursor: pointer;
     }
 
     svg:hover {
-      background: ${colors.background};
+      color: ${colors.purpleShadow};
+      background: ${colors.purpleLight + '33'};
+      border-radius: 3px;
     }
   }
   section {

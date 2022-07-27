@@ -98,6 +98,17 @@ export default createGlobalStyle`
   }
 
   /*
+   *  Divider
+   */
+
+  hr {
+    border-color: ${colors.grey2};
+    background: ${colors.grey2};
+    opacity: 0.3;
+    margin: 15px 0;
+  }
+
+  /*
    *  Mobile assets
    */
 
@@ -124,27 +135,5 @@ export default createGlobalStyle`
       font-size: 24px;
       line-height: 24px;
     }
-  }
-`;
-
-export const Container = styled.div`
-  height: 100%;
-
-  & > section {
-    display: flex;
-    justify-content: center;
-  }
-`;
-
-export const Content = styled.div`
-  display: flex;
-
-  @media only screen and (min-width: 1050px) {
-    max-width: 1280px;
-  }
-
-  @media only screen and (max-width: 1049px) {
-    max-width: 100%;
-    padding: 0 15px;
   }
 `;

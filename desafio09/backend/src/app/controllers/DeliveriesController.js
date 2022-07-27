@@ -79,24 +79,23 @@ class DeliveriesController {
       arr[index].dataValues.status = status;
     });
 
+    const deliveriesCount = await Deliveries.count({
+      where: search ? { product: { [Op.iLike]: `%${search}%` } } : undefined,
+    });
+
     /*
      *  Manages cached deliveries count
      */
+    // const cachedCount = await Cache.get('deliveries_count');
+    // // let deliveriesTotal = 0;
+    // // if (cachedCount) {
+    // //   deliveriesTotal = cachedCount;
+    // // } else {
+    // //   await Cache.set('deliveries_count', deliveriesCount);
+    // //   deliveriesTotal = deliveriesCount;
+    // // }
 
-    let deliveriesTotal = 0;
-
-    const cachedCount = await Cache.get('deliveries_count');
-    if (cachedCount) {
-      deliveriesTotal = cachedCount;
-    } else {
-      const deliveriesCount = await Deliveries.count({
-        where: search ? { product: { [Op.iLike]: `%${search}%` } } : undefined,
-      });
-      await Cache.set('deliveries_count', deliveriesCount);
-      deliveriesTotal = deliveriesCount;
-    }
-
-    return res.json({ rows: deliveries, total: deliveriesTotal });
+    return res.json({ rows: deliveries, total: deliveriesCount });
   }
 
   async store(req, res) {
@@ -130,11 +129,11 @@ class DeliveriesController {
       deliveryman_id,
     });
 
-    /*
-     *  Invalidate cached deliveries count
-     */
+    // /*
+    //  *  Invalidate cached deliveries count
+    //  */
 
-    await Cache.invalidate('deliveries_count');
+    // await Cache.invalidate('deliveries_count');
 
     /*
      *  E-mail queue schedule
@@ -322,11 +321,11 @@ class DeliveriesController {
       await delivery.destroy({}, { transaction });
     });
 
-    /*
-     *  Invalidate cached deliveries count
-     */
+    // /*
+    //  *  Invalidate cached deliveries count
+    //  */
 
-    await Cache.invalidate('deliveries_count');
+    // await Cache.invalidate('deliveries_count');
 
     return res
       .status(200)
