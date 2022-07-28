@@ -53,13 +53,12 @@ export const Container = styled.div`
   table td {
     font-size: 16px;
     text-align: left;
-    text-overflow: ellipsis;
-    overflow: hidden;
+    /* text-overflow: ellipsis; */
+    /* overflow: hidden; */
     white-space: pre;
 
     img {
       display: block;
-      margin: 0 auto;
       object-fit: cover;
       width: 40px;
       height: 40px;
@@ -137,6 +136,7 @@ export const Container = styled.div`
     border: none;
     background: transparent;
     transition: opacity 0.2s;
+    position: relative;
 
     svg {
       width: 22px;
@@ -216,7 +216,6 @@ export const DropBox = styled.ul`
   padding: 15px;
   box-shadow: 0 0 10px rgba(125, 64, 231, 0.1);
   text-align: left;
-  /* right: 17.5%; */
   ${(props) =>
     props.active &&
     css`
@@ -224,6 +223,9 @@ export const DropBox = styled.ul`
       display: block;
       margin-bottom: 6px;
       height: auto;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 4;
     `}
 
   li {

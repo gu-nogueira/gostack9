@@ -93,79 +93,79 @@ function List({
                     }}
                   >
                     <MdMoreHoriz size={22} />
-                  </button>
-                  <DropBox
-                    ref={(el) => (dropDownRef.current[index] = el)}
-                    active={active === index ? true : false}
-                  >
-                    {options.map((option, index) => {
-                      switch (option) {
-                        case 'view':
-                          return (
-                            <li key={index}>
-                              <button
-                                onClick={async () =>
-                                  Modal.show({
-                                    title: `Informações sobre ${registry.name}`,
-                                    content: (
-                                      <ViewContent delivery={registry.raw} />
-                                    ),
-                                    resolver: () => 0,
-                                  })
-                                }
-                              >
-                                <AiFillEye className={option} /> Visualizar
-                              </button>
-                            </li>
-                          );
-
-                        case 'delete': {
-                          return (
-                            <li key={index}>
-                              <button
-                                onClick={async () =>
-                                  Modal.show({
-                                    title: `Excluir ${registry.name}`,
-                                    content: (
-                                      <>
-                                        <DeleteWarning />
-                                        <span>
-                                          <b>Atenção:</b> esta ação é
-                                          irreverrsível! Deseja continuar?
-                                        </span>
-                                      </>
-                                    ),
-                                    cta: 'Excluir',
-                                    resolver: () =>
-                                      handleDelete(
-                                        registry.raw.id,
-                                        registry.name
+                    <DropBox
+                      ref={(el) => (dropDownRef.current[index] = el)}
+                      active={active === index ? true : false}
+                    >
+                      {options.map((option, index) => {
+                        switch (option) {
+                          case 'view':
+                            return (
+                              <li key={index}>
+                                <button
+                                  onClick={async () =>
+                                    Modal.show({
+                                      title: `Dados de ${registry.name}`,
+                                      content: (
+                                        <ViewContent delivery={registry.raw} />
                                       ),
-                                  })
-                                }
-                              >
-                                <MdDelete className={option} /> Deletar
-                              </button>
-                            </li>
-                          );
-                        }
+                                      resolver: () => 0,
+                                    })
+                                  }
+                                >
+                                  <AiFillEye className={option} /> Visualizar
+                                </button>
+                              </li>
+                            );
 
-                        default:
-                          return (
-                            <li key={index}>
-                              <Link
-                                to={{
-                                  pathname: `/${category}/${registry.id}`,
-                                  state: registry.raw,
-                                }}
-                              >
-                                <MdEdit className={option} /> Editar
-                              </Link>
-                            </li>
-                          );
-                      }
-                    })}
-                  </DropBox>
+                          case 'delete': {
+                            return (
+                              <li key={index}>
+                                <button
+                                  onClick={async () =>
+                                    Modal.show({
+                                      title: `Excluir ${registry.name}`,
+                                      content: (
+                                        <>
+                                          <DeleteWarning />
+                                          <span>
+                                            <b>Atenção:</b> esta ação é
+                                            irreverrsível! Deseja continuar?
+                                          </span>
+                                        </>
+                                      ),
+                                      cta: 'Excluir',
+                                      resolver: () =>
+                                        handleDelete(
+                                          registry.raw.id,
+                                          registry.name
+                                        ),
+                                    })
+                                  }
+                                >
+                                  <MdDelete className={option} /> Deletar
+                                </button>
+                              </li>
+                            );
+                          }
+
+                          default:
+                            return (
+                              <li key={index}>
+                                <Link
+                                  to={{
+                                    pathname: `/${category}/${registry.id}`,
+                                    state: registry.raw,
+                                  }}
+                                >
+                                  <MdEdit className={option} /> Editar
+                                </Link>
+                              </li>
+                            );
+                        }
+                      })}
+                    </DropBox>
+                  </button>
                 </td>
               </tr>
             ))}

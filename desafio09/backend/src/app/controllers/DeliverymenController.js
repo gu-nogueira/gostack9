@@ -25,29 +25,45 @@ class DeliverymenController {
   }
 
   async index(req, res) {
-    const { page = 1, q: search } = req.query;
+    const { page = 1, perPage = 20, q: search } = req.query;
     const filter = { [Op.iLike]: `%${search}%` };
 
-    const deliverymen = await Deliverymen.findAll({
-      order: ['name'],
-      attributes: ['id', 'name', 'email'],
-      where: search
-        ? {
-            [Op.or]: [{ name: filter }, { email: filter }],
-          }
-        : undefined,
-      limit: 20,
-      offset: (page - 1) * 20,
-      include: [
-        {
-          model: Files,
-          as: 'avatar',
-          attributes: ['name', 'path', 'url'],
-        },
-      ],
-    });
+    let searches = [];
 
-    return res.json(deliverymen);
+    searches.push(
+      Deliverymen.findAll({
+        order: ['name'],
+        attributes: ['id', 'name', 'email'],
+        where: search
+          ? {
+              [Op.or]: [{ name: filter }, { email: filter }],
+            }
+          : undefined,
+        limit: perPage,
+        offset: (page - 1) * perPage,
+        include: [
+          {
+            model: Files,
+            as: 'avatar',
+            attributes: ['name', 'path', 'url'],
+          },
+        ],
+      })
+    );
+
+    searches.push(
+      Deliverymen.count({
+        where: search
+          ? {
+              [Op.or]: [{ name: filter }, { email: filter }],
+            }
+          : undefined,
+      })
+    );
+
+    const [deliverymen, deliverymenCount] = await Promise.all(searches);
+
+    return res.json({ rows: deliverymen, total: deliverymenCount });
   }
 
   async store(req, res) {

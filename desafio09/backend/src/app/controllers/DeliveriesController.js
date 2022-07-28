@@ -18,46 +18,58 @@ class DeliveriesController {
   async index(req, res) {
     const { page = 1, perPage = 20, q: search } = req.query;
 
-    const deliveries = await Deliveries.findAll({
-      order: [['id', 'DESC']],
-      attributes: ['id', 'product', 'canceled_at', 'start_date', 'end_date'],
-      where: search ? { product: { [Op.iLike]: `%${search}%` } } : undefined,
-      limit: perPage,
-      offset: (page - 1) * perPage,
-      include: [
-        {
-          model: Recipients,
-          as: 'recipient',
-          attributes: [
-            'id',
-            'destiny_name',
-            'address',
-            'number',
-            'complement',
-            'state',
-            'city',
-            'cep',
-          ],
-        },
-        {
-          model: Deliverymen,
-          as: 'deliveryman',
-          attributes: ['id', 'name', 'email'],
-          include: [
-            {
-              model: Files,
-              as: 'avatar',
-              attributes: ['name', 'path', 'url'],
-            },
-          ],
-        },
-        {
-          model: Files,
-          as: 'signature',
-          attributes: ['name', 'path', 'url'],
-        },
-      ],
-    });
+    let searches = [];
+
+    searches.push(
+      Deliveries.findAll({
+        order: [['id', 'DESC']],
+        attributes: ['id', 'product', 'canceled_at', 'start_date', 'end_date'],
+        where: search ? { product: { [Op.iLike]: `%${search}%` } } : undefined,
+        limit: perPage,
+        offset: (page - 1) * perPage,
+        include: [
+          {
+            model: Recipients,
+            as: 'recipient',
+            attributes: [
+              'id',
+              'destiny_name',
+              'address',
+              'number',
+              'complement',
+              'state',
+              'city',
+              'cep',
+            ],
+          },
+          {
+            model: Deliverymen,
+            as: 'deliveryman',
+            attributes: ['id', 'name', 'email'],
+            include: [
+              {
+                model: Files,
+                as: 'avatar',
+                attributes: ['name', 'path', 'url'],
+              },
+            ],
+          },
+          {
+            model: Files,
+            as: 'signature',
+            attributes: ['name', 'path', 'url'],
+          },
+        ],
+      })
+    );
+
+    searches.push(
+      Deliveries.count({
+        where: search ? { product: { [Op.iLike]: `%${search}%` } } : undefined,
+      })
+    );
+
+    const [deliveries, deliveriesCount] = await Promise.all(searches);
 
     deliveries.forEach((delivery, index, arr) => {
       /*
@@ -77,10 +89,6 @@ class DeliveriesController {
       }
 
       arr[index].dataValues.status = status;
-    });
-
-    const deliveriesCount = await Deliveries.count({
-      where: search ? { product: { [Op.iLike]: `%${search}%` } } : undefined,
     });
 
     /*

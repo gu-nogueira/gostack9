@@ -12,6 +12,7 @@ export const Container = styled.div`
   height: 38px;
   width: 15vw;
   color: ${colors.grey2};
+  background: #fff;
 
   svg {
     min-width: 16px;

@@ -28,7 +28,6 @@ function ViewContent({ delivery }) {
     return isoDate.toLocaleDateString('pt-BR');
   }
 
-  console.log(delivery);
   if (delivery)
     return (
       <Content>
@@ -51,7 +50,7 @@ function ViewContent({ delivery }) {
         <hr />
         <strong>Assinatura do destinatário</strong>
         <img
-          src={delivery.signature || SignatureExample}
+          src={delivery.signature?.url || SignatureExample}
           alt="Assinatura do destinatário"
         />
       </Content>
@@ -89,7 +88,7 @@ function Deliveries() {
       setDeliveries(
         rows.map((delivery) => {
           delivery.raw = { ...delivery };
-          delivery.id = `#${delivery.id}`;
+          delivery.id = `#${delivery.id.toString().padStart(2, 0)}`;
           delivery.name = `encomenda ${delivery.id}`;
           delivery.city = delivery.recipient.city;
           delivery.state = delivery.recipient.state;

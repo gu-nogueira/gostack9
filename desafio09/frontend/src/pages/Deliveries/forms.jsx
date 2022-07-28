@@ -28,7 +28,7 @@ function DeliveriesForms({ setInitialData }) {
         }))
       );
       setDeliverymen(
-        deliverymenResponse.data.map((deliveryman) => ({
+        deliverymenResponse.data.rows.map((deliveryman) => ({
           value: deliveryman.id,
           label: deliveryman.name,
           ...deliveryman,
