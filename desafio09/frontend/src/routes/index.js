@@ -10,7 +10,11 @@ import Register from '../pages/Register';
 import Deliveries from '../pages/Deliveries';
 import DeliveriesNew from '../pages/Deliveries/new';
 import DeliveriesEdit from '../pages/Deliveries/edit';
+
 import Deliverymen from '../pages/Deliverymen';
+import DeliverymenNew from '../pages/Deliverymen/new';
+import DeliverymenEdit from '../pages/Deliverymen/edit';
+
 import Recipients from '../pages/Recipients';
 import Problems from '../pages/Problems';
 
@@ -29,7 +33,15 @@ function Routes() {
           component={DeliveriesEdit}
           isPrivate
         />
+
         <Route path="/deliverymen" component={Deliverymen} isPrivate />
+        <Route path="/deliverymen/new" component={DeliverymenNew} isPrivate />
+        <Route
+          path="/deliverymen/:deliverymanId"
+          component={DeliverymenEdit}
+          isPrivate
+        />
+
         <Route path="/recipients" component={Recipients} isPrivate />
         <Route path="/problems" component={Problems} isPrivate />
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { signOut } from '../../store/modules/auth/actions';
@@ -7,11 +7,25 @@ import { Container, Menu, Item, Profile } from './styles';
 import { MdOutlineLogout } from 'react-icons/md';
 import Logo from '../../assets/svgs/logo.svg';
 
-function Header() {
-  const menu = ['Encomendas', 'Entregadores', 'Destinatários', 'Problemas'];
-  const routes = ['deliveries', 'deliverymen', 'recipients', 'problems'];
-  const [selected, setSelected] = useState('Encomendas');
-
+function Header({ url }) {
+  const navigation = [
+    {
+      name: 'Encomendas',
+      route: '/deliveries',
+    },
+    {
+      name: 'Entregadores',
+      route: '/deliverymen',
+    },
+    {
+      name: 'Destinatários',
+      route: '/recipients',
+    },
+    {
+      name: 'Problemas',
+      route: '/problems',
+    },
+  ];
   const profile = useSelector((state) => state.user.profile);
   const dispatch = useDispatch();
 
@@ -24,14 +38,9 @@ function Header() {
       <nav>
         <img src={Logo} alt="Logo" />
         <Menu>
-          {menu.map((item, index) => (
-            <Item
-              key={index}
-              route={`/${routes[index]}`}
-              onClick={() => setSelected(item)}
-              selected={selected === item ? true : false}
-            >
-              {item}
+          {navigation.map((nav, index) => (
+            <Item key={index} route={nav.route} selected={url === nav.route}>
+              {nav.name}
             </Item>
           ))}
         </Menu>

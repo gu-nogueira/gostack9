@@ -25,7 +25,7 @@ function RouteWrapper({ component: Component, isPrivate, ...rest }) {
     <Route
       {...rest}
       render={(props) => (
-        <Layout>
+        <Layout url={props.location.pathname}>
           <Component {...props} signed={signed} />
         </Layout>
       )}

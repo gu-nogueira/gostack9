@@ -6,10 +6,10 @@ import { Wrapper, Content } from './styles';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 
-function DefaultLayout({ children }) {
+function DefaultLayout({ children, url }) {
   return (
     <Wrapper>
-      <Header />
+      <Header url={url} />
       <Content>{children}</Content>
       <Footer />
     </Wrapper>
