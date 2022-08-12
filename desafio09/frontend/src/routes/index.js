@@ -34,7 +34,7 @@ function Routes() {
           isPrivate
         />
 
-        <Route path="/deliverymen" component={Deliverymen} isPrivate />
+        <Route path="/deliverymen" exact component={Deliverymen} isPrivate />
         <Route path="/deliverymen/new" component={DeliverymenNew} isPrivate />
         <Route
           path="/deliverymen/:deliverymanId"

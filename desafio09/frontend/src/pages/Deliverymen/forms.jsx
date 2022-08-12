@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import api from '../../services/api';
 
 import Input from '../../components/Input';
-import Select from '../../components/Select';
+import File from '../../components/File';
 
 import { Row, Wrapper } from './styles';
 
@@ -58,29 +58,21 @@ function DeliverymenForms({ setInitialData }) {
   return (
     <>
       <Row>
-        <Wrapper stretch>
-          <label htmlFor="recipient">Destinatário</label>
-          <Select
-            name="recipient"
-            options={recipients}
-            placeholder={
-              !loading ? 'Selecione um destinatário' : 'Carregando...'
-            }
-          />
-        </Wrapper>
-        <Wrapper stretch>
-          <label htmlFor="deliveryman">Entregador</label>
-          <Select
-            name="deliveryman"
-            options={deliverymen}
-            placeholder={!loading ? 'Selecione um entregador' : 'Carregando...'}
-          />
-        </Wrapper>
+        <File name="avatar" />
       </Row>
       <Row>
         <Wrapper stretch>
-          <label htmlFor="product">Nome do produto</label>
-          <Input name="product" />
+          <label htmlFor="name">Nome</label>
+          <Input name="name" id="name" placeholder="Nome e sobrenome" />
+        </Wrapper>
+        <Wrapper stretch>
+          <label htmlFor="email">Email</label>
+          <Input
+            name="email"
+            id="email"
+            type="email"
+            placeholder="exemplo@efast.com.br"
+          />
         </Wrapper>
       </Row>
     </>

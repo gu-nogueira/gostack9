@@ -26,11 +26,12 @@ function Search({ name, value, onSearch, ...rest }) {
     searchRef.current.focus();
   }
 
+  // ** Debouce search trigger listener
+
   useEffect(() => {
     const delayDebounceSearch = setTimeout(() => {
       onSearch(search);
     }, 500);
-
     return () => clearTimeout(delayDebounceSearch);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search]);

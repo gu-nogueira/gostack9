@@ -80,7 +80,7 @@ function DeliveriesForms({ setInitialData }) {
       <Row>
         <Wrapper stretch>
           <label htmlFor="product">Nome do produto</label>
-          <Input name="product" />
+          <Input name="product" id="product" />
         </Wrapper>
       </Row>
     </>

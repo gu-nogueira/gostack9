@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Form } from '@unform/web';
 import { toast } from 'react-toastify';
 import * as Yup from 'yup';
@@ -40,7 +40,7 @@ function DeliveriesEdit({ location }) {
         label: delivery.deliveryman.name,
       },
     };
-    formRef.current.setData(initialData);
+    // formRef.current.setData(initialData);
   }
 
   async function handleSubmit({ product, recipient, deliveryman }) {

@@ -1,22 +1,24 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo } from 'react';
 import PropTypes from 'prop-types';
 
-import { avatarColors, Container, AvatarInitials } from './styles';
+import setAvatarInitials from '../../utils/setAvatarInitials';
+
+import { Container, AvatarInitials } from './styles';
 
 function Avatar({ imageUrl, name, size }) {
-  const [initials, setInitials] = useState();
+  const [initials, setInitials] = useState('');
   const [color, setColor] = useState('#FFF');
 
-  function getRandomColor(value) {
-    const secondDigit = value.toString()[1];
-    const colorIndex = (value < 10 ? value : secondDigit) - 1;
-    setColor(avatarColors[colorIndex]);
-  }
+  /*
+   *  Set initials and color in avatar
+   */
 
   useMemo(() => {
-    const [firstName, lastName] = name.toUpperCase().split(' ');
-    setInitials(firstName?.charAt(0) + lastName?.charAt(0));
-    getRandomColor(firstName.length + lastName.length);
+    if (name) {
+      const { userInitials, randomColor } = setAvatarInitials(name);
+      setInitials(userInitials);
+      setColor(randomColor);
+    }
   }, [name]);
 
   return (
