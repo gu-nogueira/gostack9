@@ -16,6 +16,9 @@ import DeliverymenNew from '../pages/Deliverymen/new';
 import DeliverymenEdit from '../pages/Deliverymen/edit';
 
 import Recipients from '../pages/Recipients';
+import RecipientsNew from '../pages/Recipients/new';
+import RecipientsNewEdit from '../pages/Recipients/edit';
+
 import Problems from '../pages/Problems';
 
 function Routes() {
@@ -28,21 +31,16 @@ function Routes() {
 
         <Route path="/deliveries" exact component={Deliveries} isPrivate />
         <Route path="/deliveries/new" component={DeliveriesNew} isPrivate />
-        <Route
-          path="/deliveries/:deliveryId"
-          component={DeliveriesEdit}
-          isPrivate
-        />
+        <Route path="/deliveries/:id" component={DeliveriesEdit} isPrivate />
 
         <Route path="/deliverymen" exact component={Deliverymen} isPrivate />
         <Route path="/deliverymen/new" component={DeliverymenNew} isPrivate />
-        <Route
-          path="/deliverymen/:deliverymanId"
-          component={DeliverymenEdit}
-          isPrivate
-        />
+        <Route path="/deliverymen/:id" component={DeliverymenEdit} isPrivate />
 
         <Route path="/recipients" component={Recipients} isPrivate />
+        <Route path="/recipients/new" component={RecipientsNew} isPrivate />
+        <Route path="/recipients/:id" component={RecipientsNewEdit} isPrivate />
+
         <Route path="/problems" component={Problems} isPrivate />
 
         {/* 404 Page */}
