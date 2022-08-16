@@ -23,7 +23,7 @@ const schema = Yup.object().shape({
 });
 
 function DeliveriesEdit({ location }) {
-  const [delivery, setDelivery] = useState(location?.state);
+  const [delivery] = useState(location?.state);
   const [loading, setLoading] = useState(false);
 
   const formRef = useRef();
@@ -40,7 +40,7 @@ function DeliveriesEdit({ location }) {
         label: delivery.deliveryman.name,
       },
     };
-    // formRef.current.setData(initialData);
+    formRef.current.setData(initialData);
   }
 
   async function handleSubmit({ product, recipient, deliveryman }) {
@@ -69,7 +69,7 @@ function DeliveriesEdit({ location }) {
 
       setLoading(false);
 
-      toast.success('Encomenda criada com sucesso!');
+      toast.success('Encomenda editada com sucesso!');
       history.push('/deliveries');
     } catch (err) {
       if (err instanceof Yup.ValidationError) {
@@ -83,7 +83,7 @@ function DeliveriesEdit({ location }) {
       }
 
       setLoading(false);
-      toast.error('Não foi possível cadastrar a encomenda');
+      toast.error('Não foi possível editar a encomenda');
     }
   }
 

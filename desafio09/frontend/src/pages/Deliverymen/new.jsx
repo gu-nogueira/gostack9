@@ -17,9 +17,13 @@ import { ReactComponent as Loader } from '../../assets/svgs/loader.svg';
  */
 
 const schema = Yup.object().shape({
-  product: Yup.string().required('Informe o nome do produto'),
-  recipient: Yup.string().required('Selecione um destinatário'),
-  deliveryman: Yup.string().required('Selecione um entregador'),
+  name: Yup.string()
+    .test('complete-name', 'Insira um nome e sobrenome', (name) => {
+      const [firstName, lastName] = name.split(' ');
+      return !!(firstName && lastName);
+    })
+    .required('Nome obrigatório'),
+  email: Yup.string().required('Email obrigatório'),
 });
 
 function DeliverymenNew() {
@@ -27,7 +31,7 @@ function DeliverymenNew() {
 
   const formRef = useRef();
 
-  async function handleSubmit({ product, recipient, deliveryman }) {
+  async function handleSubmit({ name, email, avatar }) {
     try {
       /*
        *  Remove all previous errors
@@ -38,23 +42,28 @@ function DeliverymenNew() {
        *  Yup validation
        */
 
-      await schema.validate(
-        { product, recipient, deliveryman },
-        { abortEarly: false }
-      );
+      await schema.validate({ name, email }, { abortEarly: false });
 
       setLoading(true);
 
-      await api.post('/deliveries', {
-        product,
-        recipient_id: recipient,
-        deliveryman_id: deliveryman,
+      if (avatar) {
+        const upload = new FormData();
+        upload.append('file', avatar);
+        const response = await api.post('files', upload);
+        const { id } = response.data;
+        avatar = id;
+      }
+
+      await api.post('/deliverymen', {
+        name,
+        email,
+        avatar_id: avatar,
       });
 
       setLoading(false);
 
-      toast.success('Encomenda criada com sucesso!');
-      history.push('/deliveries');
+      toast.success('Entregador cadastrado com sucesso!');
+      history.push('/deliverymen');
     } catch (err) {
       if (err instanceof Yup.ValidationError) {
         const validationErrors = {};
@@ -68,7 +77,7 @@ function DeliverymenNew() {
 
       setLoading(false);
 
-      toast.error('Não foi possível cadastrar a encomenda');
+      toast.error('Não foi possível cadastrar o entregador');
     }
   }
 
@@ -77,7 +86,7 @@ function DeliverymenNew() {
       <Row mb={30}>
         <h2>Cadastro de encomendas</h2>
         <Wrapper flex>
-          <Link to="/deliveries" className="button grey">
+          <Link to="/deliverymen" className="button grey">
             <MdArrowBack size={20} />
             <span>Voltar</span>
           </Link>
