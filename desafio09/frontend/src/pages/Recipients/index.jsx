@@ -7,7 +7,6 @@ import api from '../../services/api';
 import Loader from '../../components/Loader';
 import Search from '../../components/Search';
 import List from '../../components/List';
-import Avatar from '../../components/Avatar';
 import Pagination from '../../components/Pagination';
 
 import { MdOutlineAdd } from 'react-icons/md';
@@ -15,70 +14,68 @@ import { Row, Wrapper } from './styles';
 
 function Recipients() {
   const [loading, setLoading] = useState(false);
-  const [deliverymen, setDeliverymen] = useState([]);
-  const [deliverymenTotal, setDeliverymenTotal] = useState(0);
+  const [recipients, setRecipients] = useState([]);
+  const [recipientsTotal, setRecipientsTotal] = useState(0);
   const [search, setSearch] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
 
   const headers = {
     id: 'ID',
-    avatar: 'Foto',
     name: 'Nome',
-    email: 'Email',
+    address: 'Endereço',
   };
 
   const options = ['edit', 'delete'];
-  const apiRoute = '/deliverymen';
+  const apiRoute = '/recipients';
   const params = {
     page: currentPage,
     perPage: 20,
     q: search,
   };
 
-  async function fetchDeliverymen() {
+  async function fetchRecipients() {
     setLoading(true);
     try {
       const response = await api.get(apiRoute, { params });
       const { rows, total } = response.data;
-      setDeliverymen(
-        rows.map((deliveryman) => {
-          deliveryman.raw = { ...deliveryman };
-          deliveryman.id = `#${deliveryman.id.toString().padStart(2, 0)}`;
-          deliveryman.avatar = (
-            <Avatar
-              name={deliveryman.name}
-              imageUrl={deliveryman.avatar?.url}
-            />
-          );
+      setRecipients(
+        rows.map((recipient) => {
+          recipient.raw = { ...recipient };
+          recipient.id = `#${recipient.id.toString().padStart(2, 0)}`;
+          recipient.name = recipient.destiny_name;
+          const { address, number, complement, city, state } = recipient;
+          recipient.address = `${address}, ${number} ${
+            complement ?? ''
+          }, ${city} - ${state}`;
 
-          return deliveryman;
+          return recipient;
         })
       );
-      setDeliverymenTotal(total);
+      setRecipientsTotal(total);
     } catch (err) {
       console.error(err);
-      toast.error('Não foi possível carregar os entregadores');
+      toast.error('Não foi possível carregar os destinatários');
     }
     setLoading(false);
   }
 
   useEffect(() => {
-    fetchDeliverymen();
+    fetchRecipients();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPage, search]);
 
   return (
     <>
-      <h2>Gerenciando entregadores</h2>
+      <h2>Gerenciando destinatários</h2>
       <Row mt={30}>
         <Wrapper flex gap={15}>
           <Search
-            placeholder="Buscar por entregadores"
+            placeholder="Buscar por destinatários"
             onSearch={(value) => setSearch(value)}
           />
-          <h4>{deliverymenTotal} registros encontrados</h4>
+          <h4>{recipientsTotal} registros encontrados</h4>
         </Wrapper>
-        <Link className="button" to="/deliverymen/new">
+        <Link className="button" to="/recipients/new">
           <MdOutlineAdd size={20} />
           <span>Cadastrar</span>
         </Link>
@@ -88,16 +85,16 @@ function Recipients() {
       ) : (
         <>
           <List
-            category="deliverymen"
+            category="recipients"
             headers={headers}
-            data={deliverymen}
+            data={recipients}
             options={options}
             apiRoute={apiRoute}
-            fetchData={fetchDeliverymen}
+            fetchData={fetchRecipients}
           />
           <Pagination
             currentPage={currentPage}
-            totalCount={deliverymenTotal}
+            totalCount={recipientsTotal}
             perPage={params.perPage}
             onPageChange={(page) => setCurrentPage(page)}
           />

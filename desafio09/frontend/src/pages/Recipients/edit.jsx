@@ -26,7 +26,7 @@ const schema = Yup.object().shape({
   email: Yup.string().required('Email obrigatório'),
 });
 
-function DeliverymenEdit({ location }) {
+function RecipientsEdit({ location }) {
   const [deliveryman] = useState(location?.state);
   const [loading, setLoading] = useState(false);
 
@@ -125,4 +125,4 @@ function DeliverymenEdit({ location }) {
   );
 }
 
-export default DeliverymenEdit;
+export default RecipientsEdit;

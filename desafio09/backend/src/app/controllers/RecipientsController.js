@@ -5,29 +5,43 @@ import Recipients from '../models/Recipients';
 
 class RecipientsController {
   async index(req, res) {
-    const { page = 1, q: search } = req.query;
+    const { page = 1, perPage = 20, q: search } = req.query;
     const filter = { [Op.iLike]: `%${search}%` };
 
-    const recipients = await Recipients.findAll({
-      order: [['updated_at', 'DESC']],
-      attributes: [
-        'id',
-        'destiny_name',
-        'address',
-        'number',
-        'complement',
-        'state',
-        'city',
-        'cep',
-      ],
-      where: search
-        ? { [Op.or]: [{ destiny_name: filter }, { address: filter }] }
-        : undefined,
-      limit: 20,
-      offset: (page - 1) * 20,
-    });
+    const searches = [];
 
-    return res.json(recipients);
+    searches.push(
+      Recipients.findAll({
+        order: [['updated_at', 'DESC']],
+        attributes: [
+          'id',
+          'destiny_name',
+          'address',
+          'number',
+          'complement',
+          'state',
+          'city',
+          'cep',
+        ],
+        where: search
+          ? { [Op.or]: [{ destiny_name: filter }, { address: filter }] }
+          : undefined,
+        limit: 20,
+        offset: (page - 1) * 20,
+      })
+    );
+
+    searches.push(
+      Recipients.count({
+        where: search
+          ? { [Op.or]: [{ destiny_name: filter }, { address: filter }] }
+          : undefined,
+      })
+    );
+
+    const [recipients, recipientsCount] = await Promise.all(searches);
+
+    return res.json({ rows: recipients, total: recipientsCount });
   }
 
   async store(req, res) {

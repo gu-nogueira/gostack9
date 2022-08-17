@@ -27,6 +27,12 @@ export const Wrapper = styled.div`
     `}
 
   ${(props) =>
+    props.width &&
+    css`
+      width: ${props.width}%;
+    `}
+
+  ${(props) =>
     props.gap &&
     css`
       gap: ${(props) => props.gap + 'px'};

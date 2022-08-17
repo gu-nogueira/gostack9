@@ -28,7 +28,7 @@ class DeliverymenController {
     const { page = 1, perPage = 20, q: search } = req.query;
     const filter = { [Op.iLike]: `%${search}%` };
 
-    let searches = [];
+    const searches = [];
 
     searches.push(
       Deliverymen.findAll({

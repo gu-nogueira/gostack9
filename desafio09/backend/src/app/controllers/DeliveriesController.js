@@ -18,7 +18,7 @@ class DeliveriesController {
   async index(req, res) {
     const { page = 1, perPage = 20, q: search } = req.query;
 
-    let searches = [];
+    const searches = [];
 
     searches.push(
       Deliveries.findAll({
