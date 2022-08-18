@@ -26,8 +26,8 @@ class RecipientsController {
         where: search
           ? { [Op.or]: [{ destiny_name: filter }, { address: filter }] }
           : undefined,
-        limit: 20,
-        offset: (page - 1) * 20,
+        limit: perPage,
+        offset: (page - 1) * perPage,
       })
     );
 

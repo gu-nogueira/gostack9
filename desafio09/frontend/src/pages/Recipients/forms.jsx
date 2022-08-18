@@ -1,19 +1,75 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { toast } from 'react-toastify';
+
+import api from '../../services/api';
 
 import Input from '../../components/Input';
+import Select from '../../components/Select';
 
 import { Row, Wrapper } from './styles';
 
 function RecipientsForms({ setInitialData }) {
+  const [states, setStates] = useState([]);
+  const [selectedState, setSelectedState] = useState('');
+  const [cities, setCities] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  async function fetchStates() {
+    try {
+      setLoading(true);
+      const response = await axios.get(
+        'https://servicodados.ibge.gov.br/api/v1/localidades/estados'
+      );
+      setStates(
+        response.data.map((state) => ({
+          value: state.sigla,
+          label: state.nome,
+        }))
+      );
+    } catch (err) {
+      // TO DO: Build backup api route in backend
+      toast.error('Não foi possível carregar os estados');
+    }
+    setLoading(false);
+  }
+
+  async function fetchCities(state) {
+    try {
+      setLoading(true);
+      const response = await axios.get(
+        `https://servicodados.ibge.gov.br/api/v1/localidades/estados/${state}/municipios`
+      );
+      setCities(
+        response.data.map((city) => ({ value: city.nome, label: city.nome }))
+      );
+    } catch (err) {
+      // TO DO: Build backup api route in backend
+      toast.error('Não foi possível carregar as cidades');
+    }
+    setLoading(false);
+  }
+
   /*
-   * Fills with initial data if it's an edit
+   *  Get all states on component mount
    */
 
   useEffect(() => {
-    if (setInitialData && typeof setInitialData === 'function') {
-      setInitialData();
-    }
+    (async () => {
+      await fetchStates();
+      if (setInitialData && typeof setInitialData === 'function') {
+        setInitialData();
+      }
+    })();
   }, [setInitialData]);
+
+  /*
+   * Get cities when selectedState & fills with initial data if it's an edit
+   */
+
+  useEffect(() => {
+    fetchCities(selectedState);
+  }, [selectedState]);
 
   return (
     <>
@@ -44,21 +100,32 @@ function RecipientsForms({ setInitialData }) {
       </Row>
       <Row>
         <Wrapper stretch>
-          <label htmlFor="city">Cidade</label>
-          <Input name="city" id="city" placeholder="São Paulo" />
-        </Wrapper>
-        <Wrapper stretch>
           <label htmlFor="state">Estado</label>
-          <Input name="state" id="state" placeholder="123" />
+          <Select
+            name="state"
+            options={states}
+            placeholder={!loading ? 'Selecione um estado' : 'Carregando...'}
+            onChange={(e) => setSelectedState(e.value)}
+          />
         </Wrapper>
         <Wrapper stretch>
-          <label htmlFor="zipcode">Cep</label>
-          <Input
-            name="zipcode"
-            id="zipcode"
-            type="zipcode"
-            placeholder="Apto. 101"
+          <label htmlFor="city">Cidade</label>
+          <Select
+            name="city"
+            options={cities}
+            placeholder={
+              !loading
+                ? !selectedState
+                  ? 'Primeiro, selecione um estado'
+                  : 'Selecione uma cidade'
+                : 'Carregando...'
+            }
+            isDisabled={!selectedState}
           />
+        </Wrapper>
+        <Wrapper stretch>
+          <label htmlFor="cep">CEP</label>
+          <Input name="cep" id="cep" type="cep" placeholder="12345-789" />
         </Wrapper>
       </Row>
     </>

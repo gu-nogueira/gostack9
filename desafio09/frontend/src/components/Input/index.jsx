@@ -4,7 +4,7 @@ import { useField } from '@unform/core';
 import { Container } from './styles';
 import { HiEye, HiEyeOff } from 'react-icons/hi';
 
-function Input({ icon: Icon, name, type, ...rest }) {
+function Input({ icon: Icon, name, type, mask, ...rest }) {
   const [focused, setFocused] = useState();
   const [visible, setVisible] = useState(false);
 

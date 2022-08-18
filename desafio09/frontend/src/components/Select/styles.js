@@ -2,7 +2,7 @@ import colors from '../../styles/colors';
 
 export const styles = {
   placeholder: (styles) => ({ ...styles, color: colors.grey2 }),
-  clearIndicator: (styles) => ({ ...styles, backgroundColor: 'red' }),
+  clearIndicator: (styles) => ({ ...styles }),
   container: (provided) => ({
     ...provided,
     margin: '0',
@@ -23,6 +23,7 @@ export const styles = {
   control: (provided, state) => ({
     ...provided,
     display: 'flex',
+    background: state.isDisabled ? colors.grey3 : 'transparent',
     border: state.selectProps.hasError
       ? `1px solid ${colors.warning1}`
       : state.isFocused

@@ -6,7 +6,9 @@ import * as Yup from 'yup';
 
 import api from '../../services/api';
 import history from '../../services/history';
-import DeliverymenForms from './forms';
+import RecipientsForms from './forms';
+
+import findStateRecord from '../../utils/findStateRecord';
 
 import { Row, Wrapper } from './styles';
 import { MdArrowBack, MdOutlineDone } from 'react-icons/md';
@@ -23,25 +25,54 @@ const schema = Yup.object().shape({
       return !!(firstName && lastName);
     })
     .required('Nome obrigatório'),
-  email: Yup.string().required('Email obrigatório'),
+  address: Yup.string().required('Endereço obrigatório'),
+  number: Yup.string().required('Número obrigatório'),
+  complement: Yup.string(),
+  state: Yup.string()
+    .required('Estado obrigatório')
+    .uppercase()
+    .max(2, 'Estado deve conter 2 dígitos'),
+  city: Yup.string().required('Cidade obrigatória'),
+  cep: Yup.string()
+    .required('CEP obrigatório')
+    .max(9, 'CEP deve conter no máximo 9 dígitos'),
 });
 
 function RecipientsEdit({ location }) {
-  const [deliveryman] = useState(location?.state);
+  const [recipient] = useState(location?.state);
   const [loading, setLoading] = useState(false);
 
   const formRef = useRef();
 
   function handleSetInitialData() {
+    const state = findStateRecord(recipient.state);
     const initialData = {
-      name: deliveryman.name,
-      email: deliveryman.email,
-      avatar: deliveryman.avatar && deliveryman.avatar.url,
+      name: recipient.destiny_name,
+      address: recipient.address,
+      number: recipient.number,
+      complement: recipient.complement,
+      state: {
+        value: state.sigla,
+        label: state.nome,
+      },
+      city: {
+        value: recipient.city,
+        label: recipient.city,
+      },
+      cep: recipient.cep,
     };
     formRef.current.setData(initialData);
   }
 
-  async function handleSubmit({ name, email, avatar }) {
+  async function handleSubmit({
+    name,
+    address,
+    number,
+    complement,
+    state,
+    city,
+    cep,
+  }) {
     try {
       /*
        *  Remove all previous errors
@@ -52,28 +83,27 @@ function RecipientsEdit({ location }) {
        *  Yup validation
        */
 
-      await schema.validate({ name, email }, { abortEarly: false });
+      await schema.validate(
+        { name, address, number, complement, state, city, cep },
+        { abortEarly: false }
+      );
 
       setLoading(true);
 
-      if (avatar) {
-        const upload = new FormData();
-        upload.append('file', avatar);
-        const response = await api.post('files', upload);
-        const { id } = response.data;
-        avatar = id;
-      }
-
-      await api.put(`/deliverymen/${deliveryman.id}`, {
-        name,
-        email,
-        avatar_id: avatar,
+      await api.put(`/recipients/${recipient.id}`, {
+        destiny_name: name,
+        address,
+        number: Number(number),
+        complement,
+        state,
+        city,
+        cep,
       });
 
       setLoading(false);
 
-      toast.success('Entregador editado com sucesso!');
-      history.push('/deliverymen');
+      toast.success('Destinatário editado com sucesso!');
+      history.push('/recipients');
     } catch (err) {
       if (err instanceof Yup.ValidationError) {
         const validationErrors = {};
@@ -87,16 +117,16 @@ function RecipientsEdit({ location }) {
 
       setLoading(false);
 
-      toast.error('Não foi possível editar o entregador');
+      toast.error('Não foi possível editar o destinatário');
     }
   }
 
   return (
     <Form ref={formRef} onSubmit={handleSubmit}>
       <Row mb={30}>
-        <h2>{deliveryman.name}</h2>
+        <h2>{recipient.name}</h2>
         <Wrapper flex>
-          <Link to="/deliverymen" className="button grey">
+          <Link to="/recipients" className="button grey">
             <MdArrowBack size={20} />
             <span>Voltar</span>
           </Link>
@@ -116,8 +146,8 @@ function RecipientsEdit({ location }) {
         </Wrapper>
       </Row>
       <div className="card">
-        <DeliverymenForms
-          userName={deliveryman.name}
+        <RecipientsForms
+          userName={recipient.name}
           setInitialData={handleSetInitialData}
         />
       </div>

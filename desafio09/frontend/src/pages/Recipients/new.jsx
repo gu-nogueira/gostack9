@@ -23,7 +23,17 @@ const schema = Yup.object().shape({
       return !!(firstName && lastName);
     })
     .required('Nome obrigatório'),
-  email: Yup.string().required('Email obrigatório'),
+  address: Yup.string().required('Endereço obrigatório'),
+  number: Yup.string().required('Número obrigatório'),
+  complement: Yup.string(),
+  state: Yup.string()
+    .required('Estado obrigatório')
+    .uppercase()
+    .max(2, 'Estado deve conter 2 dígitos'),
+  city: Yup.string().required('Cidade obrigatória'),
+  cep: Yup.string()
+    .required('CEP obrigatório')
+    .max(9, 'CEP deve conter no máximo 9 dígitos'),
 });
 
 function RecipientsNew() {
@@ -31,7 +41,15 @@ function RecipientsNew() {
 
   const formRef = useRef();
 
-  async function handleSubmit({ name, email, avatar }) {
+  async function handleSubmit({
+    name,
+    address,
+    number,
+    complement,
+    state,
+    city,
+    cep,
+  }) {
     try {
       /*
        *  Remove all previous errors
@@ -42,28 +60,27 @@ function RecipientsNew() {
        *  Yup validation
        */
 
-      await schema.validate({ name, email }, { abortEarly: false });
+      await schema.validate(
+        { name, address, number, complement, state, city, cep },
+        { abortEarly: false }
+      );
 
       setLoading(true);
 
-      if (avatar) {
-        const upload = new FormData();
-        upload.append('file', avatar);
-        const response = await api.post('files', upload);
-        const { id } = response.data;
-        avatar = id;
-      }
-
-      await api.post('/deliverymen', {
-        name,
-        email,
-        avatar_id: avatar,
+      await api.post('/recipients', {
+        destiny_name: name,
+        address,
+        number: Number(number),
+        complement,
+        state,
+        city,
+        cep,
       });
 
       setLoading(false);
 
-      toast.success('Entregador cadastrado com sucesso!');
-      history.push('/deliverymen');
+      toast.success('Destinatário cadastrado com sucesso!');
+      history.push('/recipients');
     } catch (err) {
       if (err instanceof Yup.ValidationError) {
         const validationErrors = {};
@@ -77,7 +94,7 @@ function RecipientsNew() {
 
       setLoading(false);
 
-      toast.error('Não foi possível cadastrar o entregador');
+      toast.error('Não foi possível cadastrar o destinatário');
     }
   }
 
@@ -86,7 +103,7 @@ function RecipientsNew() {
       <Row mb={30}>
         <h2>Cadastro de encomendas</h2>
         <Wrapper flex>
-          <Link to="/deliverymen" className="button grey">
+          <Link to="/recipients" className="button grey">
             <MdArrowBack size={20} />
             <span>Voltar</span>
           </Link>
