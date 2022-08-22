@@ -12,49 +12,137 @@ import * as Yup from 'yup';
 
 class ProblemsController {
   async index(req, res) {
-    const { page = 1 } = req.query;
-    const problems = await DeliveryProblems.findAll({
-      attributes: ['delivery_id'],
-    });
-    const problemsId = problems.map((problems) => problems.delivery_id);
-    const deliveries = await Deliveries.findAll({
-      limit: 20,
-      offset: (page - 1) * 20,
-      attributes: ['id', 'product', 'start_date'],
-      where: {
-        id: { [Op.in]: problemsId },
-        canceled_at: null,
-      },
-      include: [
-        {
-          model: Recipients,
-          as: 'recipient',
-          attributes: [
-            'destiny_name',
-            'address',
-            'number',
-            'complement',
-            'state',
-            'city',
-            'cep',
-          ],
-        },
-        {
-          model: Deliverymen,
-          as: 'deliveryman',
-          attributes: ['name', 'email'],
-          include: [
-            {
-              model: Files,
-              as: 'avatar',
-              attributes: ['name', 'path', 'url'],
-            },
-          ],
-        },
-      ],
-    });
+    const { page = 1, perPage = 20, q: search } = req.query;
 
-    return res.json(deliveries);
+    /*
+     *  Get all deliveries that have not been cancelled yet
+     */
+
+    const deliveries = await Deliveries.findAll({
+      where: { canceled_at: null },
+    });
+    const deliveriesId = deliveries.map((delivery) => delivery.id);
+
+    /*
+     *  Gets the conditional query for the search
+     */
+
+    const getConditionalQuery = () => {
+      const defaultQuery = { delivery_id: { [Op.in]: deliveriesId } };
+      if (search) {
+        const filter = { [Op.iLike]: `%${search}%` };
+        return {
+          [Op.or]: [...defaultQuery, { id: filter }, { address: filter }],
+        };
+      } else {
+        return defaultQuery;
+      }
+    };
+    const conditionalQuery = getConditionalQuery();
+
+    /*
+     *  List delivery problems
+     */
+
+    const searches = [];
+
+    searches.push(
+      DeliveryProblems.findAll({
+        limit: perPage,
+        offset: (page - 1) * perPage,
+        order: [['updated_at', 'DESC']],
+        where: conditionalQuery,
+        attributes: ['delivery_id', 'description', 'updated_at'],
+      })
+    );
+
+    /*
+     *  Count all delivery problems
+     */
+
+    searches.push(
+      DeliveryProblems.count({
+        where: conditionalQuery,
+      })
+    );
+
+    const [deliveryProblems, deliveryProblemsCount] = await Promise.all(
+      searches
+    );
+
+    // ** TO DO: Check for a better way to group problems by delivery
+
+    // /*
+    //  *  Gets the correct conditional query when filtering by something or not
+    //  */
+
+    // const problemsId = problems.map((problems) => problems.delivery_id);
+    // const getConditionalQuery = () => {
+    //   const defaultQuery = { id: { [Op.in]: problemsId } };
+    //   if (search) {
+    //     const filter = { [Op.iLike]: `%${search}%` };
+    //     return {
+    //       [Op.or]: [...defaultQuery, { id: filter }, { address: filter }],
+    //     };
+    //   } else {
+    //     return defaultQuery;
+    //   }
+    // };
+    // const query = getConditionalQuery();
+
+    // const searches = [];
+
+    // searches.push(
+    //   Deliveries.findAll({
+    //     limit: perPage,
+    //     offset: (page - 1) * perPage,
+    //     attributes: ['id', 'product', 'start_date'],
+    //     where: {
+    //       ...query,
+    //       canceled_at: null,
+    //     },
+    //     include: [
+    //       {
+    //         model: Recipients,
+    //         as: 'recipient',
+    //         attributes: [
+    //           'destiny_name',
+    //           'address',
+    //           'number',
+    //           'complement',
+    //           'state',
+    //           'city',
+    //           'cep',
+    //         ],
+    //       },
+    //       {
+    //         model: Deliverymen,
+    //         as: 'deliveryman',
+    //         attributes: ['name', 'email'],
+    //         include: [
+    //           {
+    //             model: Files,
+    //             as: 'avatar',
+    //             attributes: ['name', 'path', 'url'],
+    //           },
+    //         ],
+    //       },
+    //     ],
+    //   })
+    // );
+
+    // searches.push(
+    //   Deliveries.count({
+    //     where: {
+    //       ...query,
+    //       canceled_at: null,
+    //     },
+    //   })
+    // );
+
+    // const [deliveriesWithProblems, problemsCount] = await Promise.all(searches);
+
+    return res.json({ rows: deliveryProblems, total: deliveryProblemsCount });
   }
 
   async show(req, res) {

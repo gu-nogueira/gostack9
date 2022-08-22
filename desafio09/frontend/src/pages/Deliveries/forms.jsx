@@ -21,7 +21,7 @@ function DeliveriesForms({ setInitialData }) {
         searches
       );
       setRecipients(
-        recipientsResponse.data.map((recipient) => ({
+        recipientsResponse.data.rows.map((recipient) => ({
           value: recipient.id,
           label: recipient.destiny_name,
           ...recipient,

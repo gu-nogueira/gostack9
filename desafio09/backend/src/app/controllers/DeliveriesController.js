@@ -312,19 +312,24 @@ class DeliveriesController {
       return res.status(404).json({ error: 'Delivery not found' });
     }
 
-    const deliveryProblems = await DeliveryProblems.findAll({
-      where: { delivery_id: delivery.id },
-    });
-
     /*
      *  Transaction for deleting delivery problems before delivery
      */
 
     await Transaction.process(async (transaction) => {
-      if (deliveryProblems) {
-        await DeliveryProblems.destroy({
+      const deliveryProblems = await DeliveryProblems.findAll(
+        {
           where: { delivery_id: delivery.id },
-        });
+        },
+        { transaction }
+      );
+      if (deliveryProblems) {
+        await DeliveryProblems.destroy(
+          {
+            where: { delivery_id: delivery.id },
+          },
+          { transaction }
+        );
       }
       await delivery.destroy({}, { transaction });
     });

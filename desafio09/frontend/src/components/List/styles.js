@@ -53,8 +53,8 @@ export const Container = styled.div`
   table td {
     font-size: 16px;
     text-align: left;
-    /* text-overflow: ellipsis; */
-    /* overflow: hidden; */
+    text-overflow: ellipsis;
+    overflow-x: hidden;
     white-space: pre;
 
     img {
