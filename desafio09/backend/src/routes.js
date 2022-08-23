@@ -28,8 +28,16 @@ routes.get('/deliverymen/:id', DeliverymenController.show);
 routes.get('/deliverymen/:id/deliveries', OrdersController.index);
 routes.get('/deliverymen/:id/delivered', OrdersController.index);
 routes.post('/deliverymen/:id/deliveries/:deliveryId', OrdersController.store);
-routes.put('/deliverymen/:id/deliveries/:deliveryId', upload.single('file'), fileMiddleware, OrdersController.update);
-routes.put('/deliverymen/:id/deliveries/:deliveryId/problems/', ProblemsController.update);
+routes.put(
+  '/deliverymen/:id/deliveries/:deliveryId',
+  upload.single('file'),
+  fileMiddleware,
+  OrdersController.update
+);
+routes.put(
+  '/deliverymen/:id/deliveries/:deliveryId/problems/',
+  ProblemsController.update
+);
 
 routes.use(authMiddleware);
 

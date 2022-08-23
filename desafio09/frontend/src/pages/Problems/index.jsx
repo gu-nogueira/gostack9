@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { parseISO, format } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 
 import api from '../../services/api';
 
@@ -10,7 +12,28 @@ import List from '../../components/List';
 import Pagination from '../../components/Pagination';
 
 import { MdOutlineAdd } from 'react-icons/md';
-import { Row, Wrapper } from './styles';
+import { Content, Description, Row, Wrapper } from './styles';
+
+function formatDate(date) {
+  const isoDate = parseISO(date);
+  return format(isoDate, "dd/MM/yyyy 'as' HH'h'mm", { locale: ptBR });
+}
+
+function ViewContent({ data }) {
+  if (data)
+    return (
+      <Content>
+        <strong>Informações da encomenda</strong>
+        <p>Encomenda #{data.delivery_id.toString().padStart(2, 0)}</p>
+        <hr />
+        <strong>Descrição</strong>
+        <Description>{data.description}</Description>
+        <hr />
+        <strong>Última atualização</strong>
+        <p>{formatDate(data.updated_at)}</p>
+      </Content>
+    );
+}
 
 function Problems() {
   const [loading, setLoading] = useState(false);
@@ -20,12 +43,12 @@ function Problems() {
   const [currentPage, setCurrentPage] = useState(1);
 
   const headers = {
-    delivery_id: 'Encomenda',
+    name: 'Encomenda',
     description: 'Problema',
     updated_at: 'Atualizado em',
   };
 
-  const options = ['view', 'delete'];
+  const options = ['view', 'cancel'];
   const apiRoute = '/deliveries/problems';
   const params = {
     page: currentPage,
@@ -41,16 +64,20 @@ function Problems() {
       setProblems(
         rows.map((problem) => {
           problem.raw = { ...problem };
-          problem.delivery_id = `#${problem.delivery_id
-            .toString()
-            .padStart(2, 0)}`;
+          problem.name = `#${problem.delivery_id.toString().padStart(2, 0)}`;
+          problem.description = (
+            <Wrapper text width="30vw">
+              {problem.description}
+            </Wrapper>
+          );
+          problem.updated_at = formatDate(problem.updated_at);
           return problem;
         })
       );
       setProblemsTotal(total);
     } catch (err) {
       console.error(err);
-      toast.error('Não foi possível carregar os destinatários');
+      toast.error('Não foi possível carregar os problemas de entregas');
     }
     setLoading(false);
   }
@@ -62,31 +89,28 @@ function Problems() {
 
   return (
     <>
-      <h2>Gerenciando destinatários</h2>
+      <h2>Problemas na entrega</h2>
       <Row mt={30}>
         <Wrapper flex gap={15}>
           <Search
-            placeholder="Buscar por destinatários"
+            placeholder="Buscar por problemas de entrega"
             onSearch={(value) => setSearch(value)}
           />
           <h4>{problemsTotal} registros encontrados</h4>
         </Wrapper>
-        <Link className="button" to="/recipients/new">
-          <MdOutlineAdd size={20} />
-          <span>Cadastrar</span>
-        </Link>
       </Row>
       {loading ? (
         <Loader />
       ) : (
-        <Wrapper tableCell={'max-width: 30vw'}>
+        <>
           <List
-            category="recipients"
+            category="problems"
             headers={headers}
             data={problems}
             options={options}
             apiRoute={apiRoute}
             fetchData={fetchProblems}
+            viewContent={ViewContent}
           />
           <Pagination
             currentPage={currentPage}
@@ -94,7 +118,7 @@ function Problems() {
             perPage={params.perPage}
             onPageChange={(page) => setCurrentPage(page)}
           />
-        </Wrapper>
+        </>
       )}
     </>
   );

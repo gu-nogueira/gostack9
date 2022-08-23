@@ -32,7 +32,8 @@ class ProblemsController {
       if (search) {
         const filter = { [Op.iLike]: `%${search}%` };
         return {
-          [Op.or]: [...defaultQuery, { id: filter }, { address: filter }],
+          ...defaultQuery,
+          [Op.or]: [{ id: filter }, { address: filter }],
         };
       } else {
         return defaultQuery;

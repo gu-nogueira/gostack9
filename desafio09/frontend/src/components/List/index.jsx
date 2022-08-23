@@ -6,7 +6,7 @@ import Modal from '../Modal';
 
 import api from '../../services/api';
 
-import { MdMoreHoriz, MdEdit, MdDelete } from 'react-icons/md';
+import { MdMoreHoriz, MdEdit, MdDelete, MdCancel } from 'react-icons/md';
 import { AiFillEye } from 'react-icons/ai';
 import { HiEmojiSad } from 'react-icons/hi';
 import { Container, DropBox, DeleteWarning, Content } from './styles';
@@ -36,6 +36,19 @@ function List({
       console.error(err);
       toast.error(
         `Não foi possível excluir ${name}, tente novamente mais tarde`
+      );
+    }
+  }
+
+  async function handleCancel(id, name) {
+    try {
+      await api.delete(`/deliveries/${id}/cancel`);
+      toast.success(`Encomenda ${name} cancelada com sucesso`);
+      fetchData();
+    } catch (err) {
+      console.error(err);
+      toast.error(
+        `Não foi possível cancelar a encomenda ${name}, tente novamente mais tarde`
       );
     }
   }
@@ -107,7 +120,7 @@ function List({
                                     Modal.show({
                                       title: `Dados de ${registry.name}`,
                                       content: (
-                                        <ViewContent delivery={registry.raw} />
+                                        <ViewContent data={registry.raw} />
                                       ),
                                       resolver: () => 0,
                                     })
@@ -144,6 +157,38 @@ function List({
                                   }
                                 >
                                   <MdDelete className={option} /> Deletar
+                                </button>
+                              </li>
+                            );
+                          }
+
+                          case 'cancel': {
+                            return (
+                              <li key={index}>
+                                <button
+                                  onClick={async () =>
+                                    Modal.show({
+                                      title: `Cancelar encomenda ${registry.name}`,
+                                      content: (
+                                        <>
+                                          <DeleteWarning />
+                                          <span>
+                                            <b>Atenção:</b> esta ação é
+                                            irreverrsível! Deseja continuar?
+                                          </span>
+                                        </>
+                                      ),
+                                      cta: 'Excluir',
+                                      resolver: () =>
+                                        handleCancel(
+                                          registry.raw.delivery_id,
+                                          registry.name
+                                        ),
+                                    })
+                                  }
+                                >
+                                  <MdCancel className={option} /> Cancelar
+                                  encomenda
                                 </button>
                               </li>
                             );

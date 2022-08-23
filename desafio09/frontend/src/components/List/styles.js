@@ -53,9 +53,6 @@ export const Container = styled.div`
   table td {
     font-size: 16px;
     text-align: left;
-    text-overflow: ellipsis;
-    overflow-x: hidden;
-    white-space: pre;
 
     img {
       display: block;
@@ -238,6 +235,10 @@ export const DropBox = styled.ul`
     }
 
     svg.delete {
+      fill: ${colors.warning1};
+    }
+
+    svg.cancel {
       fill: ${colors.warning1};
     }
 

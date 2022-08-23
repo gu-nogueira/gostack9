@@ -15,7 +15,7 @@ import { MdOutlineAdd } from 'react-icons/md';
 import { Row, Wrapper, Content } from './styles';
 import SignatureExample from '../../assets/images/signaature-example.png';
 
-function ViewContent({ delivery }) {
+function ViewContent({ data }) {
   function formatCep(cep) {
     return (Number(cep) / 1000).toString().replace('.', '-');
   }
@@ -28,29 +28,29 @@ function ViewContent({ delivery }) {
     return isoDate.toLocaleDateString('pt-BR');
   }
 
-  if (delivery)
+  if (data)
     return (
       <Content>
         <strong>Informações da encomenda</strong>
         <p>
-          {delivery.recipient.address}, {delivery.recipient.number}
+          {data.recipient.address}, {data.recipient.number}
         </p>
         <p>
-          {delivery.recipient.city} - {delivery.recipient.state}
+          {data.recipient.city} - {data.recipient.state}
         </p>
-        <p>{formatCep(delivery.recipient.cep)}</p>
+        <p>{formatCep(data.recipient.cep)}</p>
         <hr />
         <strong>Datas</strong>
         <p>
-          <b>Retirada:</b> {formatDate(delivery.start_date)}
+          <b>Retirada:</b> {formatDate(data.start_date)}
         </p>
         <p>
-          <b>Entrega:</b> {formatDate(delivery.end_date)}
+          <b>Entrega:</b> {formatDate(data.end_date)}
         </p>
         <hr />
         <strong>Assinatura do destinatário</strong>
         <img
-          src={delivery.signature?.url || SignatureExample}
+          src={data.signature?.url || SignatureExample}
           alt="Assinatura do destinatário"
         />
       </Content>
