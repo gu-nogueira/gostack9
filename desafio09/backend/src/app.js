@@ -17,7 +17,7 @@ class App {
 
     this.middlewares();
     this.routes();
-    // this.exceptionHandler();
+    this.exceptionHandler();
 
     console.timeLog('Load time');
     console.log('Load complete');

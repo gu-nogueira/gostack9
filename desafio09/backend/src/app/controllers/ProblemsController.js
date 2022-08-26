@@ -28,15 +28,17 @@ class ProblemsController {
      */
 
     const getConditionalQuery = () => {
-      const defaultQuery = { delivery_id: { [Op.in]: deliveriesId } };
       if (search) {
+        const numberSearch = Number(search);
         const filter = { [Op.iLike]: `%${search}%` };
         return {
-          ...defaultQuery,
-          [Op.or]: [{ id: filter }, { address: filter }],
+          [Op.or]: [
+            !isNaN(numberSearch) && { delivery_id: numberSearch },
+            { description: filter },
+          ],
         };
       } else {
-        return defaultQuery;
+        return { delivery_id: { [Op.in]: deliveriesId } };
       }
     };
     const conditionalQuery = getConditionalQuery();

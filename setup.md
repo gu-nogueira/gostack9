@@ -41,6 +41,10 @@ Meu setup de ambiente de desenvolvimento web
 ### Windows Terminal
   - Baixar na Microsoft Store
 
+### Oh My Posh
+  - Instalação em: https://ohmyposh.dev/
+  - Nerd Fonts (instalar CaskaydiaCove NF'): https://www.nerdfonts.com/
+
 ### MobaXTerm
   - Instalador local
   - Importar configurações
@@ -266,6 +270,19 @@ insert_final_newline = true
 - Vamos rodar o comando: `cinst -y openjdk11`
 - Reiniciar o terminal, e verificá-lo com `java -version`
 
+## Setando variáveis ambiente (Windows)
+
+- Criar diretório personalizado. Ex: `C:\Android\Sdk`
+- Agora, no Painel de Controle do Windows, abra o item “Sistema e Segurança” ou “Sistema”, clique em “Configurações avançadas do sistema”, selecione “Variáveis de ambiente” e clique no botão “Nova variável de ambiente”, indique o nome da variável como `ANDROID_HOME`, adicione o caminho utilizado acima (Ex.: `C:\Android\Sdk`) como segundo parâmetro e clique em OK.
+- Caso não tenha instalado o `JDK` com o `chocolatey`, faça o mesmo processo para criar a variável `JAVA_HOME`. Mas primeiramente temos que obter o caminho de instalação. O caminho padrão é: `C:\Program Files\OpenJDK\openjdk-11.[SUA_VERSÃO]`
+-Na mesma janela de "Variáveis de ambiente" no Windows, clique na variável PATH e então em "Editar". Haverá uma lista de caminhos e você deve adicionar esses quatro novos caminhos no fim da lista:
+```
+%ANDROID_HOME%\emulator
+%ANDROID_HOME%\tools
+%ANDROID_HOME%\tools\bin
+%ANDROID_HOME%\platform-tools
+```
+
 ## Emuladores
 
 - Android Studio: https://developer.android.com
@@ -276,8 +293,7 @@ insert_final_newline = true
 ### Emulando Android Virtual Device por linha de comando
 - Primeiro, precisamos achar o nome do dispositivo na pasta do SDK do android, no nosso caso: `cd C:/Android/Sdk/emulator && ./emulator -list-avds`
 - Então, rodamos `cd C:/Android/Sdk/emulator && ./emulator -avd NOME_DO_DISPOSITIVO`
-- Trabalho: `cd C:/Android/Sdk/emulator && ./emulator -avd Pixel_5_API_29_2`
-- Casa: `cd C:/Android/Sdk/emulator && ./emulator -avd Pixel_4_API_29`
+- Casa: `cd C:/Android/Sdk/emulator && ./emulator -avd Pixel_5_API_31`
 - Caso rodando em arquitetura x86, mudar o `C:/Android/Sdk/emulator` por `C:/Android/Sdk/tools` 
 
 ## Utilitários

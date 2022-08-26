@@ -75,7 +75,8 @@ function Login() {
             type="password"
             placeholder="Senha"
           />
-          <Link to="/forgot">Esqueci minha senha</Link>
+          {/* TO DO: efast v2 */}
+          {/* <Link to="/forgot">Esqueci minha senha</Link> */}
           <button type="submit">
             {loading ? (
               <>
@@ -86,9 +87,10 @@ function Login() {
               'Entrar'
             )}
           </button>
-          <small>
+          {/* TO DO: efast v2 */}
+          {/* <small>
             Não possui uma conta? <Link to="/register">Registre-se</Link>
-          </small>
+          </small> */}
         </Form>
       </Column>
     </>
