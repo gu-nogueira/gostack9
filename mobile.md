@@ -33,6 +33,7 @@ Montagem de aplicativo mobile consumindo a api desenvolvida em node.js
 ## Utilizando NPX
 - É possível instalar o react-native-cli usando o `npx` do NPM, que a partir da versão 5 já possibilita utilizá-lo, permitindo acesso a pacotes (CLIs) sem precisar instalá-los na máquina;
 - Então: `npx react-native init modulo06`
+> Obs: caso não esteja funcionando, utilizar `npx react-native init nome_do_projeto --npm`
 - Agora podemos rodar dentro da pasta do projeto `npx react-native run-android`
 
 ## Instalando o React Native CLI máquina
@@ -183,6 +184,33 @@ Navigation.navigate('Rota');
 ```js
 import 'intl';
 import 'intl/locale-data/jsonp/pt-BR'; // Ou qualquer locale que precisar
+```
+
+## Babel plugin root import
+- Usado para realizar importações customizáveis no projeto
+- Instalar com `yarn add babel-plugin-root-import eslint-import-resolver-babel-plugin-root-import`
+- Feito isso, no `babel.config.js` iremos inserir a seguinte propriedade:
+```js
+plugins: [
+  'babel-plugin-root-import',
+  {
+    rootPathSuffix: 'src',
+  },
+],
+```
+- Agora no `eslintrc.js`, vamos adicionar:
+```js
+settings: {
+  'import/resolver': {
+    'babel-plugin-root-import': {
+      rootPathSuffix: 'src',
+    },
+  },
+},
+```
+- E por fim, para o intellisense funcionar no vscode, criaremos o `jsconfig.json`:
+```json
+  
 ```
 
 # Resolução de problemas
