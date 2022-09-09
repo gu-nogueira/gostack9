@@ -36,6 +36,14 @@ Montagem de aplicativo mobile consumindo a api desenvolvida em node.js
 > Obs: caso não esteja funcionando, utilizar `npx react-native init nome_do_projeto --npm`
 - Agora podemos rodar dentro da pasta do projeto `npx react-native run-android`
 
+## (Update) Linkando o Yarn v3 para usar no React Native
+- Para isso, é necessário criar um arquivo na raiz do projeto chamado `.yarnrc.yml`:
+```yml
+nodeLinker: node-modules
+```
+- E rodar `yarn install``
+Para mais informações, ver esse [artigo](https://levelup.gitconnected.com/how-to-use-yarn-3-with-react-native-and-how-to-migrate-c5f108108533).
+
 ## Instalando o React Native CLI máquina
 *ATENÇÃO: Só é possível instalá-lo com yarn após definir as variáveis ambientes do windows, consultar `setup.md`*
 - Podemos também instalar a cli globalmente na máquina por `yarn global add react-native-cli`
@@ -78,6 +86,7 @@ import './config/ReactotronConfig';
 - Agora, podemos realizar logs no console com `console.tron.log('Hello World!');`
 
 ## React Navigation (rotas)
+> Seguir documentação do [react navigation](https://reactnavigation.org/docs/getting-started)
 - Assim como no ReactJS, vamos criar o diretório `src > pages`, onde ficarão contidas todas as telas da aplicação
 - Dentro deste diretório vamos criar `Main > index.js` e `Users > index.js`
 > Snippet da Rocketseat para criação de componente React Native: `rnfc`
@@ -102,7 +111,7 @@ function Routes() {
           headerTintColor: '#FFF'
         }}
       >
-        <Stack.Screen
+        <Stack.Screen'
           name="Main"
           component={Main}
           options={{

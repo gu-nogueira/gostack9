@@ -1,10 +1,24 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { PersistGate } from 'redux-persist/integration/react';
+import { Provider } from 'react-redux';
+import { StatusBar } from 'react-native';
 
-// import { Container } from './styles';
+import './config/ReactotronConfig';
 
-const src = () => {
-  return <Text>Opa fiãoooo agora vai porra</Text>;
+import { store, persistor } from './store';
+import Routes from './routes';
+
+import colors from './styles/colors';
+
+const App = () => {
+  return (
+    <Provider store={store}>
+      <PersistGate persistor={persistor}>
+        <StatusBar barStyle="light-content" backgroundColor={colors.primary} />
+        <Routes />
+      </PersistGate>
+    </Provider>
+  );
 };
 
-export default src;
+export default App;
