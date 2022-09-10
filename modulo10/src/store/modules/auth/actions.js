@@ -1,7 +1,6 @@
 export function signInRequest(email, password) {
   return {
     type: '@auth/SIGN_IN_REQUEST',
-    // Em payload uma boa prática é´colocar qualquer outra informação adicional
     payload: { email, password },
   };
 }

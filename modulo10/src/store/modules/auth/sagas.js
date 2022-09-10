@@ -27,6 +27,9 @@ export function* signIn({ payload }) {
     // ** Token insertion on Axios
     api.defaults.headers.Authorization = `Bearer ${token}`;
 
+    // Teste delay do redux-saga
+    // yield delay(3000);
+
     yield put(signInSuccess(token, user));
 
     // history.push('/dashboard');

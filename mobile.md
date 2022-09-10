@@ -33,7 +33,7 @@ Montagem de aplicativo mobile consumindo a api desenvolvida em node.js
 ## Utilizando NPX
 - É possível instalar o react-native-cli usando o `npx` do NPM, que a partir da versão 5 já possibilita utilizá-lo, permitindo acesso a pacotes (CLIs) sem precisar instalá-los na máquina;
 - Então: `npx react-native init modulo06`
-> Obs: caso não esteja funcionando, utilizar `npx react-native init nome_do_projeto --npm`
+> Obs: caso esteja utilizando `yarn` em conjunto com `npm`, utilizar `npx react-native init nome_do_projeto --npm`
 - Agora podemos rodar dentro da pasta do projeto `npx react-native run-android`
 
 ## (Update) Linkando o Yarn v3 para usar no React Native
@@ -222,5 +222,15 @@ settings: {
   
 ```
 
-# Resolução de problemas
+# Problemas conhecidos
 - Grande parte dos problemas com React Native são resolvidos no terminal do Metro Bundler com `react-native start --reset-cache` ou no pior dos casos com `react-native run-android` ou `react-native run-ios`
+
+## Problemas na instalação do projeto com `npx react-native init <projeto>`
+
+### Problemas com package.json não encontrado na cache do npm
+- Esse é um problema conhecido do Windows. Ocorre quando há espaço no nome do usuário.
+- Para solucionar, é preciso setar o cache do npm utilizado usando:
+```bash
+# '~1' representa o caractere de espaço para 'Gustavo Nogueira'
+npm config set cache "C:\Users\Gustavo~1Nogueira\AppData\Roaming\npm-cache" --global
+``` 
