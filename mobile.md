@@ -82,7 +82,7 @@ if (__DEV__) {
 ```js
 import './config/ReactotronConfig';
 ```
-- Caso não funcione (principalmente no Android), será necessário realizar um redirecionamento de portas do ADB: `adb reverse tcp: 9090 tcp: 9090` ou então pelo caminho `C:/Android/Sdk/platform-tools/adb reverse tcp: 9090 tcp: 9090`
+- Caso não funcione (principalmente no Android), será necessário realizar um redirecionamento de portas do ADB: `adb reverse tcp:9090 tcp:9090` ou então pelo caminho `C:/Android/Sdk/platform-tools/adb reverse tcp:9090 tcp:9090`
 - Agora, podemos realizar logs no console com `console.tron.log('Hello World!');`
 
 ## React Navigation (rotas)

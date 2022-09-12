@@ -3522,6 +3522,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"date-fns@npm:next":
+  version: 2.0.0-beta.5
+  resolution: "date-fns@npm:2.0.0-beta.5"
+  checksum: 03bba2c985dcf3e89c23cb162695d4a11b178116c236e8552db52ee1629bc18ae4b0fa44287f3eb8a68c0c6ac4cbc6b6574df0f94fb4de22a0dd26604c9a024a
+  languageName: node
+  linkType: hard
+
 "dayjs@npm:^1.8.15":
   version: 1.11.5
   resolution: "dayjs@npm:1.11.5"
@@ -7298,6 +7305,7 @@ __metadata:
     axios: ^0.27.2
     babel-jest: ^26.6.3
     babel-plugin-root-import: ^6.6.0
+    date-fns: next
     eslint: ^7.32.0
     eslint-import-resolver-babel-plugin-root-import: ^1.1.1
     immer: ^9.0.15

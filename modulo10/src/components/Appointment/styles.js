@@ -1,10 +1,13 @@
 import styled from 'styled-components/native';
+import colors from '~/styles/colors';
 
 export const Container = styled.View`
   margin-bottom: 15px;
   padding: 15px;
   border-radius: 4px;
   background: #fff;
+
+  opacity: ${(props) => (props.past ? 0.6 : 1)};
 
   display: flex;
   flex-direction: row;
