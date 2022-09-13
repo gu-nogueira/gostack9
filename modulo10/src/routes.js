@@ -1,4 +1,5 @@
 import React from 'react';
+import { TouchableOpacity } from 'react-native';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -11,6 +12,10 @@ import SignUp from './pages/SignUp';
 import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
 
+import SelectProvider from './pages/New/SelectProvider';
+import SelectDateTime from './pages/New/SelectDateTime';
+import Confirm from './pages/New/Confirm';
+
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import colors from './styles/colors';
@@ -18,12 +23,45 @@ import colors from './styles/colors';
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
+const AddRoutes = () => {
+  return (
+    <Stack.Navigator
+      defaultScreenOptions={{
+        headerLeftContainerStyle: {
+          marginLeft: 20,
+        },
+      }}>
+      <Stack.Screen
+        name="SelectProvider"
+        component={SelectProvider}
+        options={({ navigation }) => ({
+          title: 'Selecione o prestador',
+          headerTitleAlign: 'center',
+          headerTransparent: true,
+          headerTintColor: '#fff',
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate('Dashboard');
+              }}>
+              <Icon name="chevron-left" size={20} color="#fff" />
+            </TouchableOpacity>
+          ),
+        })}
+      />
+      <Stack.Screen name="SelectDateTime" component={SelectDateTime} />
+      <Stack.Screen name="Confirm" component={Confirm} />
+    </Stack.Navigator>
+  );
+};
+
 const Routes = ({ signed = false }) => {
   return (
     <NavigationContainer>
       {signed ? (
         <Tab.Navigator
           screenOptions={({ route }) => ({
+            tabBarVisible: false,
             headerShown: false,
             tabBarHideOnKeyboard: true,
             tabBarActiveTintColor: '#fff',
@@ -44,6 +82,17 @@ const Routes = ({ signed = false }) => {
               tabBarIcon: ({ color }) => (
                 <Icon name="event" size={20} color={color} />
               ),
+            }}
+          />
+          <Tab.Screen
+            name="SelectProvider"
+            component={AddRoutes}
+            options={{
+              title: 'Adicionar',
+              tabBarIcon: ({ color }) => (
+                <Icon name="add-circle-outline" size={20} color={color} />
+              ),
+              tabBarStyle: { display: 'none' },
             }}
           />
           <Tab.Screen

@@ -9,15 +9,13 @@ import { toast } from 'react-toastify';
 
 export function* updateProfile({ payload }) {
   try {
-    const { name, email, avatar_id, ...rest } = payload.data;
+    const { name, email, ...rest } = payload.data;
 
-    // Faz um ternário para checar se há oldPassword, se houver, envia o restante das informações para a request
     const profile = Object.assign(
-      { name, email, avatar_id },
+      { name, email },
       rest.oldPassword ? rest : {},
     );
 
-    // Não é necessário id do usuário pois já está contido no token enviado
     const response = yield call(api.put, 'users', profile);
     Alert.alert('Sucesso!', 'Perfil atualizado com sucesso!');
     yield put(updateProfileSuccess(response.data));
