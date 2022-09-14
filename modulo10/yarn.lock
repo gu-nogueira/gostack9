@@ -1688,6 +1688,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@react-native-community/datetimepicker@npm:^6.3.2":
+  version: 6.3.2
+  resolution: "@react-native-community/datetimepicker@npm:6.3.2"
+  dependencies:
+    invariant: ^2.2.4
+  checksum: 7234515d21749338d4a307bfe1c9e9a41dc3a93f10e8f69af48bc21cb4b91ae5d7b307552ea59c518238a2a036d4751c3aead8a3ab606d086b2d7736a3ab2c83
+  languageName: node
+  linkType: hard
+
 "@react-native-community/eslint-config@npm:^2.0.0":
   version: 2.0.0
   resolution: "@react-native-community/eslint-config@npm:2.0.0"
@@ -7298,6 +7307,7 @@ __metadata:
     "@babel/core": ^7.12.9
     "@babel/runtime": ^7.12.5
     "@react-native-community/async-storage": ^1.12.1
+    "@react-native-community/datetimepicker": ^6.3.2
     "@react-native-community/eslint-config": ^2.0.0
     "@react-navigation/bottom-tabs": ^6.3.3
     "@react-navigation/native": ^6.0.12

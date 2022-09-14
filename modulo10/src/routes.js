@@ -24,6 +24,21 @@ const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 const AddRoutes = () => {
+  const AddRoutesOptions = ({ navigation, title, backTo }) => ({
+    title,
+    headerTitleAlign: 'center',
+    headerTransparent: true,
+    headerTintColor: '#fff',
+    headerLeft: () => (
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate(backTo);
+        }}>
+        <Icon name="chevron-left" size={20} color="#fff" />
+      </TouchableOpacity>
+    ),
+  });
+
   return (
     <Stack.Navigator
       defaultScreenOptions={{
@@ -34,22 +49,25 @@ const AddRoutes = () => {
       <Stack.Screen
         name="SelectProvider"
         component={SelectProvider}
-        options={({ navigation }) => ({
-          title: 'Selecione o prestador',
-          headerTitleAlign: 'center',
-          headerTransparent: true,
-          headerTintColor: '#fff',
-          headerLeft: () => (
-            <TouchableOpacity
-              onPress={() => {
-                navigation.navigate('Dashboard');
-              }}>
-              <Icon name="chevron-left" size={20} color="#fff" />
-            </TouchableOpacity>
-          ),
-        })}
+        options={({ navigation }) =>
+          AddRoutesOptions({
+            navigation,
+            title: 'Selecione o prestador',
+            backTo: 'Dashboard',
+          })
+        }
       />
-      <Stack.Screen name="SelectDateTime" component={SelectDateTime} />
+      <Stack.Screen
+        name="SelectDateTime"
+        component={SelectDateTime}
+        options={({ navigation }) =>
+          AddRoutesOptions({
+            navigation,
+            title: 'Selecione o horário',
+            backTo: 'SelectProvider',
+          })
+        }
+      />
       <Stack.Screen name="Confirm" component={Confirm} />
     </Stack.Navigator>
   );

@@ -19,7 +19,7 @@ const Dashboard = () => {
   // ** Fetch appointments from API
 
   async function loadAppointments() {
-    const response = await api.get('appointments');
+    const response = await api.get('/appointments');
 
     setAppointments(response.data);
   }
@@ -27,7 +27,7 @@ const Dashboard = () => {
   // ** Cancel an appointment action
 
   async function handleCancel(id) {
-    const response = await api.delete(`appointments/${id}`);
+    const response = await api.delete(`/appointments/${id}`);
 
     setAppointments(
       appointments.map((appointment) =>
