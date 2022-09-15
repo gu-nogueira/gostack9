@@ -24,7 +24,7 @@ const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 const AddRoutes = () => {
-  const AddRoutesOptions = ({ navigation, title, backTo }) => ({
+  const AddRoutesOptions = ({ navigation, title }) => ({
     title,
     headerTitleAlign: 'center',
     headerTransparent: true,
@@ -32,7 +32,7 @@ const AddRoutes = () => {
     headerLeft: () => (
       <TouchableOpacity
         onPress={() => {
-          navigation.navigate(backTo);
+          navigation.goBack();
         }}>
         <Icon name="chevron-left" size={20} color="#fff" />
       </TouchableOpacity>
@@ -53,7 +53,6 @@ const AddRoutes = () => {
           AddRoutesOptions({
             navigation,
             title: 'Selecione o prestador',
-            backTo: 'Dashboard',
           })
         }
       />
@@ -64,11 +63,19 @@ const AddRoutes = () => {
           AddRoutesOptions({
             navigation,
             title: 'Selecione o horário',
-            backTo: 'SelectProvider',
           })
         }
       />
-      <Stack.Screen name="Confirm" component={Confirm} />
+      <Stack.Screen
+        name="Confirm"
+        component={Confirm}
+        options={({ navigation }) =>
+          AddRoutesOptions({
+            navigation,
+            title: 'Confirmar agendamento',
+          })
+        }
+      />
     </Stack.Navigator>
   );
 };
@@ -85,6 +92,7 @@ const Routes = ({ signed = false }) => {
             tabBarActiveTintColor: '#fff',
             tabBarInactiveTintColor: 'rgba(255, 255, 255, 0.6)',
             tabBarActiveBackgroundColor: colors.quartiary,
+            unmountOnBlur: true,
             tabBarStyle: {
               paddingTop: 10,
               paddingBottom: 15,

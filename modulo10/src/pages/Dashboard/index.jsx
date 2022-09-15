@@ -7,14 +7,17 @@ import Appointment from '~/components/Appointment';
 
 import { Container, Title, List } from './styles';
 
-const Dashboard = () => {
+const Dashboard = ({ navigation }) => {
   const [appointments, setAppointments] = useState([]);
 
-  // ** Fetch appointments from API on Mount
+  // ** Fetch appointments from API when focused
 
   useEffect(() => {
-    loadAppointments();
-  }, []);
+    const updateAppointments = navigation.addListener('focus', () => {
+      loadAppointments();
+    });
+    return updateAppointments;
+  }, [navigation]);
 
   // ** Fetch appointments from API
 
