@@ -84,6 +84,10 @@ Port: 5432
 User: postgres
 Pass: docker
 ```
+> Caso o hostname não funcione, então no client do docker iremos pegar o ip local do container dessa forma:
+```sh
+docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' database
+```
 
 ### Bancos não-relacionais | MongoDB
 - Link para montar o container: https://hub.docker.com/_/mongo

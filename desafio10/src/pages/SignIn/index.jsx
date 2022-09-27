@@ -16,16 +16,14 @@ import {
 } from './styles';
 
 const SignIn = ({ navigation }) => {
-  const dispatch = useDispatch();
-  const passwordRef = useRef();
-
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [deliverymanId, setDeliverymanId] = useState('');
 
   const loading = useSelector((state) => state.auth.loading);
 
+  const dispatch = useDispatch();
+
   function handleSubmit() {
-    dispatch(signInRequest(email, password));
+    dispatch(signInRequest(deliverymanId));
   }
 
   return (
@@ -35,35 +33,22 @@ const SignIn = ({ navigation }) => {
 
         <Form>
           <FormInput
-            icon="mail-outline"
-            keyboardType="email-address"
+            icon="person"
+            keyboardType="numeric"
             autoCorrect={false}
             autoCapitalize="none"
-            placeholder="Digite seu e-mail"
-            returnKeyType="next"
-            onSubmitEditing={() => passwordRef.current.focus()}
-            value={email}
-            onChangeText={setEmail}
-          />
-
-          <FormInput
-            icon="lock-outline"
-            secureTextEntry
-            placeholder="Sua senha secreta"
-            ref={passwordRef}
+            placeholder="Informe seu ID de cadastro"
             returnKeyType="send"
-            onSubmitEditing={handleSubmit}
-            value={password}
-            onChangeText={setPassword}
+            value={deliverymanId}
+            onChangeText={setDeliverymanId}
           />
-
           <SubmitButton loading={loading} onPress={handleSubmit}>
-            Acessar
+            Entrar
           </SubmitButton>
         </Form>
 
         <SignLink onPress={() => navigation.navigate('SignUp')}>
-          <SignLinkText>Criar conta gratuita</SignLinkText>
+          <SignLinkText>Solicitar acesso</SignLinkText>
         </SignLink>
       </Container>
     </Background>

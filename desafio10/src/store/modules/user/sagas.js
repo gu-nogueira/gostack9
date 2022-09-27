@@ -5,8 +5,6 @@ import api from '~/services/api';
 
 import { updateProfileSuccess, updateProfileFailure } from './actions';
 
-import { toast } from 'react-toastify';
-
 export function* updateProfile({ payload }) {
   try {
     const { name, email, ...rest } = payload.data;

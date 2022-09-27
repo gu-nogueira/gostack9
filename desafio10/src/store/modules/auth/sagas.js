@@ -7,31 +7,21 @@ import { signInSuccess, signFailure } from './actions';
 
 export function* signIn({ payload }) {
   try {
-    const { email, password } = payload;
-    const response = yield call(api.post, 'sessions', {
+    const { deliverymanId } = payload;
+    const response = yield call(api.get, `deliverymen/${deliverymanId}`);
+
+    const { name, email, avatar } = response.data;
+    const deliveryman = {
+      id: deliverymanId,
+      name,
       email,
-      password,
-    });
-
-    const { token, user } = response.data;
-
-    if (user.provider) {
-      Alert.alert(
-        'Erro no login',
-        'O usuário não pode ser prestador de serviços',
-      );
-      return;
-    }
+      avatar: avatar?.url,
+    };
 
     // ** Token insertion on Axios
-    api.defaults.headers.Authorization = `Bearer ${token}`;
+    // api.defaults.headers.Authorization = `Bearer ${token}`;
 
-    // Teste delay do redux-saga
-    // yield delay(3000);
-
-    yield put(signInSuccess(token, user));
-
-    // history.push('/dashboard');
+    yield put(signInSuccess(deliveryman));
   } catch (err) {
     Alert.alert(
       'Falha na autenticação',
@@ -41,29 +31,31 @@ export function* signIn({ payload }) {
   }
 }
 
-export function* signUp({ payload }) {
-  try {
-    const { name, email, password } = payload;
+// export function* signUp({ payload }) {
+//   try {
+//     const { name, email, password } = payload;
 
-    yield call(api.post, 'users', {
-      name,
-      email,
-      password,
-    });
+//     yield call(api.post, 'users', {
+//       name,
+//       email,
+//       password,
+//     });
 
-    // history.push('/');
-  } catch (err) {
-    Alert.alert(
-      'Falha no cadastro',
-      'Houve um erro no cadastro, verifique seus dados',
-    );
-    yield put(signFailure());
-  }
-}
+//     // history.push('/');
+//   } catch (err) {
+//     Alert.alert(
+//       'Falha no cadastro',
+//       'Houve um erro no cadastro, verifique seus dados',
+//     );
+//     yield put(signFailure());
+//   }
+// }
 
 // Token keep alive
 export function setToken({ payload }) {
-  if (!payload) return;
+  if (!payload) {
+    return;
+  }
 
   const { token } = payload.auth;
 
@@ -75,5 +67,5 @@ export function setToken({ payload }) {
 export default all([
   takeLatest('persist/REHYDRATE', setToken),
   takeLatest('@auth/SIGN_IN_REQUEST', signIn),
-  takeLatest('@auth/SIGN_UP_REQUEST', signUp),
+  // takeLatest('@auth/SIGN_UP_REQUEST', signUp),
 ]);
