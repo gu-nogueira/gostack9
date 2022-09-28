@@ -3,16 +3,18 @@ import bcrypt from 'bcryptjs';
 
 class Users extends Model {
   static init(sequelize) {
-    super.init({
-      // Campos para interagir com a tabela users
-      name: Sequelize.STRING,
-      email: Sequelize.STRING,
-      password: Sequelize.VIRTUAL,
-      password_hash: Sequelize.STRING,
-    },
-    {
-      sequelize,
-    });
+    super.init(
+      {
+        // Campos para interagir com a tabela users
+        name: Sequelize.STRING,
+        email: Sequelize.STRING,
+        password: Sequelize.VIRTUAL,
+        password_hash: Sequelize.STRING,
+      },
+      {
+        sequelize,
+      }
+    );
 
     // Só gera password_hash caso haja password na request
     this.addHook('beforeSave', async (user) => {
@@ -22,7 +24,7 @@ class Users extends Model {
     });
 
     return this;
-  };
+  }
 
   // Verifica password no banco
   checkPassword(password) {

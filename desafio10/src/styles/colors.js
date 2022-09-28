@@ -1,5 +1,6 @@
 const colors = {
-  background: '#7D40E705',
+  // background: '#7D40E705',
+  background: '#FCFBFF',
   warning1: '#fb6f91',
   border: '#e4daf5',
   purpleLight: '#9c6eed',

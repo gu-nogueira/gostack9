@@ -1,46 +1,64 @@
 import styled from 'styled-components/native';
-
-import Input from '~/components/Input';
-import Button from '~/components/Button';
-
-import colors from '~/styles/colors';
+// import { RectButton } from 'react-native-gesture-handler';
 
 export const Container = styled.SafeAreaView`
   flex: 1;
+  justify-content: center;
+  align-items: center;
+  padding: 0 35px;
 `;
 
-export const Title = styled.Text`
-  font-size: 20px;
-  color: #fff;
-  font-weight: bold;
-  align-self: center;
-  margin-top: 30px;
+export const Avatar = styled.View`
+  width: 137px;
+  height: 137px;
+
+  background: #f4effc;
+  border-radius: 137px;
+
+  justify-content: center;
+  align-items: center;
+
+  margin-bottom: 40px;
 `;
 
-// ** Scroll view for keyboard avoiding view
+export const Initial = styled.Text`
+  color: #a28fd0;
+  font-size: 60px;
+`;
 
-export const Form = styled.ScrollView.attrs({
-  showsVerticalScrollIndicator: false,
-  contentContainerStyle: { padding: 30 },
-})`
+export const Image = styled.Image`
+  width: 137px;
+  height: 137px;
+  border-radius: 137px;
+`;
+
+export const Content = styled.View`
   align-self: stretch;
 `;
 
-export const FormInput = styled(Input)`
-  margin-bottom: 10px;
+export const Label = styled.Text`
+  font-size: 12px;
+  color: #666666;
 `;
 
-export const Separator = styled.View`
-  height: 1px;
-  background: rgba(255, 255, 255, 0.2);
-  margin: 20px 0 30px;
+export const Text = styled.Text`
+  font-size: 22px;
+  font-weight: bold;
+  color: #444444;
+  margin-bottom: 15px;
 `;
 
-export const SubmitButton = styled(Button)`
-  margin-top: 5px;
+export const Logout = styled.TouchableOpacity`
+  margin-top: 15px;
+  background: #e74040;
+  height: 45px;
+  border-radius: 4px;
+  align-items: center;
+  justify-content: center;
 `;
 
-export const LogoutButton = styled(Button)`
-  margin-top: 10px;
-  background: ${colors.error};
+export const TextButton = styled.Text`
+  color: #fff;
+  font-weight: bold;
+  font-size: 16px;
 `;

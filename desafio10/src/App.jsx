@@ -8,11 +8,12 @@ import colors from './styles/colors';
 
 const MainApp = () => {
   const signed = useSelector((state) => state.auth.signed);
+  const barStyle = signed ? 'dark-content' : 'light-content';
   const backgroundColor = signed ? colors.background : colors.purple;
 
   return (
     <>
-      <StatusBar barStyle="light-content" backgroundColor={backgroundColor} />
+      <StatusBar barStyle={barStyle} backgroundColor={backgroundColor} />
       <Routes signed={signed} />
     </>
   );

@@ -4,52 +4,60 @@ import Recipients from '../models/Recipients';
 import Files from '../models/Files';
 
 import { Op } from 'sequelize';
-import { startOfDay, endOfDay, parseISO, format, isBefore, setHours, setMinutes } from 'date-fns';
+import {
+  startOfDay,
+  endOfDay,
+  parseISO,
+  format,
+  isBefore,
+  setHours,
+  setMinutes,
+} from 'date-fns';
 
 class OrderController {
-
   async index(req, res) {
     const deliveryman = await Deliverymen.findByPk(req.params.id);
     if (!deliveryman) {
-      return res.status(400).json({ error: 'Deliveryman not found'});
+      return res.status(400).json({ error: 'Deliveryman not found' });
     }
-
-    const { page = 1 } = req.query;
-    const { delivered } = req.query || null;
+    const { page = 1, delivered = false } = req.query;
     const deliveries = await Deliveries.findAll({
       where: {
         deliveryman_id: deliveryman.id,
         canceled_at: null,
-        end_date: delivered ? { [Op.ne]:null } : null,
+        end_date: {
+          [delivered === 'true' ? Op.not : Op.is]: null,
+        },
       },
       attributes: ['id', 'product', 'start_date', 'end_date', 'created_at'],
       limit: 20,
       offset: (page - 1) * 20,
-      include: [{
-        model: Recipients,
-        as: 'recipient',
-        attributes: [
-          'destiny_name',
-          'address',
-          'number',
-          'complement',
-          'state',
-          'city',
-          'cep',
-        ],
-      },
-      {
-        model: Files,
-        as: 'signature',
-        attributes: ['name', 'path', 'url'],
-      }],
+      include: [
+        {
+          model: Recipients,
+          as: 'recipient',
+          attributes: [
+            'destiny_name',
+            'address',
+            'number',
+            'complement',
+            'state',
+            'city',
+            'cep',
+          ],
+        },
+        {
+          model: Files,
+          as: 'signature',
+          attributes: ['name', 'path', 'url'],
+        },
+      ],
     });
 
     return res.json(deliveries);
   }
 
-  async store (req, res) {
-
+  async store(req, res) {
     const { id, deliveryId } = req.params;
     const { start_date: startDate } = req.query;
 
@@ -59,7 +67,7 @@ class OrderController {
 
     const deliveryman = await Deliverymen.findByPk(id);
     if (!deliveryman) {
-      return res.status(400).json({ error: 'Deliveryman not found'});
+      return res.status(400).json({ error: 'Deliveryman not found' });
     }
 
     /**
@@ -82,7 +90,7 @@ class OrderController {
      * Check start date
      */
 
-     if (!startDate) {
+    if (!startDate) {
       return res.status(404).json({ error: 'Invalid date' });
     }
 
@@ -91,7 +99,9 @@ class OrderController {
      */
 
     if (delivery.start_date != null) {
-      return res.status(400).json({ error: 'This delivery has already been started' });
+      return res
+        .status(400)
+        .json({ error: 'This delivery has already been started' });
     }
 
     /**
@@ -99,7 +109,9 @@ class OrderController {
      */
 
     if (deliveryman.id != delivery.deliveryman_id) {
-      return res.status(400).json({ error: 'You do not have permission to deliver this delivery' });
+      return res
+        .status(400)
+        .json({ error: 'You do not have permission to deliver this delivery' });
     }
 
     /**
@@ -109,12 +121,19 @@ class OrderController {
     const checkOrderLimit = await Deliveries.count({
       where: {
         deliveryman_id: deliveryman.id,
-        start_date: { [Op.between]: [startOfDay(parseISO(startDate)), endOfDay(parseISO(startDate))] },
+        start_date: {
+          [Op.between]: [
+            startOfDay(parseISO(startDate)),
+            endOfDay(parseISO(startDate)),
+          ],
+        },
         // canceled_at: null,
-      }
+      },
     });
     if (checkOrderLimit >= 5) {
-      return res.status(400).json({ error: 'Exceeded limit of 5 orders per day' });
+      return res
+        .status(400)
+        .json({ error: 'Exceeded limit of 5 orders per day' });
     }
 
     /**
@@ -123,13 +142,17 @@ class OrderController {
 
     if (startDate && startDate != delivery.start_date) {
       const parsedDate = format(parseISO(startDate), 'HH:mm');
-      const startDay = format(setMinutes(setHours(new Date(),8),0), 'HH:mm');
-      const endDay = format(setMinutes(setHours(new Date(),18),0), 'HH:mm');
+      const startDay = format(setMinutes(setHours(new Date(), 8), 0), 'HH:mm');
+      const endDay = format(setMinutes(setHours(new Date(), 18), 0), 'HH:mm');
       if (parsedDate < startDay || parsedDate > endDay) {
-        return res.status(400).json({ error: 'The start date must be between 08:00 and 18:00' });
+        return res
+          .status(400)
+          .json({ error: 'The start date must be between 08:00 and 18:00' });
       }
       if (isBefore(parseISO(startDate), new Date())) {
-        return res.status(400).json({ error: 'Cannot create new orders with past date' });
+        return res
+          .status(400)
+          .json({ error: 'Cannot create new orders with past date' });
       }
     }
 
@@ -140,7 +163,6 @@ class OrderController {
   }
 
   async update(req, res) {
-
     /**
      * Yup validation
      */
@@ -154,7 +176,7 @@ class OrderController {
 
     const deliveryman = await Deliverymen.findByPk(id);
     if (!deliveryman) {
-      return res.status(400).json({ error: 'Deliveryman not found'});
+      return res.status(400).json({ error: 'Deliveryman not found' });
     }
 
     /**
@@ -185,7 +207,9 @@ class OrderController {
      */
 
     if (delivery.end_date != null) {
-      return res.status(400).json({ error: 'This delivery has already been ended' });
+      return res
+        .status(400)
+        .json({ error: 'This delivery has already been ended' });
     }
 
     /**
@@ -201,7 +225,9 @@ class OrderController {
      */
 
     if (deliveryman.id != delivery.deliveryman_id) {
-      return res.status(400).json({ error: 'You do not have permission to deliver this delivery' });
+      return res
+        .status(400)
+        .json({ error: 'You do not have permission to deliver this delivery' });
     }
 
     /**
@@ -211,12 +237,19 @@ class OrderController {
     const checkOrderLimit = await Deliveries.count({
       where: {
         deliveryman_id: deliveryman.id,
-        end_date: { [Op.between]: [startOfDay(parseISO(endDate)), endOfDay(parseISO(endDate))] },
+        end_date: {
+          [Op.between]: [
+            startOfDay(parseISO(endDate)),
+            endOfDay(parseISO(endDate)),
+          ],
+        },
         // canceled_at: null,
-      }
+      },
     });
     if (checkOrderLimit >= 5) {
-      return res.status(400).json({ error: 'Exceeded limit of 5 orders per day' });
+      return res
+        .status(400)
+        .json({ error: 'Exceeded limit of 5 orders per day' });
     }
 
     /**
@@ -225,16 +258,22 @@ class OrderController {
 
     if (endDate && endDate != delivery.end_date) {
       const parsedDate = format(parseISO(endDate), 'HH:mm');
-      const startDay = format(setMinutes(setHours(new Date(),8),0), 'HH:mm');
-      const endDay = format(setMinutes(setHours(new Date(),18),0), 'HH:mm');
+      const startDay = format(setMinutes(setHours(new Date(), 8), 0), 'HH:mm');
+      const endDay = format(setMinutes(setHours(new Date(), 18), 0), 'HH:mm');
       if (parsedDate < startDay || parsedDate > endDay) {
-        return res.status(400).json({ error: 'The start date must be between 08:00 and 18:00' });
+        return res
+          .status(400)
+          .json({ error: 'The start date must be between 08:00 and 18:00' });
       }
-      if (isBefore(parseISO(endDate),delivery.start_date)) {
-        return res.status(400).json({ error: 'The end date cannot be before start date' });
+      if (isBefore(parseISO(endDate), delivery.start_date)) {
+        return res
+          .status(400)
+          .json({ error: 'The end date cannot be before start date' });
       }
       if (isBefore(parseISO(endDate), new Date())) {
-        return res.status(400).json({ error: 'Cannot create new orders with past date' });
+        return res
+          .status(400)
+          .json({ error: 'Cannot create new orders with past date' });
       }
     }
 
@@ -246,4 +285,4 @@ class OrderController {
   }
 }
 
-export default new OrderController ();
+export default new OrderController();

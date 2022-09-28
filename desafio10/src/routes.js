@@ -89,28 +89,28 @@ const Routes = ({ signed = false }) => {
             tabBarVisible: false,
             headerShown: false,
             tabBarHideOnKeyboard: true,
-            tabBarActiveTintColor: '#fff',
-            tabBarInactiveTintColor: 'rgba(255, 255, 255, 0.6)',
-            tabBarActiveBackgroundColor: colors.quartiary,
+            tabBarActiveTintColor: colors.purple,
+            tabBarInactiveTintColor: colors.grey1,
+            tabBarActiveBackgroundColor: colors.background,
             unmountOnBlur: true,
             tabBarStyle: {
               paddingTop: 10,
               paddingBottom: 15,
               height: 65,
-              backgroundColor: colors.quartiary,
+              backgroundColor: colors.background,
             },
           })}>
           <Tab.Screen
             name="Dashboard"
             component={Dashboard}
             options={{
-              title: 'Agendamentos',
+              title: 'Entregas',
               tabBarIcon: ({ color }) => (
-                <Icon name="event" size={20} color={color} />
+                <Icon name="menu" size={20} color={color} />
               ),
             }}
           />
-          <Tab.Screen
+          {/* <Tab.Screen
             name="SelectProvider"
             component={AddRoutes}
             options={{
@@ -120,14 +120,14 @@ const Routes = ({ signed = false }) => {
               ),
               tabBarStyle: { display: 'none' },
             }}
-          />
+          /> */}
           <Tab.Screen
             name="Profile"
             component={Profile}
             options={{
               title: 'Meu perfil',
               tabBarIcon: ({ color }) => (
-                <Icon name="person" size={20} color={color} />
+                <Icon name="account-circle" size={20} color={color} />
               ),
             }}
           />

@@ -1,65 +1,221 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import PropTypes from 'prop-types';
+import { parseISO, format } from 'date-fns';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+// import Spinner from 'react-native-loading-spinner-overlay';
+
+import Background from '~/components/Background';
 
 import api from '~/services/api';
 
-import Background from '~/components/Background';
-import Appointment from '~/components/Appointment';
+// ** Redux actions
+import { signOut } from '~/store/modules/auth/actions';
 
-import { Container, Title, List } from './styles';
+import {
+  Container,
+  Header,
+  Avatar,
+  Initial,
+  Image,
+  ContentHeader,
+  ContentHeaderText,
+  Welcome,
+  Name,
+  Logout,
+  Content,
+  List,
+  Heading,
+  Title,
+  Filters,
+  Pending,
+  HandedOut,
+  TextFilter,
+  Card,
+  CardHeader,
+  CardTitle,
+  CardBody,
+  TimeLine,
+  Line,
+  Ellipses,
+  Ellipse,
+  TextLine,
+  CardFooter,
+  Info,
+  Label,
+  Text,
+  Details,
+  DetailText,
+  NotRegister,
+  TextNotRegister,
+} from './styles';
+import colors from '~/styles/colors';
 
-const Dashboard = ({ navigation }) => {
-  const [appointments, setAppointments] = useState([]);
+function Dashboard({ isFocused, navigation }) {
+  const [packages, setPackages] = useState([]);
+  const [isConcluded, setIsConcluded] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  // ** Fetch appointments from API when focused
+  const user = useSelector((state) => state.user.profile);
+  // const idUser = useSelector((state) => state.auth.id);
+  const idUser = user.id;
+  const dispatch = useDispatch();
 
-  useEffect(() => {
-    const updateAppointments = navigation.addListener('focus', () => {
-      loadAppointments();
+  const initials = useMemo(
+    () =>
+      user.name
+        .split(' ')
+        .map((n) => n[0])
+        .join(''),
+    [user.name],
+  );
+
+  async function loadPackages(id, concluded) {
+    setLoading(true);
+    const { data } = await api.get(`deliverymen/${id}/deliveries`, {
+      params: {
+        delivered: concluded,
+        // isCanceled: false,
+      },
     });
-    return updateAppointments;
-  }, [navigation]);
 
-  // ** Fetch appointments from API
-
-  async function loadAppointments() {
-    const response = await api.get('/appointments');
-
-    setAppointments(response.data);
+    setPackages(
+      data.map((item) => ({
+        ...item,
+        id: `#${String(item.id).padStart(2, '0')}`,
+        awaitingWithdrawal: !item.start_date,
+        delivered: !!item.end_date,
+      })),
+    );
+    setLoading(false);
   }
 
-  // ** Cancel an appointment action
+  useEffect(() => {
+    loadPackages(idUser, isConcluded);
+  }, [isFocused, idUser, isConcluded]);
 
-  async function handleCancel(id) {
-    const response = await api.delete(`/appointments/${id}`);
+  useEffect(() => {
+    loadPackages(idUser, isConcluded);
+  }, [idUser, isConcluded]);
 
-    setAppointments(
-      appointments.map((appointment) =>
-        appointment.id === id
-          ? {
-              ...appointment,
-              canceled_at: response.data.canceled_at,
-            }
-          : appointment,
-      ),
-    );
-    // loadAppointments();
+  function handleLogout() {
+    dispatch(signOut());
   }
 
   return (
-    <Background>
+    <Background background={colors.background}>
       <Container>
-        <Title>Agendamentos</Title>
-
-        <List
-          data={appointments}
-          keyExtractor={(item) => String(item.id)}
-          renderItem={({ item }) => (
-            <Appointment onCancel={() => handleCancel(item.id)} data={item} />
+        {/* <Spinner
+        visible={loading}
+        animation="fade"
+        overlayColor="rgba(0,0,0,0.8)"
+        textContent="Carregando dados"
+        textStyle={{ color: '#fff' }}
+      /> */}
+        <Header>
+          <Avatar>
+            {user.avatar ? (
+              <Image
+                source={{
+                  uri:
+                    // ** The default 'localhost' URL is not accessible from the Android emulator
+                    user.avatar.replace('localhost', '10.0.2.2'),
+                }}
+              />
+            ) : (
+              <Initial>{initials}</Initial>
+            )}
+          </Avatar>
+          <ContentHeader>
+            <ContentHeaderText>
+              <Welcome>Bem vindo de volta,</Welcome>
+              <Name>{user.name}</Name>
+            </ContentHeaderText>
+            <Logout onPress={handleLogout}>
+              <Icon name="exit-to-app" size={25} color="#E74040" />
+            </Logout>
+          </ContentHeader>
+        </Header>
+        <Content>
+          <Heading>
+            <Title>Entregas</Title>
+            <Filters>
+              <Pending onPress={() => setIsConcluded(false)}>
+                <TextFilter active={!isConcluded}>Pendentes</TextFilter>
+              </Pending>
+              <HandedOut onPress={() => setIsConcluded(true)}>
+                <TextFilter active={isConcluded}>Entregues</TextFilter>
+              </HandedOut>
+            </Filters>
+          </Heading>
+          {packages.length < 1 && (
+            <NotRegister>
+              <TextNotRegister>
+                Não existem dados para serem exibos
+              </TextNotRegister>
+            </NotRegister>
           )}
-        />
+
+          <List
+            data={packages}
+            keyExtractor={(item) => String(item.id)}
+            renderItem={({ item }) => (
+              <Card>
+                <CardHeader>
+                  <Icon name="local-shipping" size={22} color="#7D40E7" />
+                  <CardTitle>Encomenda {item.id}</CardTitle>
+                </CardHeader>
+                <CardBody>
+                  <TimeLine>
+                    <Ellipses>
+                      <Line />
+                      <>
+                        <Ellipse complete={!item.awaitingWithdrawal}>
+                          <TextLine>Aguardando Retirada</TextLine>
+                        </Ellipse>
+                        <Ellipse complete={!item.awaitingWithdrawal}>
+                          <TextLine>Retirada</TextLine>
+                        </Ellipse>
+                        <Ellipse complete={item.delivered}>
+                          <TextLine>Entregue</TextLine>
+                        </Ellipse>
+                      </>
+                    </Ellipses>
+                  </TimeLine>
+                </CardBody>
+                <CardFooter>
+                  <Info>
+                    <Label>Data</Label>
+                    <Text>
+                      {item.start_date &&
+                        format(parseISO(item.start_date), 'dd/MM/yyyy')}
+                    </Text>
+                  </Info>
+                  <Info>
+                    <Label>Cidade</Label>
+                    <Text>{item.recipient.city}</Text>
+                  </Info>
+                  <Info>
+                    <Details
+                      onPress={() =>
+                        navigation.navigate('Detail', { delivery: item })
+                      }>
+                      <DetailText>Ver detalhes</DetailText>
+                    </Details>
+                  </Info>
+                </CardFooter>
+              </Card>
+            )}
+          />
+        </Content>
       </Container>
     </Background>
   );
+}
+
+Dashboard.propTypes = {
+  isFocused: PropTypes.bool.isRequired,
+  navigation: PropTypes.shape.isRequired,
 };
 
 export default Dashboard;
