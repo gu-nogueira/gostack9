@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
-import { TouchableOpacity, View } from 'react-native';
+import { StatusBar, TouchableOpacity, View } from 'react-native';
 import { format, parseISO } from 'date-fns';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
@@ -20,21 +20,25 @@ import {
   ButtonText,
   TwoRows,
 } from './styles';
+import colors from '~/styles/colors';
 
-export default function Detail({ navigation }) {
-  const delivery = navigation.getParam('delivery');
+export default function Detail({ navigation, route }) {
+  const { delivery } = route.params;
 
   const dateWithdrawal = useMemo(
-    () => format(parseISO(delivery.start_date), 'dd / MM / yyyy'),
-    [delivery.start_date]
+    () =>
+      delivery.start_date
+        ? format(parseISO(delivery.start_date), 'dd / MM / yyyy')
+        : '-- / -- / ----',
+    [delivery.start_date],
   );
 
   const deliveryDate = useMemo(
     () =>
       delivery.end_date
         ? format(parseISO(delivery.end_date), 'dd / MM / yyyy')
-        : '- - / - - / - -',
-    [delivery.end_date]
+        : '-- / -- / ----',
+    [delivery.end_date],
   );
 
   const status = useMemo(() => {
@@ -49,11 +53,12 @@ export default function Detail({ navigation }) {
 
   return (
     <Container>
+      <StatusBar barStyle="light-content" backgroundColor={colors.purple} />
       <Background />
       <Content>
         <Card>
           <CardHeader>
-            <Icon name="local-shipping" size={22} color="#7D40E7" />
+            <Icon name="local-shipping" size={22} color={colors.purple} />
             <CardTitle>Informações da entrega</CardTitle>
           </CardHeader>
           <CardBody>
@@ -74,7 +79,7 @@ export default function Detail({ navigation }) {
 
         <Card>
           <CardHeader>
-            <Icon name="event" size={22} color="#7D40E7" />
+            <Icon name="event" size={22} color={colors.purple} />
             <CardTitle>Situação da entrega</CardTitle>
           </CardHeader>
           <CardBody>
@@ -100,8 +105,7 @@ export default function Detail({ navigation }) {
             <Button
               onPress={() =>
                 navigation.navigate('SendProblem', { id: delivery.id })
-              }
-            >
+              }>
               <Icon name="highlight-off" size={22} color="#E74040" />
               <ButtonText>Informar Problema</ButtonText>
             </Button>
@@ -112,8 +116,7 @@ export default function Detail({ navigation }) {
                   id: delivery.id,
                   key: delivery.key,
                 })
-              }
-            >
+              }>
               <Icon name="info" size={22} color="#E7BA40" />
               <ButtonText>Visualizar Problemas</ButtonText>
             </Button>
@@ -121,9 +124,8 @@ export default function Detail({ navigation }) {
             <Button
               onPress={() =>
                 navigation.navigate('Confirm', { id: delivery.id })
-              }
-            >
-              <Icon name="check-circle" size={22} color="#7D40E7" />
+              }>
+              <Icon name="check-circle" size={22} color={colors.purple} />
               <ButtonText>Confirmar Entrega</ButtonText>
             </Button>
           </Actions>
@@ -143,8 +145,7 @@ Detail.navigationOptions = ({ navigation }) => ({
     <TouchableOpacity
       onPress={() => {
         navigation.navigate('Dashboard');
-      }}
-    >
+      }}>
       <Icon name="chevron-left" size={20} color="#fff" />
     </TouchableOpacity>
   ),

@@ -1,5 +1,7 @@
 import styled, { css } from 'styled-components/native';
 
+import colors from '~/styles/colors';
+
 export const Container = styled.SafeAreaView`
   flex: 1;
   padding: 20px 30px 0 30px;
@@ -109,8 +111,15 @@ export const TextFilter = styled.Text`
     `}
 `;
 
-export const Card = styled.View`
-  border: 1px solid #0000001a;
+export const Card = styled.View.attrs({
+  style: {
+    shadowColor: '#171717',
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.4,
+    shadowRadius: 2,
+  },
+})`
+  border: 1px solid ${colors.border};
   border-radius: 4px;
   margin-top: 9px;
   margin-bottom: 28px;
@@ -136,7 +145,7 @@ export const CardBody = styled.View`
 
 export const TimeLine = styled.View`
   width: 288px;
-  height: 44px;
+  /* height: 44px; */
   align-items: center;
   position: relative;
 `;
@@ -164,16 +173,24 @@ export const Ellipse = styled.View`
   align-items: center;
 `;
 
+export const TextRow = styled.View`
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+`;
+
 export const TextLine = styled.Text`
-  margin-top: 10px;
-  width: 44px;
+  margin-top: 5px;
+  width: 50px;
   text-align: center;
   font-size: 8px;
+  color: ${colors.grey1};
 `;
 
 export const CardFooter = styled.View`
   height: 64px;
-  background: #f8f9fd;
+  background: ${colors.opacityBackground};
   flex-direction: row;
   justify-content: space-between;
   align-items: center;

@@ -12,9 +12,10 @@ import SignUp from './pages/SignUp';
 import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
 
-import SelectProvider from './pages/New/SelectProvider';
-import SelectDateTime from './pages/New/SelectDateTime';
-import Confirm from './pages/New/Confirm';
+import Detail from './pages/Delivery/Detail';
+// import Confirm from './pages/Delivery/Confirm';
+// import Problems from './pages/Delivery/Problems';
+// import SendProblem from './pages/Delivery/SendProblem';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
@@ -23,7 +24,7 @@ import colors from './styles/colors';
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-const AddRoutes = () => {
+const DeliveryRoutes = () => {
   const AddRoutesOptions = ({ navigation, title }) => ({
     title,
     headerTitleAlign: 'center',
@@ -47,35 +48,35 @@ const AddRoutes = () => {
         },
       }}>
       <Stack.Screen
-        name="SelectProvider"
-        component={SelectProvider}
+        name="Dashboard"
+        component={Dashboard}
         options={({ navigation }) =>
           AddRoutesOptions({
             navigation,
-            title: 'Selecione o prestador',
+            title: '',
           })
         }
       />
       <Stack.Screen
-        name="SelectDateTime"
-        component={SelectDateTime}
+        name="Detail"
+        component={Detail}
         options={({ navigation }) =>
           AddRoutesOptions({
             navigation,
-            title: 'Selecione o horário',
+            title: 'Detalhes da encomenda',
           })
         }
       />
-      <Stack.Screen
+      {/* <Stack.Screen
         name="Confirm"
         component={Confirm}
         options={({ navigation }) =>
           AddRoutesOptions({
             navigation,
-            title: 'Confirmar agendamento',
+            title: '',
           })
         }
-      />
+      /> */}
     </Stack.Navigator>
   );
 };
@@ -84,54 +85,45 @@ const Routes = ({ signed = false }) => {
   return (
     <NavigationContainer>
       {signed ? (
-        <Tab.Navigator
-          screenOptions={({ route }) => ({
-            tabBarVisible: false,
-            headerShown: false,
-            tabBarHideOnKeyboard: true,
-            tabBarActiveTintColor: colors.purple,
-            tabBarInactiveTintColor: colors.grey1,
-            tabBarActiveBackgroundColor: colors.background,
-            unmountOnBlur: true,
-            tabBarStyle: {
-              paddingTop: 10,
-              paddingBottom: 15,
-              height: 65,
-              backgroundColor: colors.background,
-            },
-          })}>
-          <Tab.Screen
-            name="Dashboard"
-            component={Dashboard}
-            options={{
-              title: 'Entregas',
-              tabBarIcon: ({ color }) => (
-                <Icon name="menu" size={20} color={color} />
-              ),
-            }}
-          />
-          {/* <Tab.Screen
-            name="SelectProvider"
-            component={AddRoutes}
-            options={{
-              title: 'Adicionar',
-              tabBarIcon: ({ color }) => (
-                <Icon name="add-circle-outline" size={20} color={color} />
-              ),
-              tabBarStyle: { display: 'none' },
-            }}
-          /> */}
-          <Tab.Screen
-            name="Profile"
-            component={Profile}
-            options={{
-              title: 'Meu perfil',
-              tabBarIcon: ({ color }) => (
-                <Icon name="account-circle" size={20} color={color} />
-              ),
-            }}
-          />
-        </Tab.Navigator>
+        <>
+          <Tab.Navigator
+            screenOptions={({ route }) => ({
+              tabBarVisible: false,
+              headerShown: false,
+              tabBarHideOnKeyboard: true,
+              tabBarActiveTintColor: colors.purple,
+              tabBarInactiveTintColor: colors.grey1,
+              tabBarActiveBackgroundColor: colors.background,
+              unmountOnBlur: true,
+              tabBarStyle: {
+                paddingTop: 10,
+                paddingBottom: 15,
+                height: 65,
+                backgroundColor: colors.background,
+              },
+            })}>
+            <Tab.Screen
+              name="DeliveryRoutes"
+              component={DeliveryRoutes}
+              options={{
+                title: 'Entregas',
+                tabBarIcon: ({ color }) => (
+                  <Icon name="menu" size={20} color={color} />
+                ),
+              }}
+            />
+            <Tab.Screen
+              name="Profile"
+              component={Profile}
+              options={{
+                title: 'Meu perfil',
+                tabBarIcon: ({ color }) => (
+                  <Icon name="account-circle" size={20} color={color} />
+                ),
+              }}
+            />
+          </Tab.Navigator>
+        </>
       ) : (
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           <Stack.Screen name="SignIn" component={SignIn} />

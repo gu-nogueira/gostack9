@@ -43,11 +43,11 @@
 ## Aplicação Web [Go Barber & Fast Feet Web]
 
 * [x] Modulo 9;
-* [ ] Desafio 9;
+* [x] Desafio 9;
 
 ## Aplicação Mobile [Go Barber & Fast Feet Web]
 
-* [ ] Modulo 10;
+* [x] Modulo 10;
 * [ ] Desafio 10;
 
 ## Testes TDD [Node.js]

@@ -39,6 +39,7 @@ import {
   Line,
   Ellipses,
   Ellipse,
+  TextRow,
   TextLine,
   CardFooter,
   Info,
@@ -72,21 +73,13 @@ function Dashboard({ isFocused, navigation }) {
 
   async function loadPackages(id, concluded) {
     setLoading(true);
-    const { data } = await api.get(`deliverymen/${id}/deliveries`, {
+    const response = await api.get(`deliverymen/${id}/deliveries`, {
       params: {
         delivered: concluded,
         // isCanceled: false,
       },
     });
-
-    setPackages(
-      data.map((item) => ({
-        ...item,
-        id: `#${String(item.id).padStart(2, '0')}`,
-        awaitingWithdrawal: !item.start_date,
-        delivered: !!item.end_date,
-      })),
-    );
+    setPackages(response.data);
     setLoading(false);
   }
 
@@ -159,53 +152,59 @@ function Dashboard({ isFocused, navigation }) {
           <List
             data={packages}
             keyExtractor={(item) => String(item.id)}
-            renderItem={({ item }) => (
-              <Card>
-                <CardHeader>
-                  <Icon name="local-shipping" size={22} color="#7D40E7" />
-                  <CardTitle>Encomenda {item.id}</CardTitle>
-                </CardHeader>
-                <CardBody>
-                  <TimeLine>
-                    <Ellipses>
-                      <Line />
-                      <>
-                        <Ellipse complete={!item.awaitingWithdrawal}>
-                          <TextLine>Aguardando Retirada</TextLine>
-                        </Ellipse>
-                        <Ellipse complete={!item.awaitingWithdrawal}>
-                          <TextLine>Retirada</TextLine>
-                        </Ellipse>
-                        <Ellipse complete={item.delivered}>
-                          <TextLine>Entregue</TextLine>
-                        </Ellipse>
-                      </>
-                    </Ellipses>
-                  </TimeLine>
-                </CardBody>
-                <CardFooter>
-                  <Info>
-                    <Label>Data</Label>
-                    <Text>
-                      {item.start_date &&
-                        format(parseISO(item.start_date), 'dd/MM/yyyy')}
-                    </Text>
-                  </Info>
-                  <Info>
-                    <Label>Cidade</Label>
-                    <Text>{item.recipient.city}</Text>
-                  </Info>
-                  <Info>
-                    <Details
-                      onPress={() =>
-                        navigation.navigate('Detail', { delivery: item })
-                      }>
-                      <DetailText>Ver detalhes</DetailText>
-                    </Details>
-                  </Info>
-                </CardFooter>
-              </Card>
-            )}
+            renderItem={({ item }) => {
+              const isWaiting = !item.start_date || !!item.start_date;
+              const isWithdrawn = !!item.start_date;
+              const isDelivered = !!item.end_date;
+
+              return (
+                <Card>
+                  <CardHeader>
+                    <Icon name="local-shipping" size={22} color="#7D40E7" />
+                    <CardTitle>
+                      Encomenda #{String(item.id).padStart(2, '0')}
+                    </CardTitle>
+                  </CardHeader>
+                  <CardBody>
+                    <TimeLine>
+                      <Ellipses>
+                        <Line />
+                        <Ellipse complete={isWaiting} />
+                        <Ellipse complete={isWithdrawn} />
+                        <Ellipse complete={isDelivered} />
+                      </Ellipses>
+                      <TextRow>
+                        <TextLine>Aguardando Retirada</TextLine>
+                        <TextLine>Retirada</TextLine>
+                        <TextLine>Entregue</TextLine>
+                      </TextRow>
+                    </TimeLine>
+                  </CardBody>
+                  <CardFooter>
+                    <Info>
+                      <Label>Data</Label>
+                      <Text>
+                        {item.start_date
+                          ? format(parseISO(item.start_date), 'dd/MM/yyyy')
+                          : '--/--/----'}
+                      </Text>
+                    </Info>
+                    <Info>
+                      <Label>Cidade</Label>
+                      <Text>{item.recipient.city}</Text>
+                    </Info>
+                    <Info>
+                      <Details
+                        onPress={() =>
+                          navigation.navigate('Detail', { delivery: item })
+                        }>
+                        <DetailText>Ver detalhes</DetailText>
+                      </Details>
+                    </Info>
+                  </CardFooter>
+                </Card>
+              );
+            }}
           />
         </Content>
       </Container>

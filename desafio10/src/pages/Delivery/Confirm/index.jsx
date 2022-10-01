@@ -3,11 +3,11 @@ import { TouchableOpacity, Alert } from 'react-native';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import Spinner from 'react-native-loading-spinner-overlay';
+// import Spinner from 'react-native-loading-spinner-overlay';
 
 import api from '../../../services/api';
 
-import image from '../../../assets/image.png';
+// import image from '../../../assets/image.png';
 
 import {
   Container,
@@ -28,7 +28,7 @@ export default function Confirm({ navigation }) {
   const [dataImage, setDataImage] = useState({});
   const [loading, setLoading] = useState(false);
 
-  const idUser = useSelector(state => state.auth.id);
+  const idUser = useSelector((state) => state.auth.id);
   const idDelivery = navigation.getParam('id');
 
   const camera = useRef(null);
@@ -65,7 +65,7 @@ export default function Confirm({ navigation }) {
       setLoading(false);
       Alert.alert(
         'Erro inesperado',
-        'Ocorreu um erro inesperado para concluir a entrega do produto'
+        'Ocorreu um erro inesperado para concluir a entrega do produto',
       );
     }
   }
@@ -74,13 +74,13 @@ export default function Confirm({ navigation }) {
     <Container>
       <Background />
       <Content>
-        <Spinner
+        {/* <Spinner
           visible={loading}
           animation="fade"
           overlayColor="rgba(0,0,0,0.8)"
           textContent="Concluindo entrega"
           textStyle={{ color: '#fff' }}
-        />
+        /> */}
         {showCamera ? (
           <CaptureImage>
             <Camera
@@ -98,13 +98,13 @@ export default function Confirm({ navigation }) {
           </CaptureImage>
         ) : (
           <>
-            <Image source={takeImage ? { uri: takeImage } : image}>
-              <Actions>
-                <ButtonCamera onPress={() => setShowCamera(true)}>
-                  <Icon name="photo-camera" size={25} color="#fff" />
-                </ButtonCamera>
-              </Actions>
-            </Image>
+            {/* <Image source={takeImage ? { uri: takeImage } : image}> */}
+            <Actions>
+              <ButtonCamera onPress={() => setShowCamera(true)}>
+                <Icon name="photo-camera" size={25} color="#fff" />
+              </ButtonCamera>
+            </Actions>
+            {/* </Image> */}
             <Button disabled={!takeImage} onPress={handleSubmit}>
               <Text>Enviar</Text>
             </Button>
@@ -125,8 +125,7 @@ Confirm.navigationOptions = ({ navigation }) => ({
     <TouchableOpacity
       onPress={() => {
         navigation.goBack();
-      }}
-    >
+      }}>
       <Icon name="chevron-left" size={20} color="#fff" />
     </TouchableOpacity>
   ),

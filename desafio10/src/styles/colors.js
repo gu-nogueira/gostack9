@@ -1,8 +1,9 @@
 const colors = {
-  // background: '#7D40E705',
+  opacityBackground: '#7D40E705',
   background: '#FCFBFF',
   warning1: '#fb6f91',
   border: '#e4daf5',
+  footer: '#f8f9fd',
   purpleLight: '#9c6eed',
   purple: '#7D40E7',
   purpleShadow: '#5431BD',
