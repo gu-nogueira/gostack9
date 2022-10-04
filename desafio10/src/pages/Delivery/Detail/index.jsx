@@ -4,6 +4,8 @@ import { StatusBar, TouchableOpacity, View } from 'react-native';
 import { format, parseISO } from 'date-fns';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
+import ActionsCard from './Cards/Actions';
+
 import {
   Container,
   Background,
@@ -14,10 +16,6 @@ import {
   CardBody,
   Label,
   Text,
-  Actions,
-  Button,
-  Separator,
-  ButtonText,
   TwoRows,
 } from './styles';
 import colors from '~/styles/colors';
@@ -100,36 +98,7 @@ export default function Detail({ navigation, route }) {
           </CardBody>
         </Card>
 
-        {!delivery.end_date && (
-          <Actions>
-            <Button
-              onPress={() =>
-                navigation.navigate('SendProblem', { id: delivery.id })
-              }>
-              <Icon name="highlight-off" size={22} color="#E74040" />
-              <ButtonText>Informar Problema</ButtonText>
-            </Button>
-            <Separator />
-            <Button
-              onPress={() =>
-                navigation.navigate('Problems', {
-                  id: delivery.id,
-                  key: delivery.key,
-                })
-              }>
-              <Icon name="info" size={22} color="#E7BA40" />
-              <ButtonText>Visualizar Problemas</ButtonText>
-            </Button>
-            <Separator />
-            <Button
-              onPress={() =>
-                navigation.navigate('Confirm', { id: delivery.id })
-              }>
-              <Icon name="check-circle" size={22} color={colors.purple} />
-              <ButtonText>Confirmar Entrega</ButtonText>
-            </Button>
-          </Actions>
-        )}
+        <ActionsCard delivery={delivery} />
       </Content>
     </Container>
   );

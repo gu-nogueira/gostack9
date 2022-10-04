@@ -13,7 +13,7 @@ import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
 
 import Detail from './pages/Delivery/Detail';
-// import Confirm from './pages/Delivery/Confirm';
+import Confirm from './pages/Delivery/Confirm';
 // import Problems from './pages/Delivery/Problems';
 // import SendProblem from './pages/Delivery/SendProblem';
 
@@ -67,16 +67,16 @@ const DeliveryRoutes = () => {
           })
         }
       />
-      {/* <Stack.Screen
+      <Stack.Screen
         name="Confirm"
         component={Confirm}
         options={({ navigation }) =>
           AddRoutesOptions({
             navigation,
-            title: '',
+            title: 'Confirmar entrega',
           })
         }
-      /> */}
+      />
     </Stack.Navigator>
   );
 };
