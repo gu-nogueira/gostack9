@@ -4,7 +4,7 @@ import colors from '~/styles/colors';
 
 export const Container = styled.SafeAreaView`
   flex: 1;
-  padding: 20px 30px 0 30px;
+  padding: 20px 30px 90px 30px;
 `;
 
 export const Header = styled.View`

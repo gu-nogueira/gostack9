@@ -213,8 +213,8 @@ function Dashboard({ isFocused, navigation }) {
 }
 
 Dashboard.propTypes = {
-  isFocused: PropTypes.bool.isRequired,
-  navigation: PropTypes.shape.isRequired,
+  isFocused: PropTypes.bool,
+  navigation: PropTypes.object.isRequired,
 };
 
 export default Dashboard;

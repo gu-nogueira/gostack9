@@ -1,6 +1,7 @@
+import React from 'react';
+import { StyleSheet } from 'react-native';
 import styled, { css } from 'styled-components/native';
-import { RectButton } from 'react-native-gesture-handler';
-import { RNCamera } from 'react-native-camera';
+import { Camera as RNVisionCamera } from 'react-native-vision-camera';
 
 export const Container = styled.SafeAreaView`
   flex: 1;
@@ -24,7 +25,31 @@ export const CaptureImage = styled.View`
   margin-bottom: 11px;
 `;
 
-export const Camera = styled(RNCamera)`
+// const _Camera = ({ device, forwardedRef }) => (
+//   <RNVisionCamera
+//     device={device}
+//     ref={forwardedRef}
+//     isActive={true}
+//     photo={true}
+//   />
+// );
+
+// export const Camera = styled(_Camera)`
+//   width: 100%;
+//   height: 100%;
+//   max-height: 445px;
+//   min-height: 445px;
+//   align-items: center;
+// `;
+
+export const Camera = styled(RNVisionCamera).attrs(
+  ({ device, forwardedRef }) => ({
+    device,
+    ref: forwardedRef,
+    isActive: true,
+    photo: true,
+  }),
+)`
   width: 100%;
   height: 100%;
   max-height: 445px;
@@ -41,22 +66,22 @@ export const Image = styled.ImageBackground`
 `;
 
 export const Actions = styled.View`
-  ${props =>
+  ${(props) =>
     !props.isCamera &&
     css`
       height: 445px;
     `};
 
-  ${props =>
+  ${(props) =>
     props.isCamera &&
     css`
-      top: -80;
+      top: -80px;
     `};
   align-items: center;
   justify-content: flex-end;
 `;
 
-export const ButtonCamera = styled(RectButton)`
+export const ButtonCamera = styled.TouchableOpacity`
   background: rgba(0, 0, 0, 0.3);
   width: 61px;
   height: 61px;
@@ -70,7 +95,7 @@ export const Button = styled.TouchableOpacity`
   width: 335px;
   height: 45px;
   background: #7d40e7;
-  ${props =>
+  ${(props) =>
     props.disabled &&
     css`
       background: rgba(125, 64, 231, 0.2);

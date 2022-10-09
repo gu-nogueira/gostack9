@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
-import PropTypes from 'prop-types';
 import { StatusBar, TouchableOpacity, View } from 'react-native';
+import PropTypes from 'prop-types';
 import { format, parseISO } from 'date-fns';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
@@ -107,15 +107,3 @@ export default function Detail({ navigation, route }) {
 Detail.propTypes = {
   navigation: PropTypes.shape().isRequired,
 };
-
-Detail.navigationOptions = ({ navigation }) => ({
-  title: 'Detalhes da encomenda',
-  headerLeft: () => (
-    <TouchableOpacity
-      onPress={() => {
-        navigation.navigate('Dashboard');
-      }}>
-      <Icon name="chevron-left" size={20} color="#fff" />
-    </TouchableOpacity>
-  ),
-});

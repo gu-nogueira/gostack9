@@ -3716,6 +3716,7 @@ __metadata:
     react-native-safe-area-context: ^4.3.4
     react-native-screens: ^3.17.0
     react-native-vector-icons: ^9.2.0
+    react-native-vision-camera: ^2.14.1
     react-redux: ^8.0.2
     react-test-renderer: 18.1.0
     reactotron-react-native: ^5.0.2
@@ -8294,6 +8295,16 @@ __metadata:
     fa5-upgrade: bin/fa5-upgrade.sh
     generate-icon: bin/generate-icon.js
   checksum: 222baf88c3f269234c08a41680e6400a4bf1f4c170f7c2ffac34b2c1c089cdb1084223db2a7d9cc54ee212eec20ff1478f3f482df19062e3057c328642da0be2
+  languageName: node
+  linkType: hard
+
+"react-native-vision-camera@npm:^2.14.1":
+  version: 2.14.1
+  resolution: "react-native-vision-camera@npm:2.14.1"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 813b250a5adc38e38588b2a060ef2f93cbfaf90b9d3b946ffe8e0955143c6384e1a0b529d0f9a80aeb88def8918d3144d8ecea4ba169926dd7a8c1be01cc3dd8
   languageName: node
   linkType: hard
 
