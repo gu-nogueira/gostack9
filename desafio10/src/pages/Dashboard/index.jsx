@@ -52,13 +52,13 @@ import {
 } from './styles';
 import colors from '~/styles/colors';
 
-function Dashboard({ isFocused, navigation }) {
+function Dashboard({ navigation }) {
   const [packages, setPackages] = useState([]);
   const [isConcluded, setIsConcluded] = useState(false);
   const [loading, setLoading] = useState(true);
 
   const user = useSelector((state) => state.user.profile);
-  // const idUser = useSelector((state) => state.auth.id);
+
   const idUser = user.id;
   const dispatch = useDispatch();
 
@@ -83,9 +83,14 @@ function Dashboard({ isFocused, navigation }) {
     setLoading(false);
   }
 
+  // ** Fetch appointments from API when focused
+
   useEffect(() => {
-    loadPackages(idUser, isConcluded);
-  }, [isFocused, idUser, isConcluded]);
+    const updatePackages = navigation.addListener('focus', () => {
+      loadPackages(idUser, isConcluded);
+    });
+    return updatePackages;
+  }, [idUser, isConcluded, navigation]);
 
   useEffect(() => {
     loadPackages(idUser, isConcluded);

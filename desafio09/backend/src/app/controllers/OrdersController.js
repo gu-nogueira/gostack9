@@ -95,13 +95,13 @@ class OrderController {
     }
 
     /**
-     * Check if delivery has already started
+     * Check if delivery has already been withdrawn
      */
 
     if (delivery.start_date != null) {
       return res
         .status(400)
-        .json({ error: 'This delivery has already been started' });
+        .json({ error: 'The delivery has already been withdrawn' });
     }
 
     /**
@@ -149,10 +149,10 @@ class OrderController {
           .status(400)
           .json({ error: 'The start date must be between 08:00 and 18:00' });
       }
-      if (isBefore(parseISO(startDate), new Date())) {
+      if (isBefore(new Date(), parseISO(startDate))) {
         return res
           .status(400)
-          .json({ error: 'Cannot create new orders with past date' });
+          .json({ error: 'Cannot withdraw orders in the future' });
       }
     }
 
@@ -169,6 +169,7 @@ class OrderController {
 
     const { id, deliveryId } = req.params;
     const { end_date: endDate } = req.query;
+    const { signature_id: signatureId } = req.body;
 
     /**
      * Check deliveryman id
@@ -216,7 +217,7 @@ class OrderController {
      * Check if has signature
      */
 
-    if (!req.fileId) {
+    if (!signatureId && !req.fileId) {
       return res.status(404).json({ error: 'Signature not found' });
     }
 
@@ -270,14 +271,14 @@ class OrderController {
           .status(400)
           .json({ error: 'The end date cannot be before start date' });
       }
-      if (isBefore(parseISO(endDate), new Date())) {
+      if (isBefore(new Date(), parseISO(endDate))) {
         return res
           .status(400)
-          .json({ error: 'Cannot create new orders with past date' });
+          .json({ error: 'Cannot delivery orders in the future' });
       }
     }
 
-    delivery.signature_id = req.fileId;
+    delivery.signature_id = signatureId || req.fileId;
     delivery.end_date = endDate;
     await delivery.save();
 

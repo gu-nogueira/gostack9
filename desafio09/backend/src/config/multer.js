@@ -12,7 +12,7 @@ export default {
       });
     },
   }),
-  // File limit 2MB
+  // ** File limit 2MB
   limits: {
     fileSize: 2 * 1024 * 1024,
   },

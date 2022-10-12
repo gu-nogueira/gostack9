@@ -11,7 +11,9 @@ import {
 import Icon from 'react-native-vector-icons/MaterialIcons';
 // import Spinner from 'react-native-loading-spinner-overlay';
 
-import api from '../../../services/api';
+import api from '~/services/api';
+
+import errorParser from '~/utils/errorParser';
 
 // import Camera from './Camera';
 
@@ -43,7 +45,7 @@ const Confirm = ({ navigation, route }) => {
   const [dataImage, setDataImage] = useState({});
   const [loading, setLoading] = useState(false);
 
-  const idUser = useSelector((state) => state.auth.id);
+  const profile = useSelector((state) => state.user.profile);
 
   async function getCameraPermissionStatus() {
     const currentStatus = await RNVisionCamera.getCameraPermissionStatus();
@@ -72,6 +74,7 @@ const Confirm = ({ navigation, route }) => {
     if (cameraRef.current !== null) {
       const photo = await resolveNativePictureMethod();
       console.tron.log('photooooooooo', photo);
+      console.log('cameraRef', cameraRef.current);
       setTakeImage(`file://${photo.path}?${new Date()}`);
       setDataImage(photo);
       setShowCamera(false);
@@ -83,24 +86,37 @@ const Confirm = ({ navigation, route }) => {
     try {
       const data = new FormData();
       data.append('file', {
-        uri: dataImage.path,
+        uri: `file://${dataImage.path}`,
         name: 'signature.jpg',
         type: 'image/jpeg',
       });
-      const response = await api.post('files', data);
-
-      await api.put(`deliveryman/${idUser}/deliveries/${deliveryId}`, {
-        signature_id: response.data.id,
+      const response = await api.post('files', data, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
       });
+
+      await api.put(
+        `/deliverymen/${profile.id}/deliveries/${deliveryId}`,
+        { signature_id: response.data.id },
+        {
+          params: {
+            end_date: new Date().toISOString(),
+          },
+        },
+      );
 
       setLoading(false);
       navigation.navigate('Dashboard');
-    } catch (error) {
+    } catch (err) {
       setLoading(false);
       Alert.alert(
-        'Erro inesperado',
-        'Ocorreu um erro inesperado para concluir a entrega do produto',
+        'Não foi possível confirmar a entrega',
+        err.response?.data?.error
+          ? errorParser(err.response.data.error)
+          : 'Ocorreu um erro inesperado para concluir a entrega do produto',
       );
+      console.tron.error(err);
     }
   }
 

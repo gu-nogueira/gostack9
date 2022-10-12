@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { TouchableOpacity, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import Spinner from 'react-native-loading-spinner-overlay';
+// import Spinner from 'react-native-loading-spinner-overlay';
 
-import api from '../../../services/api';
+import api from '~/services/api';
 
 import {
   Container,
@@ -16,8 +17,10 @@ import {
   Text,
 } from './styles';
 
-export default function SendProblem({ navigation }) {
-  const idDelivery = navigation.getParam('id');
+export default function SendProblem({ navigation, route }) {
+  const { id: deliveryId } = route.params;
+
+  const profile = useSelector((state) => state.user.profile);
 
   const [loading, setLoading] = useState(false);
   const [description, setDescription] = useState('');
@@ -26,9 +29,12 @@ export default function SendProblem({ navigation }) {
     setLoading(true);
 
     try {
-      await api.post(`delivery/${idDelivery}/problems`, {
-        description,
-      });
+      await api.put(
+        `/deliverymen/${profile.id}/deliveries/${deliveryId}/problems`,
+        {
+          description,
+        },
+      );
 
       navigation.goBack();
       setLoading(false);
@@ -36,7 +42,7 @@ export default function SendProblem({ navigation }) {
       setLoading(false);
       Alert.alert(
         'Falha no envio do problema',
-        'Houve um erro no envio do problema, tente novamente mais tarde'
+        'Houve um erro no envio do problema, tente novamente mais tarde',
       );
     }
   }
@@ -45,13 +51,13 @@ export default function SendProblem({ navigation }) {
     <Container>
       <Background />
       <Content>
-        <Spinner
+        {/* <Spinner
           visible={loading}
           animation="fade"
           overlayColor="rgba(0,0,0,0.8)"
           textContent="Enviando problema"
           textStyle={{ color: '#fff' }}
-        />
+        /> */}
         <Form>
           <Input value={description} onChangeText={setDescription} />
           <Button onPress={handleSubmit}>
@@ -66,16 +72,3 @@ export default function SendProblem({ navigation }) {
 SendProblem.propTypes = {
   navigation: PropTypes.shape().isRequired,
 };
-
-SendProblem.navigationOptions = ({ navigation }) => ({
-  title: 'Informar problema',
-  headerLeft: () => (
-    <TouchableOpacity
-      onPress={() => {
-        navigation.goBack();
-      }}
-    >
-      <Icon name="chevron-left" size={20} color="#fff" />
-    </TouchableOpacity>
-  ),
-});

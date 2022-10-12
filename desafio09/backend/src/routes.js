@@ -26,7 +26,6 @@ routes.post('/files', upload.single('file'), FilesController.store);
 
 routes.get('/deliverymen/:id', DeliverymenController.show);
 routes.get('/deliverymen/:id/deliveries', OrdersController.index);
-// routes.get('/deliverymen/:id/delivered', OrdersController.index);
 routes.post('/deliverymen/:id/deliveries/:deliveryId', OrdersController.store);
 routes.put(
   '/deliverymen/:id/deliveries/:deliveryId',
@@ -34,6 +33,8 @@ routes.put(
   fileMiddleware,
   OrdersController.update
 );
+// ** PROVISÓRIO ** Fazer um método próprio para entregadores para checar se é o mesmo entregador que está visualizando os problemas
+routes.get('/deliverymen/:id/problems/', ProblemsController.show);
 routes.put(
   '/deliverymen/:id/deliveries/:deliveryId/problems/',
   ProblemsController.update

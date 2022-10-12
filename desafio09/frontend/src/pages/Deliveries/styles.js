@@ -73,6 +73,7 @@ export const Content = styled.div`
     display: block;
     margin: 20px auto 0 auto;
     width: auto;
-    max-height: 60px;
+    max-width: 150px;
+    transform: rotate(-0.25turn);
   }
 `;

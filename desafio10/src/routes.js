@@ -14,8 +14,8 @@ import Profile from './pages/Profile';
 
 import Detail from './pages/Delivery/Detail';
 import Confirm from './pages/Delivery/Confirm';
-// import Problems from './pages/Delivery/Problems';
-// import SendProblem from './pages/Delivery/SendProblem';
+import Problems from './pages/Delivery/Problems';
+import SendProblem from './pages/Delivery/SendProblem';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
@@ -74,6 +74,26 @@ const DeliveryRoutes = () => {
           AddRoutesOptions({
             navigation,
             title: 'Confirmar entrega',
+          })
+        }
+      />
+      <Stack.Screen
+        name="SendProblem"
+        component={SendProblem}
+        options={({ navigation }) =>
+          AddRoutesOptions({
+            navigation,
+            title: 'Informar problema',
+          })
+        }
+      />
+      <Stack.Screen
+        name="Problems"
+        component={Problems}
+        options={({ navigation }) =>
+          AddRoutesOptions({
+            navigation,
+            title: 'Visualizar problemas',
           })
         }
       />

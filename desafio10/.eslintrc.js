@@ -15,7 +15,7 @@ module.exports = {
     ecmaFeatures: {
       jsx: true,
     },
-    ecmaVersion: 2018,
+    ecmaVersion: 2020,
     sourceType: 'module',
   },
   plugins: ['react', 'react-native', 'prettier'],
@@ -29,6 +29,7 @@ module.exports = {
     'global-require': 'off',
     'no-param-reassign': 'off',
     'no-underscore-dangle': 'off',
+    'no-unsafe-optional-chaining': 'off',
     camelcase: 'off',
     'no-console': ['warn', { allow: ['tron'] }],
     'react-hooks/rules-of-hooks': 'warn',

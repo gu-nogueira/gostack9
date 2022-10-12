@@ -19,7 +19,7 @@ export default function ActionsCard({ delivery }) {
   const handleAddProblem = async () => {
     if (delivery.end_date) return;
 
-    navigation.navigate('NewProblem', { id: delivery.id });
+    navigation.navigate('SendProblem', { id: delivery.id });
   };
 
   const handleConfirm = async () => {
@@ -36,7 +36,7 @@ export default function ActionsCard({ delivery }) {
         null,
         {
           params: {
-            start_date: new Date('2022-10-04T17:50:21.817Z').toISOString(),
+            start_date: new Date().toISOString(),
           },
         },
       );
@@ -51,7 +51,7 @@ export default function ActionsCard({ delivery }) {
         'Entre em contato se tiver algum problema',
       );
 
-      navigation.navigate('Deliveries');
+      navigation.navigate('Dashboard');
     } catch (err) {
       // showMessage({
       //   message: 'Falha ao retirar mercadoria',

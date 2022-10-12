@@ -3,9 +3,11 @@ import PropTypes from 'prop-types';
 import { TouchableOpacity, Alert } from 'react-native';
 import { format, parseISO } from 'date-fns';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import Spinner from 'react-native-loading-spinner-overlay';
+// import Spinner from 'react-native-loading-spinner-overlay';
 
-import api from '../../../services/api';
+import api from '~/services/api';
+
+import errorParser from '~/utils/errorParser';
 
 import {
   Container,
@@ -19,45 +21,47 @@ import {
   TextNotRegister,
 } from './styles';
 
-export default function Problems({ navigation }) {
+export default function Problems({ navigation, route }) {
+  const { id: deliveryId } = route.params;
+
   const [problems, setProblems] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  const key = navigation.getParam('key');
-  const idDelivery = navigation.getParam('id');
 
   async function loadProblems(id) {
     setLoading(true);
     try {
-      const { data } = await api.get(`delivery/${id}/problems`);
+      const { data } = await api.get(`deliverymen/${id}/problems`);
       setProblems(data);
       setLoading(false);
-    } catch (error) {
+    } catch (err) {
       setLoading(false);
       Alert.alert(
-        'Erro inesperado',
-        'Ocorreu um erro inesperado para recuperar os problemas, tente novamente mais tarde'
+        'Não foi possível listar problemas',
+        err.response?.data?.error
+          ? errorParser(err.response.data.error)
+          : 'Ocorreu um erro inesperado para recuperar os problemas, tente novamente mais tarde',
       );
       navigation.goBack();
     }
   }
 
   useEffect(() => {
-    loadProblems(idDelivery);
-  }, [idDelivery]);
+    loadProblems(deliveryId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [deliveryId]);
 
   return (
     <Container>
       <Background />
       <Content>
-        <Title>Encomenda {key}</Title>
-        <Spinner
+        <Title>Encomenda #{String(deliveryId).padStart(2, '0')}</Title>
+        {/* <Spinner
           visible={loading}
           animation="fade"
           overlayColor="rgba(0,0,0,0.8)"
           textContent="Carregando problemas"
           textStyle={{ color: '#fff' }}
-        />
+        /> */}
         {problems.length < 1 && !loading && (
           <NotRegister>
             <TextNotRegister>
@@ -65,10 +69,10 @@ export default function Problems({ navigation }) {
             </TextNotRegister>
           </NotRegister>
         )}
-        {problems.map(item => (
+        {problems.map((item) => (
           <Problem key={item.id}>
             <Description>{item.description}</Description>
-            <Date>{format(parseISO(item.createdAt), 'dd/MM/yyyy')}</Date>
+            <Date>{format(parseISO(item.updated_at), 'dd/MM/yyyy')}</Date>
           </Problem>
         ))}
       </Content>
@@ -79,16 +83,3 @@ export default function Problems({ navigation }) {
 Problems.propTypes = {
   navigation: PropTypes.shape().isRequired,
 };
-
-Problems.navigationOptions = ({ navigation }) => ({
-  title: 'Visualizar problemas',
-  headerLeft: () => (
-    <TouchableOpacity
-      onPress={() => {
-        navigation.goBack();
-      }}
-    >
-      <Icon name="chevron-left" size={20} color="#fff" />
-    </TouchableOpacity>
-  ),
-});
