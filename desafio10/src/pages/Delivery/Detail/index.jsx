@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import { format, parseISO } from 'date-fns';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
+import formatters from '~/utils/formatters';
+
 import ActionsCard from './Cards/Actions';
 
 import {
@@ -17,6 +19,7 @@ import {
   Label,
   Text,
   TwoRows,
+  Status,
 } from './styles';
 import colors from '~/styles/colors';
 
@@ -26,28 +29,28 @@ export default function Detail({ navigation, route }) {
   const dateWithdrawal = useMemo(
     () =>
       delivery.start_date
-        ? format(parseISO(delivery.start_date), 'dd / MM / yyyy')
-        : '-- / -- / ----',
+        ? format(parseISO(delivery.start_date), 'dd/MM/yyyy')
+        : '--/--/----',
     [delivery.start_date],
   );
 
   const deliveryDate = useMemo(
     () =>
       delivery.end_date
-        ? format(parseISO(delivery.end_date), 'dd / MM / yyyy')
-        : '-- / -- / ----',
+        ? format(parseISO(delivery.end_date), 'dd/MM/yyyy')
+        : '--/--/----',
     [delivery.end_date],
   );
 
   const status = useMemo(() => {
     if (delivery.end_date) {
-      return 'Concluído';
+      return 'Entregue';
     }
-    if (delivery.canceled_at) {
-      return 'Cancelado';
+    if (delivery.start_date) {
+      return 'Retirado';
     }
     return 'Pendente';
-  }, [delivery.end_date, delivery.canceled_at]);
+  }, [delivery.end_date, delivery.start_date]);
 
   return (
     <Container>
@@ -61,13 +64,13 @@ export default function Detail({ navigation, route }) {
           </CardHeader>
           <CardBody>
             <Label firstItem>Destinatário</Label>
-            <Text>{delivery.recipient.name}</Text>
+            <Text>{delivery.recipient.destiny_name}</Text>
 
             <Label>Endereço de entrega</Label>
             <Text>
-              {delivery.recipient.street}, {delivery.recipient.number},{' '}
+              {delivery.recipient.address}, Nº{delivery.recipient.number},{' '}
               {delivery.recipient.city} - {delivery.recipient.state},{' '}
-              {delivery.recipient.zip_code}
+              {formatters.cep(delivery.recipient.cep)}
             </Text>
 
             <Label>Produto</Label>
@@ -83,7 +86,6 @@ export default function Detail({ navigation, route }) {
           <CardBody>
             <Label firstItem>Status</Label>
             <Text>{status}</Text>
-
             <TwoRows>
               <View>
                 <Label>Data de retirada</Label>

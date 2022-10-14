@@ -1,4 +1,4 @@
-import styled from 'styled-components/native';
+import styled, { css } from 'styled-components/native';
 
 import colors from '~/styles/colors';
 
@@ -59,4 +59,59 @@ export const Text = styled(Label)`
 export const TwoRows = styled.View`
   flex-direction: row;
   justify-content: space-between;
+`;
+
+export const Status = styled.Text`
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  /* width: fit-content; */
+
+  &::before {
+    content: '';
+    display: block;
+    width: 8px;
+    height: 8px;
+    border-radius: 4px;
+    margin-right: 5px;
+  }
+
+  ${(props) => {
+    switch (props.status) {
+      case 'pendente':
+        return css`
+          color: ${colors.yellow1};
+          &::before {
+            background: ${colors.yellow1};
+          }
+        `;
+      case 'retirado':
+        return css`
+          color: ${colors.blue1};
+          &::before {
+            background: ${colors.blue1};
+          }
+        `;
+      case 'entregue':
+        return css`
+          color: ${colors.green1};
+          &::before {
+            background: ${colors.green1};
+          }
+        `;
+      case 'cancelado':
+        return css`
+          color: ${colors.warning1};
+          &::before {
+            background: ${colors.warning1};
+          }
+        `;
+      default:
+        return css``;
+    }
+  }}
 `;
