@@ -23,7 +23,7 @@ class Mail {
   configureTemplates() {
     const viewPath = resolve(__dirname, '..', 'app', 'views', 'emails');
 
-    // Formatando Handlebars templates
+    // ** Formats the email template
     this.transporter.use(
       'compile',
       nodemailerhbs({

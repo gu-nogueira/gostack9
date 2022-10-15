@@ -147,11 +147,15 @@ class DeliveriesController {
      *  E-mail queue schedule
      */
 
-    await Queue.add(OrderMail.key, {
-      product,
-      recipient,
-      deliveryman,
-    });
+    try {
+      await Queue.add(OrderMail.key, {
+        product,
+        recipient,
+        deliveryman,
+      });
+    } catch (err) {
+      console.error('Failed to add Queue event:', err);
+    }
 
     return res.json({
       id,

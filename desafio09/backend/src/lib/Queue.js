@@ -1,5 +1,6 @@
 import 'dotenv/config';
 import Bee from 'bee-queue';
+import bqScripts from 'bee-queue/lib/lua';
 
 import redisConfig from '../config/redis';
 
@@ -27,7 +28,19 @@ class Queue {
   }
 
   add(queue, job) {
-    return this.queues[queue].bee.createJob(job).save();
+    return this.queues[queue].bee.createJob(job).save(async (err, job) => {
+      if (err) {
+        console.error(`Failed creating job: ${queue}`, err);
+        // ** Known error when redis has not all lua scripts loaded properly
+        if (err.command === 'EVALSHA') {
+          await bqScripts.buildCache(redisConfig);
+          console.info('Successfully reloaded Lua scripts into cache!');
+          // create job again
+          // queue.createJob(config).save();
+          this.queues[queue].bee.createJob(job).save();
+        }
+      }
+    });
   }
 
   processQueue() {

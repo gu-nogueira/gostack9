@@ -28,15 +28,20 @@ class Database {
   }
 
   init() {
-    this.connection = new Sequelize(databaseConfig);
-    console.log('Loading models...');
-    models
-      .map((model) => model.init(this.connection))
-      .map(
-        (model) => model.associate && model.associate(this.connection.models)
-      );
-    console.log('Configuring transaction loader...');
-    Transaction.setSequelize(this.connection);
+    try {
+      console.log('Loading database...');
+      this.connection = new Sequelize(databaseConfig);
+      console.log('Loading models...');
+      models
+        .map((model) => model.init(this.connection))
+        .map(
+          (model) => model.associate && model.associate(this.connection.models)
+        );
+      console.log('Configuring transaction loader...');
+      Transaction.setSequelize(this.connection);
+    } catch (err) {
+      console.error('Failed to load database: ', err);
+    }
   }
 }
 
