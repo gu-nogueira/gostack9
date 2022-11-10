@@ -234,3 +234,54 @@ settings: {
 # '~1' representa o caractere de espaço para 'Gustavo Nogueira'
 npm config set cache "C:\Users\Gustavo~1Nogueira\AppData\Roaming\npm-cache" --global
 ``` 
+
+# Deploy React Native
+
+## Configurações visuais no Android
+
+### Trocar nome do app:
+- Navegar em `android > app > src > main > res > values > strings.xml`
+
+### Trocar ícone do app:
+- Novo ícone deve estar em formato `.png` com o tamanho de `1024 x 1024 px`
+- Acessar o site [Android Icon Generator](https://romannurik.github.io/AndroidAssetStudio/icons-launcher.html) e gerar as imagens android;
+- Feito download, copiar todas as pastas com prefixo `drawable` na pasta baixada dentro de `android`;
+- Substituir no diretório do app `res` todas as pastas com o prefixo `mipmap`;
+- No mesmo diretório, dentro do arquivo `AndroidManifext.xml`, trocar as linhas `android:icon` e `android:roundIcon` para `@drawable/icon`
+
+### Configurar splash screen
+- Criar no diretório `res > values` um arquivo `colors.xml`:
+```xml
+<?xml version="1.0" encoding="utf-8" ?>
+<resources>
+  <color name="primary">#7D40E7</color>
+</resources>
+```
+- Criar em `res > drawable` o arquivo `background_splash.xml`:
+```xml
+<?xml version="1.0" encoding="utf-8" ?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+  <item android:drawable="@color/primary" />
+  <item android:height="200dp" android:drawable="@drawable/icon" android:gravity="center" />
+</layer-list>
+```
+- Adicionar em `res > values` no arquivo `styles.xml`:
+```xml
+<style name="SplashTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
+    <item name="android:windowBackground">@drawable/background_splash</item>
+</style>
+```
+- Por fim, adicionar no ``, dentro da tag `<activity`:
+```xml
+<activity
+  android:theme="@style/SplashTheme"
+/>
+```
+
+### Mudar o id do aplicativo
+- Dentro de `android > app > build.gradle`, substituir dentro de `defaultConfig`:
+```java
+defaultConfig {
+  applicationId "com.nomedaempresa.nomedoapp"
+}
+```
